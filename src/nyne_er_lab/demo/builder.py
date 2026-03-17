@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import base64
 from html import escape
 from pathlib import Path
 
@@ -106,37 +107,46 @@ def _render_demo_html(report) -> str:
     metrics = report.model_metrics
     headline = report.headline_metrics
     leakage_failures = [item for item in report.leakage_checks if not item["passed"]]
+    
+    # Load and encode logo
+    logo_path = Path(__file__).parent / "logo.png"
+    if logo_path.exists():
+        logo_b64 = base64.b64encode(logo_path.read_bytes()).decode("utf-8")
+        logo_html = f'<img src="data:image/png;base64,{logo_b64}" alt="Entity Resolution Lab logo" style="width: 100%; height: auto; border-radius: 12px;">'
+    else:
+        logo_html = ""
+        
     return f"""<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nyne ER Lab</title>
+    <title>Entity Resolution Lab</title>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+      
       :root {{
-        --bg: #f5f1e8;
-        --panel: #fffdf8;
-        --ink: #172026;
-        --muted: #6f756f;
-        --teal: #0f8b8d;
-        --gold: #c59d31;
-        --slate: #20303c;
-        --good: #2d7d46;
-        --warn: #ad7a16;
-        --bad: #9f3f3f;
-        --border: #dfd6c6;
+        --bg: #FFFFFF;
+        --panel: #F9FAFB;
+        --ink: #222425;
+        --muted: #5F6368;
+        --accent: #3B82F6;
+        --good: #10B981;
+        --warn: #F59E0B;
+        --bad: #EF4444;
+        --border: #E5E7EB;
       }}
       body {{
         margin: 0;
         color: var(--ink);
-        background: radial-gradient(circle at top left, rgba(15,139,141,0.12), transparent 30%), var(--bg);
-        font-family: Georgia, 'Iowan Old Style', serif;
+        background: var(--bg);
+        font-family: 'Inter', -apple-system, sans-serif;
       }}
       main {{ max-width: 1120px; margin: 0 auto; padding: 40px 20px 80px; }}
       .hero {{
         border: 1px solid var(--border);
-        border-radius: 22px;
-        background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(15,139,141,0.08));
+        border-radius: 12px;
+        background: var(--panel);
         padding: 28px;
         margin-bottom: 22px;
       }}
@@ -147,18 +157,18 @@ def _render_demo_html(report) -> str:
       .panel, .case, .identity {{
         border: 1px solid var(--border);
         background: var(--panel);
-        border-radius: 16px;
+        border-radius: 12px;
         padding: 18px;
       }}
       table {{ width: 100%; border-collapse: collapse; }}
       th, td {{ text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); }}
-      .bar {{ width: 100%; height: 10px; background: #eee7d9; border-radius: 999px; overflow: hidden; }}
-      .bar span {{ display: block; height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold)); }}
-      .match {{ border-left: 6px solid var(--good); }}
-      .abstain {{ border-left: 6px solid var(--warn); }}
-      .non_match {{ border-left: 6px solid var(--bad); }}
-      h1, h2, h3 {{ margin: 0 0 12px; }}
-      p {{ line-height: 1.55; }}
+      .bar {{ width: 100%; height: 10px; background: var(--border); border-radius: 999px; overflow: hidden; }}
+      .bar span {{ display: block; height: 100%; background: var(--accent); }}
+      .match {{ border-left: 2px solid var(--good); }}
+      .abstain {{ border-left: 2px solid var(--warn); }}
+      .non_match {{ border-left: 2px solid var(--bad); }}
+      h1, h2, h3 {{ margin: 0 0 12px; font-weight: 700; color: var(--ink); }}
+      p {{ line-height: 1.55; color: var(--ink); }}
     </style>
   </head>
   <body>
@@ -166,19 +176,10 @@ def _render_demo_html(report) -> str:
       <section class="hero">
         <div class="hero-grid">
           <div class="logo">
-            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Nyne ER Lab logo">
-              <circle cx="22" cy="24" r="12" fill="#0f8b8d"/>
-              <circle cx="22" cy="92" r="12" fill="#20303c"/>
-              <circle cx="60" cy="58" r="10" fill="#c59d31"/>
-              <circle cx="98" cy="58" r="16" fill="#0f8b8d"/>
-              <path d="M34 24 L52 50" stroke="#20303c" stroke-width="5" stroke-linecap="round"/>
-              <path d="M34 92 L52 66" stroke="#20303c" stroke-width="5" stroke-linecap="round"/>
-              <path d="M68 58 L80 58" stroke="#20303c" stroke-width="5" stroke-dasharray="7 6" stroke-linecap="round"/>
-              <path d="M84 58 L98 58" stroke="#0f8b8d" stroke-width="5" stroke-linecap="round"/>
-            </svg>
+            {logo_html}
           </div>
           <div>
-            <p class="eyebrow">Nyne ER Lab</p>
+            <p class="eyebrow">Entity Resolution Lab</p>
             <h1>Public-Web Identity Resolution</h1>
             <p>Founder-facing benchmark and demo layer for explainable identity resolution. Headline metrics come only from the curated real-profile benchmark; stress suites are reported separately.</p>
           </div>

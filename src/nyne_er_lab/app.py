@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import base64
 from html import escape
+from pathlib import Path
 
 import numpy as np
 import plotly.graph_objects as go
@@ -11,6 +13,14 @@ from sklearn.calibration import calibration_curve
 
 from nyne_er_lab.app_data import DashboardData, load_dashboard_data, _pair_key
 from nyne_er_lab.eval.metrics import summarize_predictions, threshold_sweep
+
+
+def _logo_b64() -> str:
+    """Return base64-encoded logo PNG for use in img src."""
+    logo_path = Path(__file__).parent / "demo" / "logo.png"
+    if logo_path.exists():
+        return base64.b64encode(logo_path.read_bytes()).decode("utf-8")
+    return ""
 
 
 # ---------------------------------------------------------------------------
@@ -27,8 +37,8 @@ def _hex_to_rgb(hex_color: str) -> str:
 # ---------------------------------------------------------------------------
 
 st.set_page_config(
-    page_title="Nyne ER Lab",
-    page_icon="N",
+    page_title="Entity Resolution Lab",
+    page_icon="🍌",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -43,22 +53,22 @@ THEME_CSS = """
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-    --bg: #0a0f1a;
-    --surface: #111827;
-    --surface-2: #1e293b;
-    --border: #1e293b;
-    --cyan: #06b6d4;
-    --emerald: #10b981;
-    --rose: #f43f5e;
-    --amber: #f59e0b;
-    --violet: #8b5cf6;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --dim: #475569;
+    --bg: #191A1A;
+    --surface: #202222;
+    --surface-2: #2F3336;
+    --border: #2F3336;
+    --cyan: #3B82F6;
+    --emerald: #10B981;
+    --rose: #EF4444;
+    --amber: #F59E0B;
+    --violet: #8B5CF6;
+    --text: #E8E8E6;
+    --muted: #8E8E8E;
+    --dim: #5F6368;
 }
 
 .stApp {
-    background: linear-gradient(135deg, #0a0f1a 0%, #0f172a 50%, #0a0f1a 100%);
+    background: var(--bg);
     font-family: 'Inter', -apple-system, sans-serif;
 }
 .stApp header { background: transparent !important; }
@@ -66,62 +76,76 @@ THEME_CSS = """
 h1, h2, h3, h4 { color: var(--text) !important; font-weight: 700 !important; }
 
 /* Hero header */
+.hero-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+.hero-logo {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+.hero-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-text { flex: 1; }
 .hero-title {
-    font-size: 2.4rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #f43f5e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 0 0 4px;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 2px;
     line-height: 1.2;
 }
 .hero-sub {
     color: var(--muted);
-    font-size: 1.05rem;
-    margin: 0 0 24px;
+    font-size: 0.9rem;
+    margin: 0;
 }
 
 /* Metric cards */
 [data-testid="stMetric"] {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 18px 22px;
     transition: border-color 0.2s;
 }
 [data-testid="stMetric"]:hover { border-color: var(--cyan); }
 [data-testid="stMetricLabel"] { color: var(--muted) !important; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
-[data-testid="stMetricValue"] { color: var(--cyan) !important; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+[data-testid="stMetricValue"] { color: var(--text) !important; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
 [data-testid="stMetricDelta"] > div { color: var(--emerald) !important; }
 
 /* Tabs */
 .stTabs [data-baseweb="tab-list"] {
     gap: 2px;
     background: var(--surface);
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 4px;
     border: 1px solid var(--border);
 }
 .stTabs [data-baseweb="tab"] {
     color: var(--muted);
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 10px 18px;
     font-weight: 600;
     font-size: 0.85rem;
     letter-spacing: 0.02em;
 }
 .stTabs [aria-selected="true"] {
-    background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(139,92,246,0.15)) !important;
-    color: var(--cyan) !important;
-    border: 1px solid rgba(6,182,212,0.3);
+    background: var(--surface-2) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border);
 }
 
 /* Expanders */
 details[data-testid="stExpander"] {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 12px;
 }
 
 /* Inputs */
@@ -144,28 +168,27 @@ details[data-testid="stExpander"] {
 .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 20px;
     margin-bottom: 12px;
     transition: border-color 0.2s, transform 0.2s;
 }
-.card:hover { border-color: rgba(6,182,212,0.4); transform: translateY(-1px); }
+.card:hover { border-color: var(--cyan); transform: translateY(-1px); }
 
-/* Glow card for live results */
+/* Glow card for live results -> changed to solid border accent */
 .card-glow {
     background: var(--surface);
-    border: 1px solid rgba(6,182,212,0.4);
-    border-radius: 14px;
+    border: 1px solid var(--cyan);
+    border-radius: 12px;
     padding: 20px;
     margin-bottom: 12px;
-    box-shadow: 0 0 20px rgba(6,182,212,0.08);
 }
 
 /* Pills */
 .pill {
     display: inline-block;
     background: var(--surface-2);
-    color: var(--cyan);
+    color: var(--text);
     padding: 3px 12px;
     border-radius: 999px;
     font-size: 11px;
@@ -174,10 +197,10 @@ details[data-testid="stExpander"] {
     letter-spacing: 0.03em;
     text-transform: uppercase;
 }
-.pill-match { background: rgba(16,185,129,0.15); color: var(--emerald); }
-.pill-non_match { background: rgba(244,63,94,0.15); color: var(--rose); }
-.pill-abstain { background: rgba(245,158,11,0.15); color: var(--amber); }
-.pill-violet { background: rgba(139,92,246,0.15); color: var(--violet); }
+.pill-match { background: rgba(16,185,129,0.1); color: var(--emerald); }
+.pill-non_match { background: rgba(239,68,68,0.1); color: var(--rose); }
+.pill-abstain { background: rgba(245,158,11,0.1); color: var(--amber); }
+.pill-violet { background: rgba(139,92,246,0.1); color: var(--violet); }
 
 /* Badges */
 .badge {
@@ -189,13 +212,13 @@ details[data-testid="stExpander"] {
     text-transform: uppercase;
     letter-spacing: 0.06em;
 }
-.badge-match { background: rgba(16,185,129,0.15); color: var(--emerald); border: 1px solid rgba(16,185,129,0.3); }
-.badge-non_match { background: rgba(244,63,94,0.15); color: var(--rose); border: 1px solid rgba(244,63,94,0.3); }
-.badge-abstain { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
-.badge-high { background: rgba(16,185,129,0.15); color: var(--emerald); border: 1px solid rgba(16,185,129,0.3); }
-.badge-medium { background: rgba(6,182,212,0.15); color: var(--cyan); border: 1px solid rgba(6,182,212,0.3); }
-.badge-low { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
-.badge-uncertain { background: rgba(244,63,94,0.15); color: var(--rose); border: 1px solid rgba(244,63,94,0.3); }
+.badge-match { background: rgba(16,185,129,0.1); color: var(--emerald); border: 1px solid rgba(16,185,129,0.2); }
+.badge-non_match { background: rgba(239,68,68,0.1); color: var(--rose); border: 1px solid rgba(239,68,68,0.2); }
+.badge-abstain { background: rgba(245,158,11,0.1); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+.badge-high { background: rgba(16,185,129,0.1); color: var(--emerald); border: 1px solid rgba(16,185,129,0.2); }
+.badge-medium { background: rgba(59,130,246,0.1); color: var(--cyan); border: 1px solid rgba(59,130,246,0.2); }
+.badge-low { background: rgba(245,158,11,0.1); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+.badge-uncertain { background: rgba(239,68,68,0.1); color: var(--rose); border: 1px solid rgba(239,68,68,0.2); }
 
 /* Confidence bar */
 .conf-bar-bg {
@@ -221,8 +244,7 @@ details[data-testid="stExpander"] {
 .step-active {
     border-color: var(--cyan);
     color: var(--cyan);
-    background: rgba(6,182,212,0.08);
-    box-shadow: 0 0 12px rgba(6,182,212,0.1);
+    background: rgba(59,130,246,0.08);
 }
 
 /* Live status pulse */
@@ -243,7 +265,7 @@ details[data-testid="stExpander"] {
 .subtle-divider {
     border: none;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    background: var(--border);
     margin: 24px 0;
 }
 </style>
@@ -257,30 +279,36 @@ st.markdown(THEME_CSS, unsafe_allow_html=True)
 
 PLOTLY_LAYOUT = dict(
     template="plotly_dark",
-    paper_bgcolor="rgba(17,24,39,0)",
-    plot_bgcolor="rgba(17,24,39,0.5)",
-    font=dict(family="Inter, sans-serif", color="#e2e8f0", size=12),
+    paper_bgcolor="rgba(25,26,26,0)",
+    plot_bgcolor="rgba(25,26,26,0)",
+    font=dict(family="Inter, -apple-system, sans-serif", color="#E8E8E6", size=12),
     margin=dict(l=40, r=20, t=50, b=40),
+    title=dict(font=dict(size=14, color="#E8E8E6", family="Inter, -apple-system, sans-serif"), x=0.01, xanchor="left"),
+    legend_font=dict(size=11, color="#8E8E8E"),
+    hoverlabel=dict(font_family="Inter, -apple-system, sans-serif", bgcolor="#202222", bordercolor="#2F3336"),
+    xaxis=dict(title_font=dict(size=12, color="#8E8E8E"), tickfont=dict(size=11, color="#8E8E8E"), gridcolor="#2F3336", zerolinecolor="#2F3336"),
+    yaxis=dict(title_font=dict(size=12, color="#8E8E8E"), tickfont=dict(size=11, color="#8E8E8E"), gridcolor="#2F3336", zerolinecolor="#2F3336"),
 )
 
 C = {
-    "cyan": "#06b6d4",
-    "emerald": "#10b981",
-    "rose": "#f43f5e",
-    "amber": "#f59e0b",
-    "violet": "#8b5cf6",
-    "slate": "#94a3b8",
-    "muted": "#94a3b8",
-    "dim": "#475569",
+    "cyan": "#3B82F6",
+    "emerald": "#10B981",
+    "rose": "#EF4444",
+    "amber": "#F59E0B",
+    "violet": "#8B5CF6",
+    "slate": "#8E8E8E",
+    "muted": "#8E8E8E",
+    "dim": "#5F6368",
+    "text": "#E8E8E6",
 }
 
 SOURCE_COLORS = {
-    "github": "#06b6d4",
-    "personal_site": "#8b5cf6",
-    "conference_bio": "#f59e0b",
-    "company_profile": "#10b981",
-    "podcast_guest": "#f43f5e",
-    "huggingface": "#fbbf24",
+    "github": "#3B82F6",
+    "personal_site": "#8B5CF6",
+    "conference_bio": "#F59E0B",
+    "company_profile": "#10B981",
+    "podcast_guest": "#EF4444",
+    "huggingface": "#FBBF24",
 }
 
 # ---------------------------------------------------------------------------
@@ -360,7 +388,7 @@ def _render_live_results(result, profile_lookup) -> None:
             continue
         dec_color = C["emerald"] if rp.decision == "match" else C["rose"] if rp.decision == "non_match" else C["amber"]
         st.markdown(
-            f'<div class="card" style="border-left: 3px solid {dec_color}">'
+            f'<div class="card" style="border-top: 2px solid {dec_color}">'
             f'<strong>{escape(matched_profile.display_name)}</strong> '
             f'<span class="pill">{matched_profile.source_type}</span> '
             f'<span class="badge badge-{rp.decision}">{rp.decision}</span> '
@@ -375,9 +403,16 @@ def _render_live_results(result, profile_lookup) -> None:
 # Header
 # ---------------------------------------------------------------------------
 
-st.markdown('<p class="hero-title">Nyne ER Lab</p>', unsafe_allow_html=True)
+_logo = _logo_b64()
+_logo_img = f'<img src="data:image/png;base64,{_logo}" alt="Entity Resolution Lab">' if _logo else ""
 st.markdown(
-    '<p class="hero-sub">Public-web identity resolution with honest benchmark reporting, evidence-led decisions, and conservative abstention.</p>',
+    f'<div class="hero-header">'
+    f'<div class="hero-logo">{_logo_img}</div>'
+    f'<div class="hero-text">'
+    f'<p class="hero-title">Entity Resolution Lab</p>'
+    f'<p class="hero-sub">Public-web identity resolution — honest benchmarking, evidence-led decisions, conservative abstention.</p>'
+    f'</div>'
+    f'</div>',
     unsafe_allow_html=True,
 )
 
@@ -429,8 +464,8 @@ with tab_overview:
                 marker_color=bar_colors[i],
             ))
         fig_models.update_layout(
-            **PLOTLY_LAYOUT, barmode="group", title="Model Comparison",
-            yaxis=dict(range=[0, 1.05], gridcolor="rgba(30,41,59,0.5)"),
+            **PLOTLY_LAYOUT, barmode="group", title_text="Model Comparison",
+            yaxis_range=[0, 1.05],
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
             height=380,
         )
@@ -450,9 +485,8 @@ with tab_overview:
                     opacity=0.6, line_color=decision_colors.get(decision, C["slate"]),
                 ))
         fig_dist.update_layout(
-            **PLOTLY_LAYOUT, title="Score Distribution by Decision",
+            **PLOTLY_LAYOUT, title_text="Score Distribution by Decision",
             yaxis_title="Confidence Score",
-            yaxis=dict(gridcolor="rgba(30,41,59,0.5)"),
             showlegend=False, height=380,
         )
         st.plotly_chart(fig_dist, use_container_width=True)
@@ -467,11 +501,11 @@ with tab_overview:
             y=abl_names, x=abl_f1, orientation="h",
             marker_color=[C["emerald"] if n == "full" else C["amber"] for n in abl_names],
             text=[f"{v:.3f}" for v in abl_f1], textposition="outside",
-            textfont=dict(color=C["slate"]),
+            textfont=dict(color=C["slate"], family="Inter, -apple-system, sans-serif"),
         ))
         fig_abl.update_layout(
-            **PLOTLY_LAYOUT, title="Feature Ablation (F1)",
-            xaxis=dict(range=[0, 1.15], gridcolor="rgba(30,41,59,0.5)"),
+            **PLOTLY_LAYOUT, title_text="Feature Ablation (F1)",
+            xaxis_range=[0, 1.15],
             height=280,
         )
         st.plotly_chart(fig_abl, use_container_width=True)
@@ -514,7 +548,7 @@ with tab_overview:
             color = C["emerald"] if item["decision"] == "match" else C["rose"] if item["decision"] == "non_match" else C["amber"]
             counterfactual = " | ".join(item.get("counterfactuals", [])) or "No extra counterfactuals."
             st.markdown(
-                f'<div class="card" style="border-left: 3px solid {color}">'
+                f'<div class="card" style="border-top: 2px solid {color}">'
                 f'<span class="pill pill-{item["decision"]}">{item["bucket"]}</span><br>'
                 f'<strong>{escape(item["left_name"])} vs {escape(item["right_name"])}</strong><br>'
                 f'<small style="color:{C["muted"]}">{escape(item["explanation"])}</small><br>'
@@ -591,11 +625,11 @@ with tab_network:
                 marker=dict(
                     size=14,
                     color=SOURCE_COLORS.get(source_type, C["slate"]),
-                    line=dict(width=2, color="rgba(10,15,26,0.8)"),
+                    line=dict(width=2, color="rgba(25,26,26,0.9)"),
                 ),
                 text=[net.node_names[i].split()[0] for i in mask],
                 textposition="top center",
-                textfont=dict(size=9, color=C["muted"]),
+                textfont=dict(size=10, color=C["muted"], family="Inter, -apple-system, sans-serif"),
                 hovertext=[
                     f"<b>{net.node_names[i]}</b><br>"
                     f"Source: {net.node_types[i]}<br>"
@@ -609,11 +643,11 @@ with tab_network:
         fig_net.update_layout(
             **PLOTLY_LAYOUT,
             height=650,
-            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            xaxis_showgrid=False, xaxis_zeroline=False, xaxis_showticklabels=False,
+            yaxis_showgrid=False, yaxis_zeroline=False, yaxis_showticklabels=False,
             legend=dict(
                 orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5,
-                font=dict(size=11),
+                font=dict(size=11, color=C["muted"]),
             ),
         )
         st.plotly_chart(fig_net, use_container_width=True)
@@ -740,12 +774,11 @@ with tab_pairs:
                         for v in feat_vals
                     ],
                     text=[f"{v:.3f}" for v in feat_vals], textposition="outside",
-                    textfont=dict(color=C["slate"], size=10),
+                    textfont=dict(color=C["slate"], size=10, family="Inter, -apple-system, sans-serif"),
                 ))
                 fig_feat.update_layout(
-                    **PLOTLY_LAYOUT, title="Feature Vector", height=400,
-                    xaxis=dict(range=[0, max(feat_vals) * 1.3 + 0.1] if feat_vals else [0, 1],
-                               gridcolor="rgba(30,41,59,0.5)"),
+                    **PLOTLY_LAYOUT, title_text="Feature Vector", height=400,
+                    xaxis_range=[0, max(feat_vals) * 1.3 + 0.1] if feat_vals else [0, 1],
                 )
                 st.plotly_chart(fig_feat, use_container_width=True)
 
@@ -937,12 +970,11 @@ with tab_explainer:
                         for v in feat_vals
                     ],
                     text=[f"{v:.3f}" for v in feat_vals], textposition="outside",
-                    textfont=dict(color=C["slate"], size=10),
+                    textfont=dict(color=C["slate"], size=10, family="Inter, -apple-system, sans-serif"),
                 ))
                 fig_feat.update_layout(
-                    **PLOTLY_LAYOUT, title="Feature Vector for This Pair", height=400,
-                    xaxis=dict(range=[0, max(feat_vals) * 1.3 + 0.1] if feat_vals else [0, 1],
-                               gridcolor="rgba(30,41,59,0.5)"),
+                    **PLOTLY_LAYOUT, title_text="Feature Vector for This Pair", height=400,
+                    xaxis_range=[0, max(feat_vals) * 1.3 + 0.1] if feat_vals else [0, 1],
                 )
                 st.plotly_chart(fig_feat, use_container_width=True)
 
@@ -1150,11 +1182,11 @@ with tab_whatif:
         fig_radar.update_layout(
             **PLOTLY_LAYOUT,
             polar=dict(
-                bgcolor="rgba(17,24,39,0.3)",
-                radialaxis=dict(visible=True, range=[0, 1], gridcolor="rgba(30,41,59,0.5)"),
-                angularaxis=dict(gridcolor="rgba(30,41,59,0.3)"),
+                bgcolor="rgba(25,26,26,0)",
+                radialaxis=dict(visible=True, range=[0, 1], gridcolor="#2F3336", tickfont=dict(size=10, color=C["muted"])),
+                angularaxis=dict(gridcolor="#2F3336", tickfont=dict(size=11, color=C["text"])),
             ),
-            title="Feature Fingerprint",
+            title_text="Feature Fingerprint",
             height=450,
             showlegend=False,
         )
@@ -1166,11 +1198,10 @@ with tab_whatif:
                 y=feat_names, x=list(features.values()), orientation="h",
                 marker_color=[C["cyan"] if v >= 0.5 else C["amber"] if v >= 0.2 else C["dim"] for v in features.values()],
                 text=[f"{v:.4f}" for v in features.values()], textposition="outside",
-                textfont=dict(size=10, color=C["slate"]),
+                textfont=dict(size=10, color=C["slate"], family="Inter, -apple-system, sans-serif"),
             ))
             fig_detail.update_layout(
                 **PLOTLY_LAYOUT, height=400,
-                xaxis=dict(gridcolor="rgba(30,41,59,0.5)"),
             )
             st.plotly_chart(fig_detail, use_container_width=True)
 
@@ -1208,7 +1239,7 @@ with tab_search:
             for candidate in item["top_candidates"]:
                 color = C["emerald"] if candidate["same_person"] else C["muted"]
                 st.markdown(
-                    f'<div class="card" style="border-left: 3px solid {color}">'
+                    f'<div class="card" style="border-top: 2px solid {color}">'
                     f'<strong>{escape(candidate["display_name"])}</strong> '
                     f'<span class="pill">{candidate["source_type"]}</span> '
                     f'<span style="font-family:JetBrains Mono;color:{C["cyan"]};margin-left:8px">{candidate["score"]:.3f}</span><br>'
@@ -1366,7 +1397,7 @@ with tab_inspector:
         color = C["emerald"] if item["passed"] else C["rose"]
         status = "PASS" if item["passed"] else "FAIL"
         st.markdown(
-            f'<div class="card" style="border-left: 3px solid {color}">'
+            f'<div class="card" style="border-top: 2px solid {color}">'
             f'<strong>{status}</strong> · {escape(item["name"])}<br>'
             f'<small style="color:{C["muted"]}">{escape(item["detail"])}</small>'
             f'</div>',
@@ -1384,11 +1415,10 @@ with tab_inspector:
             y=fi_names, x=fi_coefs, orientation="h",
             marker_color=[C["cyan"] if c >= 0 else C["rose"] for c in fi_coefs],
             text=[f"{v:+.3f}" for v in fi_coefs], textposition="outside",
-            textfont=dict(color=C["slate"], size=10),
+            textfont=dict(color=C["slate"], size=10, family="Inter, -apple-system, sans-serif"),
         ))
         fig_fi.update_layout(
-            **PLOTLY_LAYOUT, title="Feature Importance (LR Coefficients)", height=450,
-            xaxis=dict(gridcolor="rgba(30,41,59,0.5)"),
+            **PLOTLY_LAYOUT, title_text="Feature Importance (LR Coefficients)", height=450,
         )
         st.plotly_chart(fig_fi, use_container_width=True)
 
@@ -1420,11 +1450,9 @@ with tab_inspector:
                 line=dict(color=C["cyan"]),
             ))
             fig_cal.update_layout(
-                **PLOTLY_LAYOUT, title="Calibration Curve",
+                **PLOTLY_LAYOUT, title_text="Calibration Curve",
                 xaxis_title="Mean predicted probability",
                 yaxis_title="Fraction of positives",
-                xaxis=dict(gridcolor="rgba(30,41,59,0.5)"),
-                yaxis=dict(gridcolor="rgba(30,41,59,0.5)"),
                 height=450,
                 legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
             )
@@ -1451,8 +1479,7 @@ with tab_inspector:
             marker_color=C["emerald"],
         ))
         fig_block.update_layout(
-            **PLOTLY_LAYOUT, barmode="group", title="Blocking Rule Effectiveness",
-            yaxis=dict(gridcolor="rgba(30,41,59,0.5)"),
+            **PLOTLY_LAYOUT, barmode="group", title_text="Blocking Rule Effectiveness",
         )
         st.plotly_chart(fig_block, use_container_width=True)
 
@@ -1482,12 +1509,12 @@ with tab_inspector:
         fig_pr.add_trace(go.Scatter(x=sweep_t, y=sweep_r, name="Recall", line=dict(color=C["amber"], width=2)))
         fig_pr.add_trace(go.Scatter(x=sweep_t, y=sweep_f, name="F1", line=dict(color=C["emerald"], width=2)))
         fig_pr.add_vline(x=threshold_val, line_dash="dash", line_color=C["rose"],
-                         annotation_text="threshold", annotation_font_color=C["rose"])
+                         annotation_text="threshold", annotation_font_color=C["rose"],
+                         annotation_font=dict(family="Inter, -apple-system, sans-serif", size=10))
         fig_pr.update_layout(
-            **PLOTLY_LAYOUT, title="Precision / Recall / F1 vs Threshold",
+            **PLOTLY_LAYOUT, title_text="Precision / Recall / F1 vs Threshold",
             xaxis_title="Threshold",
-            xaxis=dict(gridcolor="rgba(30,41,59,0.5)"),
-            yaxis=dict(range=[0, 1.05], gridcolor="rgba(30,41,59,0.5)"),
+            yaxis_range=[0, 1.05],
             height=400,
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
@@ -1512,13 +1539,12 @@ with tab_inspector:
                 nbinsx=20,
             ))
     fig_hist.add_vline(x=threshold_val, line_dash="dash", line_color=C["amber"],
-                       annotation_text="threshold", annotation_font_color=C["amber"])
+                       annotation_text="threshold", annotation_font_color=C["amber"],
+                       annotation_font=dict(family="Inter, -apple-system, sans-serif", size=10))
     fig_hist.update_layout(
         **PLOTLY_LAYOUT, barmode="overlay",
-        title="How well does the model separate classes?",
+        title_text="How well does the model separate classes?",
         xaxis_title="Calibrated Score", yaxis_title="Count",
-        xaxis=dict(gridcolor="rgba(30,41,59,0.5)"),
-        yaxis=dict(gridcolor="rgba(30,41,59,0.5)"),
         height=350,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )

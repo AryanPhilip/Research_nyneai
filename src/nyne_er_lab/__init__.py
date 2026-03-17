@@ -1,4 +1,4 @@
-"""Nyne-oriented entity resolution lab."""
+"""Entity Resolution Lab — public-web identity resolution."""
 
 from .schemas import (
     CandidatePair,
