@@ -1,0 +1,544 @@
+[
+  {
+    "profile_id": "andrej_github",
+    "canonical_person_id": "andrej_karpathy",
+    "source_type": "github",
+    "url": "https://github.com/karpathy",
+    "display_name": "Andrej Karpathy",
+    "aliases": ["Andrej", "A. Karpathy"],
+    "headline": "Building foundation models and learning systems.",
+    "bio_text": "Researcher and engineer focused on deep learning, autonomous systems, and AI education.",
+    "organizations": [
+      {"name": "OpenAI", "role": "Research scientist"},
+      {"name": "Tesla", "role": "Director of AI"}
+    ],
+    "education": [
+      {"institution": "Stanford University", "degree": "PhD"}
+    ],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://karpathy.ai/"],
+    "topics": ["deep learning", "llms", "computer vision"],
+    "timestamps": ["2015", "2017", "2023"],
+    "raw_text": "Andrej Karpathy builds deep learning systems and writes about neural networks, large language models, Tesla Autopilot, and practical AI engineering.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "focused on deep learning, autonomous systems, and AI education"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "andrej_personal",
+    "canonical_person_id": "andrej_karpathy",
+    "source_type": "personal_site",
+    "url": "https://karpathy.ai/",
+    "display_name": "Andrej Karpathy",
+    "aliases": ["A Karpathy"],
+    "headline": "Computer scientist and AI educator.",
+    "bio_text": "Computer scientist known for work in deep learning, computer vision, and large language models.",
+    "organizations": [
+      {"name": "OpenAI", "role": "Founding member"},
+      {"name": "Stanford University", "role": "PhD student"}
+    ],
+    "education": [
+      {"institution": "University of Toronto", "degree": "BSc"},
+      {"institution": "Stanford University", "degree": "PhD"}
+    ],
+    "locations": ["California"],
+    "outbound_links": ["https://github.com/karpathy"],
+    "topics": ["deep learning", "ai education", "language models"],
+    "timestamps": ["2016", "2024"],
+    "raw_text": "Andrej Karpathy is a computer scientist working on deep learning and language models. He has written educational material that many engineers use to understand neural networks.",
+    "supporting_spans": [
+      {"field_name": "headline", "snippet": "Computer scientist and AI educator."}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "andrej_speaker",
+    "canonical_person_id": "andrej_karpathy",
+    "source_type": "conference_bio",
+    "url": "https://example.org/events/andrej-karpathy",
+    "display_name": "Andrej Karpathy",
+    "aliases": ["Andrej Karpathy"],
+    "headline": "Speaker on neural networks and foundation models.",
+    "bio_text": "Andrej Karpathy has led AI teams, taught deep learning concepts to millions, and speaks about model training and deployment.",
+    "organizations": [
+      {"name": "OpenAI", "role": "Research scientist"},
+      {"name": "Tesla", "role": "AI leader"}
+    ],
+    "education": [],
+    "locations": ["United States"],
+    "outbound_links": ["https://karpathy.ai/", "https://github.com/karpathy"],
+    "topics": ["foundation models", "neural networks", "model deployment"],
+    "timestamps": ["2024"],
+    "raw_text": "Speaker biography for Andrej Karpathy covering neural networks, model training, deployment, and AI leadership.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "covering neural networks, model training, deployment, and AI leadership"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "chip_personal",
+    "canonical_person_id": "chip_huyen",
+    "source_type": "personal_site",
+    "url": "https://huyenchip.com/",
+    "display_name": "Chip Huyen",
+    "aliases": ["Huyen Chip", "Chi P. Huyen"],
+    "headline": "Writer and engineer focused on ML systems.",
+    "bio_text": "Chip Huyen writes about machine learning systems, data infrastructure, and practical AI deployment.",
+    "organizations": [
+      {"name": "Snorkel", "role": "Engineer"},
+      {"name": "Stanford University", "role": "Researcher"}
+    ],
+    "education": [
+      {"institution": "Stanford University", "degree": "BS"}
+    ],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://github.com/chiphuyen"],
+    "topics": ["ml systems", "data infrastructure", "mlops"],
+    "timestamps": ["2020", "2023"],
+    "raw_text": "Chip Huyen focuses on machine learning systems, infrastructure, and the operational realities of bringing models into products.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "machine learning systems, data infrastructure, and practical AI deployment"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "chip_github",
+    "canonical_person_id": "chip_huyen",
+    "source_type": "github",
+    "url": "https://github.com/chiphuyen",
+    "display_name": "Chip Huyen",
+    "aliases": ["Chiphuyen"],
+    "headline": "ML engineer, author, and educator.",
+    "bio_text": "Open source work and writing on MLOps, data distribution, and production machine learning.",
+    "organizations": [
+      {"name": "Snorkel", "role": "Engineer"}
+    ],
+    "education": [],
+    "locations": ["California"],
+    "outbound_links": ["https://huyenchip.com/"],
+    "topics": ["production ml", "mlops", "data distribution"],
+    "timestamps": ["2021", "2024"],
+    "raw_text": "GitHub profile for Chip Huyen featuring repositories and notes on production machine learning, data, and deployment workflows.",
+    "supporting_spans": [
+      {"field_name": "headline", "snippet": "ML engineer, author, and educator."}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "chip_company",
+    "canonical_person_id": "chip_huyen",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/chip-huyen",
+    "display_name": "Chip Huyen",
+    "aliases": ["Chi Huyen"],
+    "headline": "Advisor on production AI systems.",
+    "bio_text": "Chip Huyen advises teams building production AI systems and is known for practical guidance on deploying ML systems at scale.",
+    "organizations": [
+      {"name": "Claypot AI", "role": "Founder"}
+    ],
+    "education": [
+      {"institution": "Stanford University", "degree": "BS"}
+    ],
+    "locations": ["United States"],
+    "outbound_links": ["https://huyenchip.com/"],
+    "topics": ["production ai", "ml systems", "deployment"],
+    "timestamps": ["2024"],
+    "raw_text": "Team page biography for Chip Huyen, founder and advisor on production AI systems.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "founder and advisor on production AI systems"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "jay_personal",
+    "canonical_person_id": "jay_alammar",
+    "source_type": "personal_site",
+    "url": "https://jalammar.github.io/",
+    "display_name": "Jay Alammar",
+    "aliases": ["Mohammad Jay Alammar", "J. Alammar"],
+    "headline": "Educator explaining transformers and LLMs.",
+    "bio_text": "Jay Alammar creates accessible explanations of transformers, language models, and modern machine learning systems.",
+    "organizations": [
+      {"name": "Cohere", "role": "Director"}
+    ],
+    "education": [],
+    "locations": ["Canada"],
+    "outbound_links": ["https://github.com/jalammar"],
+    "topics": ["transformers", "llms", "education"],
+    "timestamps": ["2018", "2024"],
+    "raw_text": "Jay Alammar writes detailed visual explainers on transformers, embeddings, and large language models.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "writes detailed visual explainers on transformers"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "jay_github",
+    "canonical_person_id": "jay_alammar",
+    "source_type": "github",
+    "url": "https://github.com/jalammar",
+    "display_name": "Jay Alammar",
+    "aliases": ["jalammar"],
+    "headline": "Visual ML educator and builder.",
+    "bio_text": "GitHub profile with projects and notebooks around NLP, embeddings, and transformer education.",
+    "organizations": [
+      {"name": "Cohere", "role": "Director"}
+    ],
+    "education": [],
+    "locations": ["Toronto"],
+    "outbound_links": ["https://jalammar.github.io/"],
+    "topics": ["nlp", "embeddings", "transformers"],
+    "timestamps": ["2020", "2023"],
+    "raw_text": "Jay Alammar publishes repositories and educational material on natural language processing, embeddings, and transformer models.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "notebooks around NLP, embeddings, and transformer education"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "jay_podcast",
+    "canonical_person_id": "jay_alammar",
+    "source_type": "podcast_guest",
+    "url": "https://example.org/podcast/jay-alammar",
+    "display_name": "Jay Alammar",
+    "aliases": ["Jay"],
+    "headline": "Guest discussing transformers and educational content.",
+    "bio_text": "Podcast guest biography describing Jay Alammar's work helping engineers understand transformers and language models.",
+    "organizations": [
+      {"name": "Cohere", "role": "AI leader"}
+    ],
+    "education": [],
+    "locations": ["North America"],
+    "outbound_links": ["https://jalammar.github.io/"],
+    "topics": ["transformers", "education", "language models"],
+    "timestamps": ["2024"],
+    "raw_text": "Podcast introduction for Jay Alammar covering visual explanations for transformers and language models.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "visual explanations for transformers and language models"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "jason_builder",
+    "canonical_person_id": "jason_allen",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/jason-allen",
+    "display_name": "Jason Allen",
+    "aliases": ["J. Allen"],
+    "headline": "Applied ML engineer working on recommendation systems.",
+    "bio_text": "Jason Allen builds recommendation and ranking systems for consumer applications.",
+    "organizations": [
+      {"name": "SignalRank", "role": "ML engineer"}
+    ],
+    "education": [],
+    "locations": ["Toronto"],
+    "outbound_links": ["https://example.org/people/jason"],
+    "topics": ["ranking", "recommendation systems", "consumer ai"],
+    "timestamps": ["2024"],
+    "raw_text": "Jason Allen works on recommendation and ranking systems for consumer applications.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "recommendation and ranking systems"}
+    ],
+    "metadata": {"seed_group": "hard_negative"}
+  },
+  {
+    "profile_id": "chip_huynh_blog",
+    "canonical_person_id": "chip_huynh",
+    "source_type": "personal_site",
+    "url": "https://example.org/blog/chip-huynh",
+    "display_name": "Chip Huynh",
+    "aliases": ["Chi Huynh"],
+    "headline": "Data engineer writing about data pipelines.",
+    "bio_text": "Chip Huynh writes about ETL systems, analytics engineering, and cloud data warehouses.",
+    "organizations": [
+      {"name": "Data River", "role": "Data engineer"}
+    ],
+    "education": [],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://example.org/blog"],
+    "topics": ["etl", "analytics engineering", "warehousing"],
+    "timestamps": ["2024"],
+    "raw_text": "Chip Huynh focuses on ETL systems, analytics engineering, and cloud warehouses.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "ETL systems, analytics engineering, and cloud warehouses"}
+    ],
+    "metadata": {"seed_group": "hard_negative"}
+  },
+  {
+    "profile_id": "jay_allen_speaker",
+    "canonical_person_id": "jay_allen",
+    "source_type": "conference_bio",
+    "url": "https://example.org/conf/jay-allen",
+    "display_name": "Jay Allen",
+    "aliases": ["J Allen"],
+    "headline": "Speaker on embedding systems for search.",
+    "bio_text": "Jay Allen works on semantic search, retrieval, and embedding systems for enterprise products.",
+    "organizations": [
+      {"name": "VectorHub", "role": "Search engineer"}
+    ],
+    "education": [],
+    "locations": ["Canada"],
+    "outbound_links": ["https://example.org/conf"],
+    "topics": ["semantic search", "retrieval", "embeddings"],
+    "timestamps": ["2024"],
+    "raw_text": "Jay Allen speaks about semantic search, retrieval, and embedding systems.",
+    "supporting_spans": [
+      {"field_name": "headline", "snippet": "Speaker on embedding systems for search."}
+    ],
+    "metadata": {"seed_group": "hard_negative"}
+  },
+  {
+    "profile_id": "lilian_personal",
+    "canonical_person_id": "lilian_weng",
+    "source_type": "personal_site",
+    "url": "https://lilianweng.github.io/",
+    "display_name": "Lilian Weng",
+    "aliases": ["L. Weng"],
+    "headline": "Research leader writing about deep learning and agents.",
+    "bio_text": "Lilian Weng writes technical essays on deep learning, reinforcement learning, language models, and AI agents.",
+    "organizations": [
+      {"name": "OpenAI", "role": "Research lead"}
+    ],
+    "education": [],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://github.com/lilianweng"],
+    "topics": ["deep learning", "agents", "reinforcement learning"],
+    "timestamps": ["2023", "2024"],
+    "raw_text": "Lilian Weng publishes detailed writing on deep learning, reinforcement learning, language models, and AI agents.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "deep learning, reinforcement learning, language models, and AI agents"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "lilian_company",
+    "canonical_person_id": "lilian_weng",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/lilian-weng",
+    "display_name": "Lilian Weng",
+    "aliases": ["Lilian"],
+    "headline": "Research leader focused on AI systems.",
+    "bio_text": "Lilian Weng leads research on AI systems and shares practical explanations of agent architectures.",
+    "organizations": [
+      {"name": "OpenAI", "role": "Research lead"}
+    ],
+    "education": [],
+    "locations": ["California"],
+    "outbound_links": ["https://lilianweng.github.io/"],
+    "topics": ["ai systems", "agents", "research"],
+    "timestamps": ["2024"],
+    "raw_text": "Team page profile for Lilian Weng covering AI systems research and agent architectures.",
+    "supporting_spans": [
+      {"field_name": "headline", "snippet": "Research leader focused on AI systems."}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "lilian_speaker",
+    "canonical_person_id": "lilian_weng",
+    "source_type": "conference_bio",
+    "url": "https://example.org/speakers/lilian-weng",
+    "display_name": "Lilian Weng",
+    "aliases": ["L. Weng"],
+    "headline": "Speaker on agents, RL, and LLM systems.",
+    "bio_text": "Conference speaker biography for Lilian Weng on AI agents, reinforcement learning, and language-model systems.",
+    "organizations": [
+      {"name": "OpenAI", "role": "Research lead"}
+    ],
+    "education": [],
+    "locations": ["United States"],
+    "outbound_links": ["https://lilianweng.github.io/"],
+    "topics": ["agents", "rl", "llm systems"],
+    "timestamps": ["2024"],
+    "raw_text": "Speaker biography for Lilian Weng on AI agents, RL, and language-model systems.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "AI agents, RL, and language-model systems"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "sebastian_personal",
+    "canonical_person_id": "sebastian_raschka",
+    "source_type": "personal_site",
+    "url": "https://sebastianraschka.com/",
+    "display_name": "Sebastian Raschka",
+    "aliases": ["S. Raschka"],
+    "headline": "ML educator and researcher.",
+    "bio_text": "Sebastian Raschka writes about machine learning, LLMs, and practical deep learning for engineers.",
+    "organizations": [
+      {"name": "Lightning AI", "role": "Research engineer"}
+    ],
+    "education": [],
+    "locations": ["United States"],
+    "outbound_links": ["https://github.com/rasbt"],
+    "topics": ["machine learning", "llms", "education"],
+    "timestamps": ["2023", "2024"],
+    "raw_text": "Sebastian Raschka publishes practical deep learning and LLM educational content for engineers.",
+    "supporting_spans": [
+      {"field_name": "headline", "snippet": "ML educator and researcher."}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "sebastian_github",
+    "canonical_person_id": "sebastian_raschka",
+    "source_type": "github",
+    "url": "https://github.com/rasbt",
+    "display_name": "Sebastian Raschka",
+    "aliases": ["rasbt"],
+    "headline": "Open source ML engineer.",
+    "bio_text": "GitHub profile featuring machine learning repositories, books, and practical examples for deep learning.",
+    "organizations": [
+      {"name": "Lightning AI", "role": "Research engineer"}
+    ],
+    "education": [],
+    "locations": ["Wisconsin"],
+    "outbound_links": ["https://sebastianraschka.com/"],
+    "topics": ["deep learning", "open source", "llms"],
+    "timestamps": ["2022", "2024"],
+    "raw_text": "Sebastian Raschka shares machine learning repositories and practical deep learning examples on GitHub.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "machine learning repositories, books, and practical examples"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "sebastian_podcast",
+    "canonical_person_id": "sebastian_raschka",
+    "source_type": "podcast_guest",
+    "url": "https://example.org/podcast/sebastian-raschka",
+    "display_name": "Sebastian Raschka",
+    "aliases": ["Sebastian"],
+    "headline": "Guest discussing practical LLM engineering.",
+    "bio_text": "Podcast guest biography for Sebastian Raschka covering practical machine learning, open source, and LLM engineering.",
+    "organizations": [
+      {"name": "Lightning AI", "role": "Research engineer"}
+    ],
+    "education": [],
+    "locations": ["North America"],
+    "outbound_links": ["https://sebastianraschka.com/"],
+    "topics": ["llm engineering", "open source", "machine learning"],
+    "timestamps": ["2024"],
+    "raw_text": "Podcast biography for Sebastian Raschka on practical machine learning and open-source LLM work.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "practical machine learning and open-source LLM work"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "hamel_personal",
+    "canonical_person_id": "hamel_husain",
+    "source_type": "personal_site",
+    "url": "https://hamel.dev/",
+    "display_name": "Hamel Husain",
+    "aliases": ["H. Husain"],
+    "headline": "Engineer and writer on AI systems and evals.",
+    "bio_text": "Hamel Husain writes about AI systems, evaluation workflows, LLM engineering, and practical product development.",
+    "organizations": [
+      {"name": "Parlance Labs", "role": "Founder"}
+    ],
+    "education": [],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://github.com/hamelsmu"],
+    "topics": ["evals", "llm engineering", "ai systems"],
+    "timestamps": ["2023", "2024"],
+    "raw_text": "Hamel Husain writes about evals, AI systems, and practical LLM engineering.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "AI systems, evaluation workflows, LLM engineering, and practical product development"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "hamel_github",
+    "canonical_person_id": "hamel_husain",
+    "source_type": "github",
+    "url": "https://github.com/hamelsmu",
+    "display_name": "Hamel Husain",
+    "aliases": ["hamelsmu"],
+    "headline": "Open source engineer focused on AI workflows.",
+    "bio_text": "GitHub profile with projects on notebooks, AI tooling, evaluation workflows, and applied ML systems.",
+    "organizations": [
+      {"name": "Parlance Labs", "role": "Founder"}
+    ],
+    "education": [],
+    "locations": ["California"],
+    "outbound_links": ["https://hamel.dev/"],
+    "topics": ["ai workflows", "tooling", "evals"],
+    "timestamps": ["2024"],
+    "raw_text": "Hamel Husain publishes projects around AI tooling, evaluation workflows, and applied machine learning.",
+    "supporting_spans": [
+      {"field_name": "headline", "snippet": "Open source engineer focused on AI workflows."}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "hamel_company",
+    "canonical_person_id": "hamel_husain",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/hamel-husain",
+    "display_name": "Hamel Husain",
+    "aliases": ["Hamel"],
+    "headline": "Advisor on LLM product workflows.",
+    "bio_text": "Team biography for Hamel Husain on AI systems, evals, and building reliable LLM products.",
+    "organizations": [
+      {"name": "Parlance Labs", "role": "Founder"}
+    ],
+    "education": [],
+    "locations": ["United States"],
+    "outbound_links": ["https://hamel.dev/"],
+    "topics": ["llm products", "evals", "ai systems"],
+    "timestamps": ["2024"],
+    "raw_text": "Team biography for Hamel Husain on building reliable LLM products and evaluation systems.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "building reliable LLM products and evaluation systems"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "lilian_weng_policy",
+    "canonical_person_id": "lilian_weng_policy",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/lilian-weng-policy",
+    "display_name": "Lilian Weng",
+    "aliases": ["L. Weng"],
+    "headline": "Policy researcher focused on AI governance.",
+    "bio_text": "Lilian Weng works on AI governance, model policy, and regulatory strategy for public-interest institutions.",
+    "organizations": [
+      {"name": "Policy Grid", "role": "Research lead"}
+    ],
+    "education": [],
+    "locations": ["Washington"],
+    "outbound_links": ["https://example.org/policy-grid"],
+    "topics": ["ai governance", "policy", "regulation"],
+    "timestamps": ["2024"],
+    "raw_text": "Lilian Weng works on AI governance, regulation, and policy strategy rather than model building.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "AI governance, model policy, and regulatory strategy"}
+    ],
+    "metadata": {"seed_group": "hard_negative"}
+  },
+  {
+    "profile_id": "sebastian_raschka_finance",
+    "canonical_person_id": "sebastian_raschka_finance",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/sebastian-raschka-finance",
+    "display_name": "Sebastian Raschka",
+    "aliases": ["S. Raschka"],
+    "headline": "Quantitative analyst in finance.",
+    "bio_text": "Sebastian Raschka works on portfolio risk, market analytics, and quantitative systems for finance teams.",
+    "organizations": [
+      {"name": "NorthBridge Capital", "role": "Quant analyst"}
+    ],
+    "education": [],
+    "locations": ["New York"],
+    "outbound_links": ["https://example.org/northbridge"],
+    "topics": ["portfolio risk", "quant analytics", "finance"],
+    "timestamps": ["2024"],
+    "raw_text": "Sebastian Raschka builds quantitative systems for finance and portfolio analytics.",
+    "supporting_spans": [
+      {"field_name": "headline", "snippet": "Quantitative analyst in finance."}
+    ],
+    "metadata": {"seed_group": "hard_negative"}
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "page_id": "andrej_github_raw",
+    "canonical_person_id": "andrej_karpathy",
+    "source_type": "github",
+    "url": "https://github.com/karpathy",
+    "display_name_hint": "Andrej Karpathy",
+    "title": "karpathy (Andrej Karpathy) - GitHub",
+    "raw_text": "Andrej Karpathy builds deep learning systems and writes about neural networks, large language models, Tesla Autopilot, and practical AI engineering.",
+    "html": "<html><body><main class='github-profile'><h1 class='p-name'>Andrej Karpathy</h1><p class='p-note'>Building foundation models and learning systems.</p><div class='user-profile-bio'><p>Researcher and engineer focused on deep learning, autonomous systems, and AI education.</p></div><ul class='org-list'><li data-name='OpenAI' data-role='Research scientist'></li><li data-name='Tesla' data-role='Director of AI'></li></ul><ul class='edu-list'><li data-institution='Stanford University' data-degree='PhD'></li></ul><span class='profile-location'>San Francisco</span><ul class='topic-list'><li>deep learning</li><li>llms</li><li>computer vision</li></ul><ul class='time-list'><li>2015</li><li>2017</li><li>2023</li></ul><div class='profile-links'><a href='https://karpathy.ai/'>Website</a></div></main></body></html>"
+  },
+  {
+    "page_id": "andrej_personal_raw",
+    "canonical_person_id": "andrej_karpathy",
+    "source_type": "personal_site",
+    "url": "https://karpathy.ai/",
+    "display_name_hint": "Andrej Karpathy",
+    "title": "Andrej Karpathy",
+    "raw_text": "Andrej Karpathy is a computer scientist working on deep learning and language models. He has written educational material that many engineers use to understand neural networks.",
+    "html": "<html><body><h1 class='page-title'>Andrej Karpathy</h1><p class='tagline'>Computer scientist and AI educator.</p><section class='about'>Computer scientist known for work in deep learning, computer vision, and large language models.</section><ul class='affiliations'><li data-name='OpenAI' data-role='Founding member'></li><li data-name='Stanford University' data-role='PhD student'></li></ul><ul class='education'><li data-institution='University of Toronto' data-degree='BSc'></li><li data-institution='Stanford University' data-degree='PhD'></li></ul><span class='location'>California</span><ul class='topics'><li>deep learning</li><li>ai education</li><li>language models</li></ul><ul class='timeline'><li>2016</li><li>2024</li></ul><nav class='links'><a href='https://github.com/karpathy'>GitHub</a></nav></body></html>"
+  },
+  {
+    "page_id": "andrej_speaker_raw",
+    "canonical_person_id": "andrej_karpathy",
+    "source_type": "conference_bio",
+    "url": "https://example.org/events/andrej-karpathy",
+    "display_name_hint": "Andrej Karpathy",
+    "title": "Speaker profile: Andrej Karpathy",
+    "raw_text": "Speaker biography for Andrej Karpathy covering neural networks, model training, deployment, and AI leadership.",
+    "html": "<html><body><div class='speaker-name'>Andrej Karpathy</div><p class='speaker-headline'>Speaker on neural networks and foundation models.</p><section class='speaker-bio'>Andrej Karpathy has led AI teams, taught deep learning concepts to millions, and speaks about model training and deployment.</section><ul class='speaker-orgs'><li data-name='OpenAI' data-role='Research scientist'></li><li data-name='Tesla' data-role='AI leader'></li></ul><div class='speaker-location'>United States</div><ul class='speaker-topics'><li>foundation models</li><li>neural networks</li><li>model deployment</li></ul><ul class='speaker-years'><li>2024</li></ul><div class='speaker-links'><a href='https://karpathy.ai/'>Site</a><a href='https://github.com/karpathy'>GitHub</a></div></body></html>"
+  },
+  {
+    "page_id": "chip_personal_raw",
+    "canonical_person_id": "chip_huyen",
+    "source_type": "personal_site",
+    "url": "https://huyenchip.com/",
+    "display_name_hint": "Chip Huyen",
+    "title": "Chip Huyen",
+    "raw_text": "Chip Huyen focuses on machine learning systems, infrastructure, and the operational realities of bringing models into products.",
+    "html": "<html><body><h1 class='page-title'>Chip Huyen</h1><p class='tagline'>Writer and engineer focused on ML systems.</p><section class='about'>Chip Huyen writes about machine learning systems, data infrastructure, and practical AI deployment.</section><ul class='affiliations'><li data-name='Snorkel' data-role='Engineer'></li><li data-name='Stanford University' data-role='Researcher'></li></ul><ul class='education'><li data-institution='Stanford University' data-degree='BS'></li></ul><span class='location'>San Francisco</span><ul class='topics'><li>ml systems</li><li>data infrastructure</li><li>mlops</li></ul><ul class='timeline'><li>2020</li><li>2023</li></ul><nav class='links'><a href='https://github.com/chiphuyen'>GitHub</a></nav></body></html>"
+  },
+  {
+    "page_id": "chip_github_raw",
+    "canonical_person_id": "chip_huyen",
+    "source_type": "github",
+    "url": "https://github.com/chiphuyen",
+    "display_name_hint": "Chip Huyen",
+    "title": "chiphuyen (Chip Huyen) - GitHub",
+    "raw_text": "GitHub profile for Chip Huyen featuring repositories and notes on production machine learning, data, and deployment workflows.",
+    "html": "<html><body><main class='github-profile'><h1 class='p-name'>Chip Huyen</h1><p class='p-note'>ML engineer, author, and educator.</p><div class='user-profile-bio'><p>Open source work and writing on MLOps, data distribution, and production machine learning.</p></div><ul class='org-list'><li data-name='Snorkel' data-role='Engineer'></li></ul><span class='profile-location'>California</span><ul class='topic-list'><li>production ml</li><li>mlops</li><li>data distribution</li></ul><ul class='time-list'><li>2021</li><li>2024</li></ul><div class='profile-links'><a href='https://huyenchip.com/'>Website</a></div></main></body></html>"
+  },
+  {
+    "page_id": "chip_company_raw",
+    "canonical_person_id": "chip_huyen",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/chip-huyen",
+    "display_name_hint": "Chip Huyen",
+    "title": "Team profile: Chip Huyen",
+    "raw_text": "Team page biography for Chip Huyen, founder and advisor on production AI systems.",
+    "html": "<html><body><h1 class='team-name'>Chip Huyen</h1><p class='team-role'>Advisor on production AI systems.</p><div class='team-bio'>Chip Huyen advises teams building production AI systems and is known for practical guidance on deploying ML systems at scale.</div><ul class='team-orgs'><li data-name='Claypot AI' data-role='Founder'></li></ul><ul class='team-education'><li data-institution='Stanford University' data-degree='BS'></li></ul><div class='team-location'>United States</div><ul class='team-topics'><li>production ai</li><li>ml systems</li><li>deployment</li></ul><ul class='team-years'><li>2024</li></ul><div class='team-links'><a href='https://huyenchip.com/'>Website</a></div></body></html>"
+  },
+  {
+    "page_id": "jay_personal_raw",
+    "canonical_person_id": "jay_alammar",
+    "source_type": "personal_site",
+    "url": "https://jalammar.github.io/",
+    "display_name_hint": "Jay Alammar",
+    "title": "Jay Alammar",
+    "raw_text": "Jay Alammar writes detailed visual explainers on transformers, embeddings, and large language models.",
+    "html": "<html><body><h1 class='page-title'>Jay Alammar</h1><p class='tagline'>Educator explaining transformers and LLMs.</p><section class='about'>Jay Alammar creates accessible explanations of transformers, language models, and modern machine learning systems.</section><ul class='affiliations'><li data-name='Cohere' data-role='Director'></li></ul><span class='location'>Canada</span><ul class='topics'><li>transformers</li><li>llms</li><li>education</li></ul><ul class='timeline'><li>2018</li><li>2024</li></ul><nav class='links'><a href='https://github.com/jalammar'>GitHub</a></nav></body></html>"
+  },
+  {
+    "page_id": "jay_github_raw",
+    "canonical_person_id": "jay_alammar",
+    "source_type": "github",
+    "url": "https://github.com/jalammar",
+    "display_name_hint": "Jay Alammar",
+    "title": "jalammar (Jay Alammar) - GitHub",
+    "raw_text": "Jay Alammar publishes repositories and educational material on natural language processing, embeddings, and transformer models.",
+    "html": "<html><body><main class='github-profile'><h1 class='p-name'>Jay Alammar</h1><p class='p-note'>Visual ML educator and builder.</p><div class='user-profile-bio'><p>GitHub profile with projects and notebooks around NLP, embeddings, and transformer education.</p></div><ul class='org-list'><li data-name='Cohere' data-role='Director'></li></ul><span class='profile-location'>Toronto</span><ul class='topic-list'><li>nlp</li><li>embeddings</li><li>transformers</li></ul><ul class='time-list'><li>2020</li><li>2023</li></ul><div class='profile-links'><a href='https://jalammar.github.io/'>Website</a></div></main></body></html>"
+  },
+  {
+    "page_id": "jay_podcast_raw",
+    "canonical_person_id": "jay_alammar",
+    "source_type": "podcast_guest",
+    "url": "https://example.org/podcast/jay-alammar",
+    "display_name_hint": "Jay Alammar",
+    "title": "Podcast guest: Jay Alammar",
+    "raw_text": "Podcast introduction for Jay Alammar covering visual explanations for transformers and language models.",
+    "html": "<html><body><div class='guest-name'>Jay Alammar</div><p class='guest-headline'>Guest discussing transformers and educational content.</p><section class='guest-bio'>Podcast guest biography describing Jay Alammar's work helping engineers understand transformers and language models.</section><ul class='guest-orgs'><li data-name='Cohere' data-role='AI leader'></li></ul><div class='guest-location'>North America</div><ul class='guest-topics'><li>transformers</li><li>education</li><li>language models</li></ul><ul class='guest-years'><li>2024</li></ul><div class='guest-links'><a href='https://jalammar.github.io/'>Website</a></div></body></html>"
+  },
+  {
+    "page_id": "jason_builder_raw",
+    "canonical_person_id": "jason_allen",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/jason-allen",
+    "display_name_hint": "Jason Allen",
+    "title": "Team profile: Jason Allen",
+    "raw_text": "Jason Allen works on recommendation and ranking systems for consumer applications.",
+    "html": "<html><body><h1 class='team-name'>Jason Allen</h1><p class='team-role'>Applied ML engineer working on recommendation systems.</p><div class='team-bio'>Jason Allen builds recommendation and ranking systems for consumer applications.</div><ul class='team-orgs'><li data-name='SignalRank' data-role='ML engineer'></li></ul><div class='team-location'>Toronto</div><ul class='team-topics'><li>ranking</li><li>recommendation systems</li><li>consumer ai</li></ul><ul class='team-years'><li>2024</li></ul><div class='team-links'><a href='https://example.org/people/jason'>Profile</a></div></body></html>"
+  },
+  {
+    "page_id": "chip_huynh_blog_raw",
+    "canonical_person_id": "chip_huynh",
+    "source_type": "personal_site",
+    "url": "https://example.org/blog/chip-huynh",
+    "display_name_hint": "Chip Huynh",
+    "title": "Chip Huynh",
+    "raw_text": "Chip Huynh focuses on ETL systems, analytics engineering, and cloud warehouses.",
+    "html": "<html><body><h1 class='page-title'>Chip Huynh</h1><p class='tagline'>Data engineer writing about data pipelines.</p><section class='about'>Chip Huynh writes about ETL systems, analytics engineering, and cloud data warehouses.</section><ul class='affiliations'><li data-name='Data River' data-role='Data engineer'></li></ul><span class='location'>San Francisco</span><ul class='topics'><li>etl</li><li>analytics engineering</li><li>warehousing</li></ul><ul class='timeline'><li>2024</li></ul><nav class='links'><a href='https://example.org/blog'>Blog</a></nav></body></html>"
+  },
+  {
+    "page_id": "jay_allen_speaker_raw",
+    "canonical_person_id": "jay_allen",
+    "source_type": "conference_bio",
+    "url": "https://example.org/conf/jay-allen",
+    "display_name_hint": "Jay Allen",
+    "title": "Speaker profile: Jay Allen",
+    "raw_text": "Jay Allen speaks about semantic search, retrieval, and embedding systems.",
+    "html": "<html><body><div class='speaker-name'>Jay Allen</div><p class='speaker-headline'>Speaker on embedding systems for search.</p><section class='speaker-bio'>Jay Allen works on semantic search, retrieval, and embedding systems for enterprise products.</section><ul class='speaker-orgs'><li data-name='VectorHub' data-role='Search engineer'></li></ul><div class='speaker-location'>Canada</div><ul class='speaker-topics'><li>semantic search</li><li>retrieval</li><li>embeddings</li></ul><ul class='speaker-years'><li>2024</li></ul><div class='speaker-links'><a href='https://example.org/conf'>Conference</a></div></body></html>"
+  }
+]

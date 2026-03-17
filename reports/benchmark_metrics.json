@@ -1,0 +1,143 @@
+{
+  "models": [
+    {
+      "name": "fuzzy_name",
+      "f1": 0.571,
+      "precision": 0.4,
+      "recall": 1.0,
+      "average_precision": 0.4
+    },
+    {
+      "name": "embedding_only",
+      "f1": 0.5,
+      "precision": 0.333,
+      "recall": 1.0,
+      "average_precision": 0.333
+    },
+    {
+      "name": "lexical_baseline",
+      "f1": 0.706,
+      "precision": 0.545,
+      "recall": 1.0,
+      "average_precision": 0.915
+    },
+    {
+      "name": "hybrid",
+      "f1": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "average_precision": 1.0
+    }
+  ],
+  "cluster_f1": 0.906,
+  "ablations": [
+    {
+      "name": "full",
+      "f1": 1.0,
+      "average_precision": 1.0
+    },
+    {
+      "name": "no_embedding",
+      "f1": 1.0,
+      "average_precision": 1.0
+    },
+    {
+      "name": "no_structured",
+      "f1": 0.706,
+      "average_precision": 0.773
+    }
+  ],
+  "confusion_slices": {
+    "test_examples": 18,
+    "forced_precision": 1.0,
+    "accepted_precision": 1.0,
+    "accepted_recall": 1.0,
+    "abstain_rate": 0.444
+  },
+  "cases": [
+    {
+      "title": "Andrej Karpathy vs Andrej Karpathy",
+      "decision": "match",
+      "score": 1.0,
+      "profiles": [
+        "andrej_github",
+        "andrej_personal"
+      ],
+      "left_source": "github",
+      "right_source": "personal_site",
+      "explanation": "Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics. Contradictions: location_conflict.",
+      "reason_codes": [
+        "high_name_similarity",
+        "shared_domain",
+        "shared_org",
+        "shared_topics"
+      ]
+    },
+    {
+      "title": "Chip Huyen vs Chip Huyen",
+      "decision": "match",
+      "score": 0.722,
+      "profiles": [
+        "chip_company",
+        "chip_personal"
+      ],
+      "left_source": "company_profile",
+      "right_source": "personal_site",
+      "explanation": "Decision=match at confidence 0.72. Supporting signals: high_name_similarity, shared_domain, shared_topics. Contradictions: location_conflict.",
+      "reason_codes": [
+        "high_name_similarity",
+        "shared_domain",
+        "shared_topics"
+      ]
+    },
+    {
+      "title": "Jay Alammar vs Jay Alammar",
+      "decision": "match",
+      "score": 1.0,
+      "profiles": [
+        "jay_github",
+        "jay_personal"
+      ],
+      "left_source": "github",
+      "right_source": "personal_site",
+      "explanation": "Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics. Contradictions: location_conflict.",
+      "reason_codes": [
+        "high_name_similarity",
+        "shared_domain",
+        "shared_org",
+        "shared_topics"
+      ]
+    },
+    {
+      "title": "Andrej Karpathy vs Chip Huyen",
+      "decision": "non_match",
+      "score": 0.0,
+      "profiles": [
+        "andrej_github",
+        "chip_company"
+      ],
+      "left_source": "github",
+      "right_source": "company_profile",
+      "explanation": "Decision=non_match at confidence 0.00. Supporting signals: shared_topics. Contradictions: location_conflict.",
+      "reason_codes": [
+        "shared_topics",
+        "location_conflict"
+      ]
+    },
+    {
+      "title": "Andrej Karpathy vs Chip Huyen",
+      "decision": "non_match",
+      "score": 0.0,
+      "profiles": [
+        "andrej_github",
+        "chip_personal"
+      ],
+      "left_source": "github",
+      "right_source": "personal_site",
+      "explanation": "Decision=non_match at confidence 0.00. Supporting signals: shared_topics.",
+      "reason_codes": [
+        "shared_topics"
+      ]
+    }
+  ]
+}
