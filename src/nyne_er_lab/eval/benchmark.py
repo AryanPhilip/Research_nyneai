@@ -78,6 +78,7 @@ class BenchmarkReport:
     val_examples: list[object] = field(repr=False)
     test_examples: list[object] = field(repr=False)
     blocking_stats: dict[str, dict[str, object]] = field(repr=False)
+    baseline_scores: dict[str, list[float]] = field(default_factory=dict, repr=False)
 
     def to_payload(self) -> dict[str, object]:
         return {
@@ -553,6 +554,12 @@ def run_benchmark(dataset_name: str = "real_curated_core", protocol: str = "grou
             identities, resolved_pairs = resolve_identities(dataset.profiles, all_examples, matcher, extractor=extractor)
             profile_lookup = {profile.profile_id: profile for profile in dataset.profiles}
             primary_context = {
+                "baseline_scores": {
+                    "fuzzy_name": name_run.scores,
+                    "embedding_only": embedding_run.scores,
+                    "lexical_baseline": lexical_run.scores,
+                    "hybrid": hybrid_run.calibrated_scores,
+                },
                 "extractor": extractor,
                 "matcher": matcher,
                 "train_examples": train_examples,
@@ -648,4 +655,5 @@ def run_benchmark(dataset_name: str = "real_curated_core", protocol: str = "grou
         val_examples=primary_context["val_examples"],
         test_examples=primary_context["test_examples"],
         blocking_stats=primary_context["blocking_stats"],
+        baseline_scores=primary_context["baseline_scores"],
     )

@@ -64,6 +64,7 @@ class DashboardData:
     network: NetworkGraph = field(default_factory=lambda: NetworkGraph([], [], [], [], [], [], [], [], [], []))
     score_by_decision: dict[str, list[float]] = field(default_factory=dict)
     score_by_label: dict[int, list[float]] = field(default_factory=dict)
+    baseline_scores: dict[str, list[float]] = field(default_factory=dict)
 
 
 def _pair_key(left_id: str, right_id: str) -> tuple[str, str]:
@@ -214,4 +215,5 @@ def load_dashboard_data() -> DashboardData:
         network=network,
         score_by_decision=score_by_decision,
         score_by_label=score_by_label,
+        baseline_scores=report.baseline_scores,
     )

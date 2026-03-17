@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import base64
+from collections import defaultdict
 from html import escape
 from pathlib import Path
 
@@ -10,6 +11,7 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 from sklearn.calibration import calibration_curve
+from sklearn.decomposition import PCA
 
 from nyne_er_lab.app_data import DashboardData, load_dashboard_data, _pair_key
 from nyne_er_lab.eval.metrics import summarize_predictions, threshold_sweep
@@ -31,6 +33,11 @@ def _hex_to_rgb(hex_color: str) -> str:
     """Convert '#06b6d4' to '6,182,212'."""
     h = hex_color.lstrip("#")
     return ",".join(str(int(h[i:i+2], 16)) for i in (0, 2, 4))
+
+
+def _sigmoid(x: float) -> float:
+    x = max(-500.0, min(500.0, x))
+    return 1.0 / (1.0 + np.exp(-x))
 
 # ---------------------------------------------------------------------------
 # Page config
@@ -311,6 +318,69 @@ SOURCE_COLORS = {
     "huggingface": "#FBBF24",
 }
 
+
+# ---------------------------------------------------------------------------
+# Feature 1: Waterfall chart helper
+# ---------------------------------------------------------------------------
+
+def _waterfall_figure(features: dict[str, float], matcher) -> go.Figure:
+    """Build a Splink-style waterfall showing per-feature log-odds contributions."""
+    coefs = matcher.model.coef_[0]
+    intercept = float(matcher.model.intercept_[0])
+    feat_names = list(matcher.feature_names)
+
+    contributions = [coefs[i] * features.get(name, 0.0) for i, name in enumerate(feat_names)]
+
+    labels = ["Prior"] + [n.replace("_", " ") for n in feat_names] + ["Total"]
+    values = [intercept] + list(contributions) + [0]
+    measures = ["absolute"] + ["relative"] * len(feat_names) + ["total"]
+
+    cumulative = [intercept]
+    for c in contributions:
+        cumulative.append(cumulative[-1] + c)
+    total = cumulative[-1]
+    cumulative.append(total)
+    probs = [_sigmoid(x) for x in cumulative]
+
+    hover_texts = [f"Intercept: {intercept:.3f}<br>P(match): {probs[0]:.3f}"]
+    for i, name in enumerate(feat_names):
+        val = features.get(name, 0.0)
+        hover_texts.append(
+            f"<b>{name}</b><br>"
+            f"Value: {val:.3f}<br>"
+            f"Coef: {coefs[i]:.3f}<br>"
+            f"Contribution: {contributions[i]:+.3f}<br>"
+            f"Cumulative P(match): {probs[i + 1]:.3f}"
+        )
+    hover_texts.append(f"<b>Total log-odds: {total:.3f}</b><br>P(match): {probs[-1]:.3f}")
+
+    text_vals = [f"{intercept:+.2f}"] + [f"{c:+.2f}" for c in contributions] + [f"{total:.2f}"]
+
+    fig = go.Figure(go.Waterfall(
+        y=labels, x=values, orientation="h", measure=measures,
+        connector=dict(line=dict(color=C["dim"], width=1)),
+        increasing=dict(marker=dict(color=C["emerald"])),
+        decreasing=dict(marker=dict(color=C["rose"])),
+        totals=dict(marker=dict(color=C["cyan"])),
+        hovertext=hover_texts, hoverinfo="text",
+        textposition="outside",
+        text=text_vals,
+        textfont=dict(size=9, color=C["muted"], family="Inter, -apple-system, sans-serif"),
+    ))
+    fig.update_layout(
+        **PLOTLY_LAYOUT,
+        title_text="Evidence Waterfall (Log-Odds Contributions)",
+        height=480,
+    )
+    fig.add_annotation(
+        x=total, y=labels[-1],
+        text=f"P(match) = {probs[-1]:.3f}",
+        showarrow=False, xanchor="left", xshift=10,
+        font=dict(size=11, color=C["cyan"], family="JetBrains Mono, monospace"),
+    )
+    return fig
+
+
 # ---------------------------------------------------------------------------
 # Load data
 # ---------------------------------------------------------------------------
@@ -350,7 +420,7 @@ def _render_profile_card(profile, compact: bool = False) -> str:
     )
 
 
-def _render_live_results(result, profile_lookup) -> None:
+def _render_live_results(result, profile_lookup, extractor=None) -> None:
     """Render the results of a live resolution into the current Streamlit context."""
     from nyne_er_lab.live import LiveResult
     if not isinstance(result, LiveResult):
@@ -381,8 +451,11 @@ def _render_live_results(result, profile_lookup) -> None:
             unsafe_allow_html=True,
         )
 
+    from nyne_er_lab.models.llm_adjudicator import llm_available, adjudicate_pair
+    has_llm = llm_available()
+
     st.markdown("#### All Comparisons (ranked by score)")
-    for rp in result.matches[:12]:
+    for idx_rp, rp in enumerate(result.matches[:12]):
         matched_profile = profile_lookup.get(rp.right_profile_id)
         if not matched_profile:
             continue
@@ -397,6 +470,25 @@ def _render_live_results(result, profile_lookup) -> None:
             f'</div>',
             unsafe_allow_html=True,
         )
+        if has_llm and extractor and rp.decision in ("abstain", "match"):
+            btn_key = f"live_llm_{rp.left_profile_id}_{rp.right_profile_id}_{idx_rp}"
+            if st.button("Ask LLM", key=btn_key):
+                cache_key = f"llm_live_{rp.left_profile_id}_{rp.right_profile_id}"
+                if cache_key not in st.session_state:
+                    with st.spinner("Querying LLM..."):
+                        features = extractor.featurize_pair(result.query_profile, matched_profile)
+                        llm_res = adjudicate_pair(result.query_profile, matched_profile, features, rp.score, rp.decision)
+                        st.session_state[cache_key] = llm_res
+                llm_res = st.session_state.get(cache_key)
+                if llm_res:
+                    v_color = C["emerald"] if llm_res.verdict == "match" else C["rose"]
+                    st.markdown(
+                        f'<div class="card-glow">'
+                        f'<strong style="color:{v_color}">LLM: {llm_res.verdict}</strong> '
+                        f'({llm_res.confidence:.3f})<br>'
+                        f'<small>{escape(llm_res.reasoning)}</small></div>',
+                        unsafe_allow_html=True,
+                    )
 
 
 # ---------------------------------------------------------------------------
@@ -420,7 +512,7 @@ st.markdown(
 # Tabs
 # ---------------------------------------------------------------------------
 
-tab_overview, tab_network, tab_pairs, tab_explainer, tab_whatif, tab_search, tab_live, tab_inspector = st.tabs([
+tab_overview, tab_network, tab_pairs, tab_explainer, tab_whatif, tab_search, tab_live, tab_inspector, tab_profile, tab_arena = st.tabs([
     "Benchmark",
     "Identity Graph",
     "Failure Lab",
@@ -429,6 +521,8 @@ tab_overview, tab_network, tab_pairs, tab_explainer, tab_whatif, tab_search, tab
     "Search Trace",
     "Resolve",
     "Pipeline Inspector",
+    "Data Profile",
+    "Model Arena",
 ])
 
 
@@ -490,6 +584,39 @@ with tab_overview:
             showlegend=False, height=380,
         )
         st.plotly_chart(fig_dist, use_container_width=True)
+
+    # Confusion matrix
+    st.markdown("#### Decision Confusion Matrix")
+    cm = defaultdict(int)
+    for rp in data.resolved_pairs:
+        ex_key = _pair_key(rp.left_profile_id, rp.right_profile_id)
+        ex = data.example_lookup.get(ex_key)
+        if ex is None:
+            continue
+        true_label = "Positive" if ex.label == 1 else "Negative"
+        cm[(true_label, rp.decision)] += 0
+        cm[(true_label, rp.decision)] += 1
+
+    decisions_order = ["match", "non_match", "abstain"]
+    labels_order = ["Positive", "Negative"]
+    z = [[cm.get((lbl, dec), 0) for dec in decisions_order] for lbl in labels_order]
+    annotations = [[str(v) for v in row] for row in z]
+
+    fig_cm = go.Figure(go.Heatmap(
+        z=z, x=decisions_order, y=labels_order,
+        colorscale=[[0, "#202222"], [0.5, "#2F3336"], [1, C["cyan"]]],
+        text=annotations, texttemplate="%{text}", textfont=dict(size=16, family="JetBrains Mono"),
+        hovertemplate="True: %{y}<br>Predicted: %{x}<br>Count: %{z}<extra></extra>",
+        showscale=False,
+    ))
+    fig_cm.update_layout(
+        **PLOTLY_LAYOUT, height=280,
+        xaxis_title="Predicted Decision", yaxis_title="True Label",
+        yaxis_autorange="reversed",
+    )
+    st.plotly_chart(fig_cm, use_container_width=True)
+
+    st.markdown('<hr class="subtle-divider">', unsafe_allow_html=True)
 
     # Ablation + Calibration row
     col_abl, col_cal = st.columns(2)
@@ -761,26 +888,28 @@ with tab_pairs:
                     st.markdown(f"[Source]({profile.url})")
                     st.markdown('</div>', unsafe_allow_html=True)
 
-            # Feature vector
+            # Evidence waterfall + raw feature vector
             ex_key = _pair_key(pair.left_profile_id, pair.right_profile_id)
             example = data.example_lookup.get(ex_key)
             if example:
-                feat_names = list(example.features.keys())
-                feat_vals = list(example.features.values())
-                fig_feat = go.Figure(go.Bar(
-                    y=feat_names, x=feat_vals, orientation="h",
-                    marker_color=[
-                        C["cyan"] if v >= 0.5 else C["amber"] if v >= 0.2 else C["dim"]
-                        for v in feat_vals
-                    ],
-                    text=[f"{v:.3f}" for v in feat_vals], textposition="outside",
-                    textfont=dict(color=C["slate"], size=10, family="Inter, -apple-system, sans-serif"),
-                ))
-                fig_feat.update_layout(
-                    **PLOTLY_LAYOUT, title_text="Feature Vector", height=400,
-                    xaxis_range=[0, max(feat_vals) * 1.3 + 0.1] if feat_vals else [0, 1],
-                )
-                st.plotly_chart(fig_feat, use_container_width=True)
+                st.plotly_chart(_waterfall_figure(example.features, data.matcher), use_container_width=True, key="waterfall_pairs")
+                with st.expander("Raw feature values"):
+                    feat_names = list(example.features.keys())
+                    feat_vals = list(example.features.values())
+                    fig_feat = go.Figure(go.Bar(
+                        y=feat_names, x=feat_vals, orientation="h",
+                        marker_color=[
+                            C["cyan"] if v >= 0.5 else C["amber"] if v >= 0.2 else C["dim"]
+                            for v in feat_vals
+                        ],
+                        text=[f"{v:.3f}" for v in feat_vals], textposition="outside",
+                        textfont=dict(color=C["slate"], size=10, family="Inter, -apple-system, sans-serif"),
+                    ))
+                    fig_feat.update_layout(
+                        **PLOTLY_LAYOUT, title_text="Feature Vector", height=400,
+                        xaxis_range=[0, max(feat_vals) * 1.3 + 0.1] if feat_vals else [0, 1],
+                    )
+                    st.plotly_chart(fig_feat, use_container_width=True)
 
             # Evidence card
             ec = pair.evidence_card
@@ -827,6 +956,25 @@ with tab_pairs:
                 st.markdown("**Counterfactual Panel**")
                 for item in counterfactuals:
                     st.markdown(f"- {item}")
+
+            # LLM explanation
+            from nyne_er_lab.models.llm_adjudicator import llm_available, explain_pair as llm_explain
+            if llm_available() and left_profile and right_profile and features:
+                if st.button("Explain with AI", key="pair_llm_explain"):
+                    cache_key = f"llm_explain_{pair.left_profile_id}_{pair.right_profile_id}"
+                    if cache_key not in st.session_state:
+                        with st.spinner("Generating explanation..."):
+                            explanation = llm_explain(left_profile, right_profile, features, pair.decision, pair.score)
+                            st.session_state[cache_key] = explanation
+                    explanation = st.session_state.get(cache_key)
+                    if explanation:
+                        st.markdown(
+                            f'<div class="card-glow">'
+                            f'<strong>AI Explanation</strong><br>'
+                            f'<span style="color:{C["text"]}">{escape(explanation)}</span>'
+                            f'</div>',
+                            unsafe_allow_html=True,
+                        )
 
 
 # ========================== TAB 4: EXPLAINER ==============================
@@ -961,22 +1109,7 @@ with tab_explainer:
             )
 
             if example:
-                feat_names = list(example.features.keys())
-                feat_vals = list(example.features.values())
-                fig_feat = go.Figure(go.Bar(
-                    y=feat_names, x=feat_vals, orientation="h",
-                    marker_color=[
-                        C["cyan"] if v >= 0.5 else C["amber"] if v >= 0.2 else C["dim"]
-                        for v in feat_vals
-                    ],
-                    text=[f"{v:.3f}" for v in feat_vals], textposition="outside",
-                    textfont=dict(color=C["slate"], size=10, family="Inter, -apple-system, sans-serif"),
-                ))
-                fig_feat.update_layout(
-                    **PLOTLY_LAYOUT, title_text="Feature Vector for This Pair", height=400,
-                    xaxis_range=[0, max(feat_vals) * 1.3 + 0.1] if feat_vals else [0, 1],
-                )
-                st.plotly_chart(fig_feat, use_container_width=True)
+                st.plotly_chart(_waterfall_figure(example.features, data.matcher), use_container_width=True, key="waterfall_explainer")
 
             st.markdown('<hr class="subtle-divider">', unsafe_allow_html=True)
 
@@ -1054,6 +1187,25 @@ with tab_explainer:
                         st.markdown(f"- {sig.description}")
 
             st.markdown(f"**Final explanation:** {ec.final_explanation}")
+
+            # LLM explanation for Evidence Ledger
+            from nyne_er_lab.models.llm_adjudicator import llm_available, explain_pair as llm_explain
+            if llm_available() and left_p and right_p and example:
+                if st.button("Explain with AI", key="explainer_llm_explain"):
+                    cache_key = f"llm_explain_ledger_{ep.left_profile_id}_{ep.right_profile_id}"
+                    if cache_key not in st.session_state:
+                        with st.spinner("Generating explanation..."):
+                            explanation = llm_explain(left_p, right_p, example.features, ep.decision, ep.score)
+                            st.session_state[cache_key] = explanation
+                    explanation = st.session_state.get(cache_key)
+                    if explanation:
+                        st.markdown(
+                            f'<div class="card-glow">'
+                            f'<strong>AI Explanation</strong><br>'
+                            f'<span style="color:{C["text"]}">{escape(explanation)}</span>'
+                            f'</div>',
+                            unsafe_allow_html=True,
+                        )
 
 
 # ========================== TAB 5: WHAT-IF LAB =============================
@@ -1215,6 +1367,30 @@ with tab_whatif:
         if features.get("embedding_cosine", 0) < 0.2:
             st.markdown("- Semantic similarity is weak enough that the match is brittle")
 
+        # LLM Adjudicator button
+        from nyne_er_lab.models.llm_adjudicator import llm_available, adjudicate_pair
+        if llm_available():
+            st.markdown('<hr class="subtle-divider">', unsafe_allow_html=True)
+            if st.button("Ask LLM to adjudicate", key="whatif_llm_btn"):
+                cache_key = f"llm_adj_{left_id}_{right_id}_{force_initials}_{drop_orgs}_{drop_locations}_{keep_only_alias}"
+                if cache_key not in st.session_state:
+                    with st.spinner("Querying LLM..."):
+                        result = adjudicate_pair(stressed_left, right_p, features, score, decision)
+                        st.session_state[cache_key] = result
+                llm_result = st.session_state.get(cache_key)
+                if llm_result:
+                    v_color = C["emerald"] if llm_result.verdict == "match" else C["rose"]
+                    st.markdown(
+                        f'<div class="card-glow">'
+                        f'<strong style="color:{v_color}">LLM Verdict: {llm_result.verdict}</strong> '
+                        f'<span style="font-family:JetBrains Mono;color:{C["cyan"]}">{llm_result.confidence:.3f}</span><br>'
+                        f'<small style="color:{C["muted"]}">{escape(llm_result.reasoning)}</small>'
+                        f'</div>',
+                        unsafe_allow_html=True,
+                    )
+                else:
+                    st.warning("LLM call failed or returned no result.")
+
 
 # ========================== TAB 6: WEB SEARCH =============================
 
@@ -1305,7 +1481,7 @@ with tab_search:
                                 query_profile, data.profiles, data.extractor,
                                 data.matcher, data.identities,
                             )
-                        _render_live_results(result, data.profile_lookup)
+                        _render_live_results(result, data.profile_lookup, data.extractor)
 
 
 # ========================== TAB 7: LIVE RESOLVER ===========================
@@ -1352,7 +1528,7 @@ with tab_live:
                         query_profile, data.profiles, data.extractor, data.matcher, data.identities,
                     )
 
-                _render_live_results(result, data.profile_lookup)
+                _render_live_results(result, data.profile_lookup, data.extractor)
 
     else:  # Paste URL
         url_col1, url_col2 = st.columns([3, 1])
@@ -1386,7 +1562,7 @@ with tab_live:
                         result = resolve_live_profile(
                             query_profile, data.profiles, data.extractor, data.matcher, data.identities,
                         )
-                        _render_live_results(result, data.profile_lookup)
+                        _render_live_results(result, data.profile_lookup, data.extractor)
 
 
 # ========================== TAB 6: PIPELINE INSPECTOR =====================
@@ -1459,6 +1635,36 @@ with tab_inspector:
             st.plotly_chart(fig_cal, use_container_width=True)
         else:
             st.info("Cannot plot calibration curve — test set has only one class.")
+
+    st.markdown('<hr class="subtle-divider">', unsafe_allow_html=True)
+
+    # Feature 3: Global feature weight distribution
+    st.markdown("#### Effective Feature Contributions")
+    st.caption("Mean |coefficient × feature value| across all test examples — shows which features actually move the needle.")
+    if data.test_examples:
+        feat_names_all = list(data.matcher.feature_names)
+        coefs_all = data.matcher.model.coef_[0]
+        feat_matrix = np.array([
+            [ex.features.get(n, 0.0) for n in feat_names_all]
+            for ex in data.test_examples
+        ])
+        weighted = np.abs(coefs_all * feat_matrix)
+        mean_contrib = weighted.mean(axis=0)
+        sort_idx = np.argsort(mean_contrib)
+        sorted_names = [feat_names_all[i].replace("_", " ") for i in sort_idx]
+        sorted_vals = mean_contrib[sort_idx].tolist()
+
+        fig_wt = go.Figure(go.Bar(
+            y=sorted_names, x=sorted_vals, orientation="h",
+            marker_color=[C["cyan"] if v >= np.median(sorted_vals) else C["dim"] for v in sorted_vals],
+            text=[f"{v:.3f}" for v in sorted_vals], textposition="outside",
+            textfont=dict(color=C["slate"], size=10, family="Inter, -apple-system, sans-serif"),
+        ))
+        fig_wt.update_layout(
+            **PLOTLY_LAYOUT, title_text="Mean Effective Contribution per Feature", height=420,
+            xaxis_title="Mean |coef × value|",
+        )
+        st.plotly_chart(fig_wt, use_container_width=True)
 
     st.markdown('<hr class="subtle-divider">', unsafe_allow_html=True)
 
@@ -1549,3 +1755,358 @@ with tab_inspector:
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
     st.plotly_chart(fig_hist, use_container_width=True)
+
+    # Feature 5: Score Landscape (PCA projection)
+    st.markdown('<hr class="subtle-divider">', unsafe_allow_html=True)
+    st.markdown("#### Score Landscape (PCA)")
+    st.caption("2D projection of all test pair feature vectors. Reveals clusters of easy vs hard pairs.")
+
+    if len(data.test_examples) >= 4:
+        feat_names_pca = list(data.matcher.feature_names)
+        X_pca = np.array([[ex.features.get(n, 0.0) for n in feat_names_pca] for ex in data.test_examples])
+        pca = PCA(n_components=2)
+        coords = pca.fit_transform(X_pca)
+
+        color_mode = st.radio("Color by", ["Decision", "Correctness"], horizontal=True, key="pca_color")
+
+        # Pre-build hover labels for all test examples
+        pca_hover = []
+        for ex in data.test_examples:
+            lp = data.profile_lookup.get(ex.left_profile_id)
+            rp = data.profile_lookup.get(ex.right_profile_id)
+            pca_hover.append(f"{lp.display_name if lp else '?'} vs {rp.display_name if rp else '?'}")
+
+        fig_pca = go.Figure()
+        if color_mode == "Decision":
+            decisions_pca = data.hybrid_run.decisions[:len(data.test_examples)]
+            dec_colors = {"match": C["emerald"], "non_match": C["rose"], "abstain": C["amber"]}
+            for dec_type, color in dec_colors.items():
+                mask = [i for i, d in enumerate(decisions_pca) if d == dec_type]
+                if mask:
+                    fig_pca.add_trace(go.Scatter(
+                        x=[coords[i, 0] for i in mask], y=[coords[i, 1] for i in mask],
+                        mode="markers", name=dec_type,
+                        marker=dict(size=8, color=color, opacity=0.7, line=dict(width=1, color="rgba(25,26,26,0.8)")),
+                        hovertext=[pca_hover[i] for i in mask],
+                        hoverinfo="text",
+                    ))
+        else:
+            decisions_pca = data.hybrid_run.decisions[:len(data.test_examples)]
+            labels_pca = [ex.label for ex in data.test_examples]
+            correctness_map = {
+                (1, "match"): ("TP", C["emerald"]),
+                (0, "non_match"): ("TN", C["cyan"]),
+                (1, "non_match"): ("FN", C["amber"]),
+                (0, "match"): ("FP", C["rose"]),
+            }
+            groups: dict[str, list[int]] = defaultdict(list)
+            for i, (lbl, dec) in enumerate(zip(labels_pca, decisions_pca)):
+                name_c, _ = correctness_map.get((lbl, dec), ("Other", C["dim"]))
+                groups[name_c].append(i)
+            # Add abstains
+            for i, dec in enumerate(decisions_pca):
+                if dec == "abstain":
+                    groups["Abstain"].append(i)
+            correctness_colors = {"TP": C["emerald"], "TN": C["cyan"], "FN": C["amber"], "FP": C["rose"], "Other": C["dim"], "Abstain": C["violet"]}
+            for name_c, indices in groups.items():
+                if indices:
+                    fig_pca.add_trace(go.Scatter(
+                        x=[coords[i, 0] for i in indices], y=[coords[i, 1] for i in indices],
+                        mode="markers", name=name_c,
+                        marker=dict(size=8, color=correctness_colors.get(name_c, C["dim"]), opacity=0.7),
+                        hoverinfo="text",
+                        hovertext=[f"Label={labels_pca[i]} Dec={decisions_pca[i]}" for i in indices],
+                    ))
+
+        fig_pca.update_layout(
+            **PLOTLY_LAYOUT, height=450,
+            title_text=f"PCA Projection (explained variance: {pca.explained_variance_ratio_.sum():.1%})",
+            xaxis_title=f"PC1 ({pca.explained_variance_ratio_[0]:.1%})",
+            yaxis_title=f"PC2 ({pca.explained_variance_ratio_[1]:.1%})",
+            xaxis_showgrid=False, yaxis_showgrid=False,
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5),
+        )
+        st.plotly_chart(fig_pca, use_container_width=True)
+    else:
+        st.info("Not enough test examples for PCA projection.")
+
+
+# ========================== TAB 9: DATA PROFILE ============================
+
+with tab_profile:
+    st.markdown("#### Data Profile")
+    st.caption("Field coverage across all profiles by source type — reveals why some cross-source pairs are harder.")
+
+    profile_fields = [
+        "display_name", "headline", "bio_text", "organizations",
+        "locations", "topics", "outbound_links", "timestamps",
+        "aliases", "education",
+    ]
+
+    source_types = sorted({p.source_type for p in data.profiles})
+    profiles_by_source: dict[str, list] = defaultdict(list)
+    for p in data.profiles:
+        profiles_by_source[p.source_type].append(p)
+
+    # Completeness heatmap
+    z_data = []
+    for st_name in source_types:
+        row = []
+        for field in profile_fields:
+            count = 0
+            for p in profiles_by_source[st_name]:
+                val = getattr(p, field, None)
+                if val is not None and val != "" and val != []:
+                    count += 1
+                elif field == "education":
+                    if hasattr(p, "education") and p.education:
+                        count += 1
+            pct = count / len(profiles_by_source[st_name]) * 100 if profiles_by_source[st_name] else 0
+            row.append(round(pct))
+        z_data.append(row)
+
+    fig_comp = go.Figure(go.Heatmap(
+        z=z_data, x=[f.replace("_", " ") for f in profile_fields], y=source_types,
+        colorscale=[[0, "#202222"], [0.5, "#2F3336"], [1, C["emerald"]]],
+        text=[[f"{v}%" for v in row] for row in z_data],
+        texttemplate="%{text}", textfont=dict(size=12, family="JetBrains Mono"),
+        hovertemplate="Source: %{y}<br>Field: %{x}<br>Coverage: %{z}%<extra></extra>",
+        colorbar=dict(title="Coverage %", ticksuffix="%"),
+    ))
+    fig_comp.update_layout(
+        **PLOTLY_LAYOUT, title_text="Field Completeness by Source Type", height=350,
+    )
+    st.plotly_chart(fig_comp, use_container_width=True)
+
+    # Summary stats
+    st.markdown("#### Source Type Summary")
+    sum_cols = st.columns(len(source_types))
+    for i, st_name in enumerate(source_types):
+        profs = profiles_by_source[st_name]
+        total_fields = 0
+        filled_fields = 0
+        for p in profs:
+            for field in profile_fields:
+                total_fields += 1
+                val = getattr(p, field, None)
+                if val is not None and val != "" and val != []:
+                    filled_fields += 1
+        avg_completeness = filled_fields / max(total_fields, 1) * 100
+        src_color = SOURCE_COLORS.get(st_name, C["slate"])
+        with sum_cols[i % len(sum_cols)]:
+            st.markdown(
+                f'<div class="card" style="border-top: 2px solid {src_color}">'
+                f'<strong>{st_name.replace("_", " ")}</strong><br>'
+                f'<span style="font-family:JetBrains Mono;color:{C["cyan"]}">{len(profs)}</span> profiles<br>'
+                f'<span style="color:{C["muted"]}">Avg completeness: {avg_completeness:.0f}%</span>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+    # Per-identity complementarity
+    st.markdown('<hr class="subtle-divider">', unsafe_allow_html=True)
+    st.markdown("#### Identity Complementarity")
+    st.caption("For each resolved identity, which fields are covered across its member profiles?")
+
+    for identity in data.identities[:6]:
+        with st.expander(f"{identity.canonical_name} ({len(identity.member_profile_ids)} profiles)"):
+            member_profs = [data.profile_lookup[pid] for pid in identity.member_profile_ids if pid in data.profile_lookup]
+            if not member_profs:
+                st.info("No profiles found.")
+                continue
+
+            z_id = []
+            y_labels = []
+            for p in member_profs:
+                row = []
+                for field in profile_fields:
+                    val = getattr(p, field, None)
+                    row.append(1 if (val is not None and val != "" and val != []) else 0)
+                z_id.append(row)
+                y_labels.append(f"{p.display_name[:20]} ({p.source_type})")
+
+            fig_id = go.Figure(go.Heatmap(
+                z=z_id, x=[f.replace("_", " ") for f in profile_fields], y=y_labels,
+                colorscale=[[0, "#202222"], [1, C["emerald"]]],
+                showscale=False,
+                hovertemplate="Profile: %{y}<br>Field: %{x}<br>Present: %{z}<extra></extra>",
+            ))
+            _id_layout = {**PLOTLY_LAYOUT, "margin": dict(l=180, r=20, t=30, b=30)}
+            fig_id.update_layout(**_id_layout, height=40 + 40 * len(member_profs))
+            st.plotly_chart(fig_id, use_container_width=True)
+
+
+# ========================== TAB 10: MODEL ARENA ============================
+
+with tab_arena:
+    st.markdown("#### Model Arena")
+    st.caption("Side-by-side comparison of all model configurations on the same test pairs.")
+
+    if data.baseline_scores and data.test_examples:
+        model_names_arena = list(data.baseline_scores.keys())
+        test_labels_arena = [ex.label for ex in data.test_examples]
+
+        # Leaderboard
+        st.markdown("##### Leaderboard")
+        leaderboard_data = []
+        for m_name in model_names_arena:
+            scores_m = data.baseline_scores[m_name]
+            if len(scores_m) != len(test_labels_arena):
+                continue
+            from nyne_er_lab.eval.metrics import summarize_predictions, optimize_threshold
+            # Use default 0.5 threshold for baselines that don't have calibrated thresholds
+            m_metrics = summarize_predictions(test_labels_arena, scores_m, 0.5)
+            leaderboard_data.append({
+                "Model": m_name,
+                "Precision": m_metrics.precision,
+                "Recall": m_metrics.recall,
+                "F1": m_metrics.f1,
+                "Avg Precision": m_metrics.average_precision,
+            })
+
+        if leaderboard_data:
+            leaderboard_data.sort(key=lambda r: r["F1"], reverse=True)
+            fig_lb = go.Figure()
+            lb_models = [r["Model"] for r in leaderboard_data]
+            for metric_name, color in [("Precision", C["slate"]), ("Recall", C["rose"]), ("F1", C["cyan"]), ("Avg Precision", C["emerald"])]:
+                fig_lb.add_trace(go.Bar(
+                    name=metric_name, x=lb_models, y=[r[metric_name] for r in leaderboard_data],
+                    marker_color=color,
+                ))
+            fig_lb.update_layout(
+                **PLOTLY_LAYOUT, barmode="group", title_text="Model Leaderboard",
+                yaxis_range=[0, 1.05], height=380,
+                legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            )
+            st.plotly_chart(fig_lb, use_container_width=True)
+
+        st.markdown('<hr class="subtle-divider">', unsafe_allow_html=True)
+
+        # Pair-level disagreement explorer
+        st.markdown("##### Pair-Level Score Comparison")
+        pair_labels_arena = []
+        for ex in data.test_examples:
+            lp = data.profile_lookup.get(ex.left_profile_id)
+            rp = data.profile_lookup.get(ex.right_profile_id)
+            ln = lp.display_name if lp else ex.left_profile_id[:12]
+            rn = rp.display_name if rp else ex.right_profile_id[:12]
+            pair_labels_arena.append(f"{ln} vs {rn}")
+
+        if pair_labels_arena:
+            selected_pair_idx = st.selectbox(
+                "Select pair",
+                range(len(pair_labels_arena)),
+                format_func=lambda i: pair_labels_arena[i],
+                key="arena_pair_select",
+            )
+            pair_scores = {}
+            for m_name in model_names_arena:
+                scores_m = data.baseline_scores[m_name]
+                if selected_pair_idx < len(scores_m):
+                    pair_scores[m_name] = scores_m[selected_pair_idx]
+
+            if pair_scores:
+                fig_ps = go.Figure(go.Bar(
+                    x=list(pair_scores.keys()),
+                    y=list(pair_scores.values()),
+                    marker_color=[C["cyan"] if n == "hybrid" else C["dim"] for n in pair_scores],
+                    text=[f"{v:.3f}" for v in pair_scores.values()],
+                    textposition="outside",
+                    textfont=dict(color=C["muted"], size=11, family="JetBrains Mono"),
+                ))
+                ground_truth = data.test_examples[selected_pair_idx].label
+                fig_ps.update_layout(
+                    **PLOTLY_LAYOUT, height=300,
+                    title_text=f"Per-Model Scores — Ground Truth: {'Same Person' if ground_truth else 'Different People'}",
+                    yaxis_range=[0, 1.1],
+                )
+                st.plotly_chart(fig_ps, use_container_width=True)
+
+        st.markdown('<hr class="subtle-divider">', unsafe_allow_html=True)
+
+        # Agreement heatmap
+        st.markdown("##### Model Agreement Heatmap")
+        st.caption("Pairwise agreement rate between models (at threshold = 0.5).")
+        n_models = len(model_names_arena)
+        agreement_matrix = np.zeros((n_models, n_models))
+        for i, m_i in enumerate(model_names_arena):
+            for j, m_j in enumerate(model_names_arena):
+                s_i = data.baseline_scores[m_i]
+                s_j = data.baseline_scores[m_j]
+                n_pairs = min(len(s_i), len(s_j))
+                if n_pairs == 0:
+                    continue
+                agree = sum(
+                    1 for k in range(n_pairs)
+                    if (s_i[k] >= 0.5) == (s_j[k] >= 0.5)
+                )
+                agreement_matrix[i, j] = agree / n_pairs
+
+        fig_agree = go.Figure(go.Heatmap(
+            z=agreement_matrix.tolist(),
+            x=model_names_arena, y=model_names_arena,
+            colorscale=[[0, "#202222"], [0.5, C["amber"]], [1, C["emerald"]]],
+            text=[[f"{v:.0%}" for v in row] for row in agreement_matrix.tolist()],
+            texttemplate="%{text}", textfont=dict(size=14, family="JetBrains Mono"),
+            showscale=False,
+            hovertemplate="%{y} vs %{x}: %{z:.1%} agreement<extra></extra>",
+        ))
+        fig_agree.update_layout(
+            **PLOTLY_LAYOUT, height=350,
+            yaxis_autorange="reversed",
+        )
+        st.plotly_chart(fig_agree, use_container_width=True)
+
+        st.markdown('<hr class="subtle-divider">', unsafe_allow_html=True)
+
+        # "Where does hybrid win?" filter
+        st.markdown("##### Where Hybrid Wins")
+        st.caption("Pairs where hybrid got it right and at least one baseline got it wrong (or vice versa).")
+        hybrid_scores = data.baseline_scores.get("hybrid", [])
+        baseline_names = [n for n in model_names_arena if n != "hybrid"]
+
+        hybrid_wins = []
+        hybrid_losses = []
+        for idx, ex in enumerate(data.test_examples):
+            if idx >= len(hybrid_scores):
+                break
+            h_correct = (hybrid_scores[idx] >= 0.5) == (ex.label == 1)
+            any_baseline_wrong = any(
+                idx < len(data.baseline_scores[bn]) and
+                (data.baseline_scores[bn][idx] >= 0.5) != (ex.label == 1)
+                for bn in baseline_names
+            )
+            any_baseline_right = any(
+                idx < len(data.baseline_scores[bn]) and
+                (data.baseline_scores[bn][idx] >= 0.5) == (ex.label == 1)
+                for bn in baseline_names
+            )
+            lp = data.profile_lookup.get(ex.left_profile_id)
+            rp = data.profile_lookup.get(ex.right_profile_id)
+            pair_desc = f"{lp.display_name if lp else '?'} vs {rp.display_name if rp else '?'}"
+            if h_correct and any_baseline_wrong:
+                hybrid_wins.append((pair_desc, hybrid_scores[idx], ex.label))
+            elif not h_correct and any_baseline_right:
+                hybrid_losses.append((pair_desc, hybrid_scores[idx], ex.label))
+
+        w_col, l_col = st.columns(2)
+        with w_col:
+            st.markdown(f'<strong style="color:{C["emerald"]}">Hybrid wins ({len(hybrid_wins)})</strong>', unsafe_allow_html=True)
+            for desc, score, label in hybrid_wins[:6]:
+                st.markdown(
+                    f'<div class="card"><small>{escape(desc)}</small><br>'
+                    f'<span style="font-family:JetBrains Mono;color:{C["cyan"]}">{score:.3f}</span> '
+                    f'<span class="pill">{"same" if label else "diff"}</span></div>',
+                    unsafe_allow_html=True,
+                )
+        with l_col:
+            st.markdown(f'<strong style="color:{C["rose"]}">Hybrid losses ({len(hybrid_losses)})</strong>', unsafe_allow_html=True)
+            for desc, score, label in hybrid_losses[:6]:
+                st.markdown(
+                    f'<div class="card"><small>{escape(desc)}</small><br>'
+                    f'<span style="font-family:JetBrains Mono;color:{C["cyan"]}">{score:.3f}</span> '
+                    f'<span class="pill">{"same" if label else "diff"}</span></div>',
+                    unsafe_allow_html=True,
+                )
+    else:
+        st.info("No baseline scores available for the Model Arena. Re-run the benchmark to enable.")

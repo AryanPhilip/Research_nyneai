@@ -24,7 +24,7 @@ def test_demo_builder_generates_expected_artifacts(tmp_path) -> None:
     assert len(payload["failure_slices"]) >= 1
 
     html = demo_path.read_text()
-    assert "Nyne ER Lab" in html
+    assert "Entity Resolution Lab" in html
     assert "Failure Gallery" in html
 
     blog = blog_path.read_text()
