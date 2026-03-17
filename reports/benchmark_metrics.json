@@ -1,143 +1,840 @@
 {
-  "models": [
+  "dataset_name": "real_curated_core",
+  "protocol": "grouped_cv",
+  "seeds": [
+    7,
+    11,
+    17
+  ],
+  "dataset_summary": {
+    "headline_dataset": "real_curated_core",
+    "headline_description": "Headline benchmark of curated public AI/ML builder profiles only.",
+    "available_datasets": {
+      "real_curated_core": {
+        "profile_count": 56,
+        "contains_synthetic": false
+      },
+      "hard_negative_bank": {
+        "profile_count": 65,
+        "contains_synthetic": false
+      },
+      "synthetic_stress": {
+        "profile_count": 88,
+        "contains_synthetic": true
+      }
+    }
+  },
+  "headline_metrics": {
+    "dataset_name": "real_curated_core",
+    "profile_count": 56,
+    "identity_count": 16,
+    "precision": 1.0,
+    "recall": 0.839,
+    "f1": 0.901,
+    "average_precision": 1.0,
+    "mean_brier": 0.0179,
+    "mean_ece": 0.0386,
+    "accepted_precision": 1.0,
+    "accepted_recall": 0.8,
+    "abstain_rate": 0.091
+  },
+  "model_metrics": [
     {
       "name": "fuzzy_name",
-      "f1": 0.571,
-      "precision": 0.4,
+      "precision": 1.0,
       "recall": 1.0,
-      "average_precision": 0.4
+      "f1": 1.0,
+      "average_precision": 1.0
     },
     {
       "name": "embedding_only",
-      "f1": 0.5,
-      "precision": 0.333,
-      "recall": 1.0,
-      "average_precision": 0.333
+      "precision": 0.737,
+      "recall": 0.833,
+      "f1": 0.764,
+      "average_precision": 0.807
     },
     {
       "name": "lexical_baseline",
-      "f1": 0.706,
-      "precision": 0.545,
-      "recall": 1.0,
-      "average_precision": 0.915
+      "precision": 1.0,
+      "recall": 0.911,
+      "f1": 0.952,
+      "average_precision": 1.0
     },
     {
       "name": "hybrid",
-      "f1": 1.0,
       "precision": 1.0,
-      "recall": 1.0,
+      "recall": 0.839,
+      "f1": 0.901,
       "average_precision": 1.0
     }
   ],
-  "cluster_f1": 0.906,
+  "cv_summary": [
+    {
+      "seed": 7,
+      "train_profiles": 35,
+      "val_profiles": 10,
+      "test_profiles": 11,
+      "precision": 1.0,
+      "recall": 0.933,
+      "f1": 0.966,
+      "average_precision": 1.0,
+      "brier": 0.0435,
+      "ece": 0.0847
+    },
+    {
+      "seed": 11,
+      "train_profiles": 35,
+      "val_profiles": 10,
+      "test_profiles": 11,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "average_precision": 1.0,
+      "brier": 0.0,
+      "ece": 0.0
+    },
+    {
+      "seed": 17,
+      "train_profiles": 36,
+      "val_profiles": 10,
+      "test_profiles": 10,
+      "precision": 1.0,
+      "recall": 0.583,
+      "f1": 0.737,
+      "average_precision": 1.0,
+      "brier": 0.0101,
+      "ece": 0.0311
+    }
+  ],
+  "stress_metrics": {
+    "hard_negative_bank": {
+      "dataset_name": "hard_negative_bank",
+      "profile_count": 65,
+      "example_count": 617,
+      "precision": 0.944,
+      "recall": 0.931,
+      "f1": 0.937,
+      "abstain_rate": 0.028
+    },
+    "synthetic_stress": {
+      "dataset_name": "synthetic_stress",
+      "profile_count": 88,
+      "example_count": 1277,
+      "precision": 0.85,
+      "recall": 0.93,
+      "f1": 0.888,
+      "abstain_rate": 0.054
+    }
+  },
+  "failure_slices": [
+    {
+      "name": "location_conflict",
+      "description": "Pairs with conflicting structured locations.",
+      "count": 14,
+      "precision": 1.0,
+      "recall": 0.9,
+      "f1": 0.947,
+      "examples": [
+        {
+          "left_profile_id": "chris_manning_conference",
+          "right_profile_id": "chris_manning_github",
+          "left_name": "Christopher Manning",
+          "right_name": "Christopher Manning",
+          "label": 1,
+          "decision": "match",
+          "score": 1.0,
+          "reason_codes": [
+            "high_name_similarity",
+            "shared_domain",
+            "shared_org",
+            "shared_topics"
+          ],
+          "explanation": "Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics. Contradictions: location_conflict.",
+          "counterfactuals": [
+            "Weak topical overlap.",
+            "Locations contradict each other."
+          ]
+        },
+        {
+          "left_profile_id": "chris_manning_conference",
+          "right_profile_id": "chris_manning_personal",
+          "left_name": "Christopher Manning",
+          "right_name": "Christopher Manning",
+          "label": 1,
+          "decision": "match",
+          "score": 1.0,
+          "reason_codes": [
+            "high_name_similarity",
+            "shared_domain",
+            "shared_org",
+            "shared_topics"
+          ],
+          "explanation": "Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics. Contradictions: location_conflict.",
+          "counterfactuals": [
+            "Locations contradict each other."
+          ]
+        },
+        {
+          "left_profile_id": "chris_manning_github",
+          "right_profile_id": "harrison_chase_github",
+          "left_name": "Christopher Manning",
+          "right_name": "Harrison Chase",
+          "label": 0,
+          "decision": "non_match",
+          "score": 0.0,
+          "reason_codes": [
+            "location_conflict"
+          ],
+          "explanation": "Decision=non_match at confidence 0.00. Supporting signals: none. Contradictions: location_conflict.",
+          "counterfactuals": [
+            "No shared personal domain or outbound link.",
+            "No overlapping organization evidence.",
+            "Weak topical overlap."
+          ]
+        },
+        {
+          "left_profile_id": "chris_manning_personal",
+          "right_profile_id": "harrison_chase_company",
+          "left_name": "Christopher Manning",
+          "right_name": "Harrison Chase",
+          "label": 0,
+          "decision": "non_match",
+          "score": 0.0,
+          "reason_codes": [
+            "shared_domain",
+            "shared_topics",
+            "location_conflict"
+          ],
+          "explanation": "Decision=non_match at confidence 0.00. Supporting signals: shared_domain, shared_topics. Contradictions: location_conflict.",
+          "counterfactuals": [
+            "No overlapping organization evidence.",
+            "Locations contradict each other.",
+            "Semantic text similarity is low."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sparse_overlap",
+      "description": "Pairs with weak supporting overlap and mostly textual evidence.",
+      "count": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "examples": [
+        {
+          "left_profile_id": "chris_manning_github",
+          "right_profile_id": "harrison_chase_github",
+          "left_name": "Christopher Manning",
+          "right_name": "Harrison Chase",
+          "label": 0,
+          "decision": "non_match",
+          "score": 0.0,
+          "reason_codes": [
+            "location_conflict"
+          ],
+          "explanation": "Decision=non_match at confidence 0.00. Supporting signals: none. Contradictions: location_conflict.",
+          "counterfactuals": [
+            "No shared personal domain or outbound link.",
+            "No overlapping organization evidence.",
+            "Weak topical overlap."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cross_source_true_match",
+      "description": "True matches across different source types.",
+      "count": 15,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.889,
+      "examples": [
+        {
+          "left_profile_id": "chris_manning_conference",
+          "right_profile_id": "chris_manning_github",
+          "left_name": "Christopher Manning",
+          "right_name": "Christopher Manning",
+          "label": 1,
+          "decision": "match",
+          "score": 1.0,
+          "reason_codes": [
+            "high_name_similarity",
+            "shared_domain",
+            "shared_org",
+            "shared_topics"
+          ],
+          "explanation": "Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics. Contradictions: location_conflict.",
+          "counterfactuals": [
+            "Weak topical overlap.",
+            "Locations contradict each other."
+          ]
+        },
+        {
+          "left_profile_id": "chris_manning_conference",
+          "right_profile_id": "chris_manning_personal",
+          "left_name": "Christopher Manning",
+          "right_name": "Christopher Manning",
+          "label": 1,
+          "decision": "match",
+          "score": 1.0,
+          "reason_codes": [
+            "high_name_similarity",
+            "shared_domain",
+            "shared_org",
+            "shared_topics"
+          ],
+          "explanation": "Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics. Contradictions: location_conflict.",
+          "counterfactuals": [
+            "Locations contradict each other."
+          ]
+        },
+        {
+          "left_profile_id": "chris_manning_github",
+          "right_profile_id": "chris_manning_personal",
+          "left_name": "Christopher Manning",
+          "right_name": "Christopher Manning",
+          "label": 1,
+          "decision": "match",
+          "score": 1.0,
+          "reason_codes": [
+            "high_name_similarity",
+            "shared_domain",
+            "shared_org",
+            "shared_topics"
+          ],
+          "explanation": "Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics.",
+          "counterfactuals": []
+        },
+        {
+          "left_profile_id": "harrison_chase_company",
+          "right_profile_id": "harrison_chase_conference",
+          "left_name": "Harrison Chase",
+          "right_name": "Harrison Chase",
+          "label": 1,
+          "decision": "abstain",
+          "score": 0.5,
+          "reason_codes": [
+            "high_name_similarity",
+            "shared_org",
+            "shared_topics",
+            "location_conflict"
+          ],
+          "explanation": "Decision=abstain at confidence 0.50. Supporting signals: high_name_similarity, shared_org, shared_topics. Contradictions: location_conflict.",
+          "counterfactuals": [
+            "No shared personal domain or outbound link.",
+            "Locations contradict each other.",
+            "Semantic text similarity is low."
+          ]
+        }
+      ]
+    }
+  ],
+  "leakage_checks": [
+    {
+      "name": "canonical_person_disjoint",
+      "passed": true,
+      "detail": "Canonical identities are disjoint across splits."
+    },
+    {
+      "name": "duplicate_urls_across_train_test",
+      "passed": true,
+      "detail": "No duplicated URLs across train/test."
+    },
+    {
+      "name": "near_duplicate_raw_text_across_train_test",
+      "passed": true,
+      "detail": "No near-duplicate raw text across train/test."
+    },
+    {
+      "name": "synthetic_contamination",
+      "passed": true,
+      "detail": "Headline dataset contains no synthetic profiles."
+    },
+    {
+      "name": "train_only_feature_fitting",
+      "passed": true,
+      "detail": "TF-IDF fit on train profiles only."
+    },
+    {
+      "name": "threshold_selected_on_validation_only",
+      "passed": true,
+      "detail": "Baseline and hybrid thresholds are chosen on validation splits only."
+    }
+  ],
+  "thresholds": [
+    {
+      "seed": 7,
+      "threshold": 0.5,
+      "match_threshold": 0.6,
+      "non_match_threshold": 0.35,
+      "score_histogram": [
+        {
+          "bin": "0.00-0.12",
+          "count": 7,
+          "positives": 0
+        },
+        {
+          "bin": "0.12-0.25",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.25-0.38",
+          "count": 1,
+          "positives": 1
+        },
+        {
+          "bin": "0.38-0.50",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.50-0.62",
+          "count": 2,
+          "positives": 2
+        },
+        {
+          "bin": "0.62-0.75",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.75-0.88",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.88-1.00",
+          "count": 12,
+          "positives": 12
+        }
+      ]
+    },
+    {
+      "seed": 11,
+      "threshold": 1.0,
+      "match_threshold": 0.6,
+      "non_match_threshold": 0.15,
+      "score_histogram": [
+        {
+          "bin": "0.00-0.12",
+          "count": 8,
+          "positives": 0
+        },
+        {
+          "bin": "0.12-0.25",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.25-0.38",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.38-0.50",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.50-0.62",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.62-0.75",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.75-0.88",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.88-1.00",
+          "count": 15,
+          "positives": 15
+        }
+      ]
+    },
+    {
+      "seed": 17,
+      "threshold": 1.0,
+      "match_threshold": 0.6,
+      "non_match_threshold": 0.15,
+      "score_histogram": [
+        {
+          "bin": "0.00-0.12",
+          "count": 10,
+          "positives": 0
+        },
+        {
+          "bin": "0.12-0.25",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.25-0.38",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.38-0.50",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.50-0.62",
+          "count": 1,
+          "positives": 1
+        },
+        {
+          "bin": "0.62-0.75",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.75-0.88",
+          "count": 0,
+          "positives": 0
+        },
+        {
+          "bin": "0.88-1.00",
+          "count": 11,
+          "positives": 11
+        }
+      ]
+    }
+  ],
+  "top_errors": [
+    {
+      "bucket": "false_negative",
+      "left_profile_id": "harrison_chase_company",
+      "right_profile_id": "harrison_chase_huggingface",
+      "left_name": "Harrison Chase",
+      "right_name": "Harrison Chase",
+      "label": 1,
+      "decision": "non_match",
+      "score": 0.333,
+      "reason_codes": [
+        "high_name_similarity",
+        "shared_org",
+        "shared_topics"
+      ],
+      "explanation": "Decision=non_match at confidence 0.33. Supporting signals: high_name_similarity, shared_org, shared_topics.",
+      "counterfactuals": [
+        "No shared personal domain or outbound link.",
+        "Semantic text similarity is low."
+      ]
+    },
+    {
+      "bucket": "abstain",
+      "left_profile_id": "harrison_chase_company",
+      "right_profile_id": "harrison_chase_conference",
+      "left_name": "Harrison Chase",
+      "right_name": "Harrison Chase",
+      "label": 1,
+      "decision": "abstain",
+      "score": 0.5,
+      "reason_codes": [
+        "high_name_similarity",
+        "shared_org",
+        "shared_topics",
+        "location_conflict"
+      ],
+      "explanation": "Decision=abstain at confidence 0.50. Supporting signals: high_name_similarity, shared_org, shared_topics. Contradictions: location_conflict.",
+      "counterfactuals": [
+        "No shared personal domain or outbound link.",
+        "Locations contradict each other.",
+        "Semantic text similarity is low."
+      ]
+    },
+    {
+      "bucket": "abstain",
+      "left_profile_id": "harrison_chase_company",
+      "right_profile_id": "harrison_chase_github",
+      "left_name": "Harrison Chase",
+      "right_name": "Harrison Chase",
+      "label": 1,
+      "decision": "abstain",
+      "score": 0.5,
+      "reason_codes": [
+        "high_name_similarity",
+        "shared_org",
+        "shared_topics"
+      ],
+      "explanation": "Decision=abstain at confidence 0.50. Supporting signals: high_name_similarity, shared_org, shared_topics.",
+      "counterfactuals": [
+        "No shared personal domain or outbound link."
+      ]
+    }
+  ],
   "ablations": [
     {
       "name": "full",
-      "f1": 1.0,
+      "f1": 0.966,
       "average_precision": 1.0
     },
     {
       "name": "no_embedding",
-      "f1": 1.0,
+      "f1": 0.696,
       "average_precision": 1.0
     },
     {
       "name": "no_structured",
-      "f1": 0.706,
-      "average_precision": 0.773
+      "f1": 0.846,
+      "average_precision": 1.0
     }
   ],
-  "confusion_slices": {
-    "test_examples": 18,
-    "forced_precision": 1.0,
-    "accepted_precision": 1.0,
-    "accepted_recall": 1.0,
-    "abstain_rate": 0.444
+  "permutation_sanity": {
+    "f1": 0.583,
+    "precision": 0.778,
+    "recall": 0.467,
+    "note": "Sanity check with shuffled train labels. This should stay materially below the real model."
   },
-  "cases": [
-    {
-      "title": "Andrej Karpathy vs Andrej Karpathy",
-      "decision": "match",
-      "score": 1.0,
-      "profiles": [
-        "andrej_github",
-        "andrej_personal"
-      ],
-      "left_source": "github",
-      "right_source": "personal_site",
-      "explanation": "Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics. Contradictions: location_conflict.",
-      "reason_codes": [
-        "high_name_similarity",
-        "shared_domain",
-        "shared_org",
-        "shared_topics"
-      ]
-    },
-    {
-      "title": "Chip Huyen vs Chip Huyen",
-      "decision": "match",
-      "score": 0.722,
-      "profiles": [
-        "chip_company",
-        "chip_personal"
-      ],
-      "left_source": "company_profile",
-      "right_source": "personal_site",
-      "explanation": "Decision=match at confidence 0.72. Supporting signals: high_name_similarity, shared_domain, shared_topics. Contradictions: location_conflict.",
-      "reason_codes": [
-        "high_name_similarity",
-        "shared_domain",
-        "shared_topics"
-      ]
-    },
-    {
-      "title": "Jay Alammar vs Jay Alammar",
-      "decision": "match",
-      "score": 1.0,
-      "profiles": [
-        "jay_github",
-        "jay_personal"
-      ],
-      "left_source": "github",
-      "right_source": "personal_site",
-      "explanation": "Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics. Contradictions: location_conflict.",
-      "reason_codes": [
-        "high_name_similarity",
-        "shared_domain",
-        "shared_org",
-        "shared_topics"
-      ]
-    },
-    {
-      "title": "Andrej Karpathy vs Chip Huyen",
-      "decision": "non_match",
-      "score": 0.0,
-      "profiles": [
-        "andrej_github",
-        "chip_company"
-      ],
-      "left_source": "github",
-      "right_source": "company_profile",
-      "explanation": "Decision=non_match at confidence 0.00. Supporting signals: shared_topics. Contradictions: location_conflict.",
-      "reason_codes": [
-        "shared_topics",
-        "location_conflict"
-      ]
-    },
-    {
-      "title": "Andrej Karpathy vs Chip Huyen",
-      "decision": "non_match",
-      "score": 0.0,
-      "profiles": [
-        "andrej_github",
-        "chip_personal"
-      ],
-      "left_source": "github",
-      "right_source": "personal_site",
-      "explanation": "Decision=non_match at confidence 0.00. Supporting signals: shared_topics.",
-      "reason_codes": [
-        "shared_topics"
-      ]
-    }
-  ]
+  "open_world_retrieval": {
+    "queries": 11,
+    "recall_at_1": 1.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "traces": [
+      {
+        "query_profile_id": "sara_hooker_github",
+        "query_name": "Sara Hooker",
+        "top_candidates": [
+          {
+            "profile_id": "sara_hooker_personal",
+            "display_name": "Sara Hooker",
+            "score": 1.0,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "personal_site"
+          },
+          {
+            "profile_id": "sara_hooker_conference",
+            "display_name": "Sara Hooker",
+            "score": 1.0,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "conference_bio"
+          },
+          {
+            "profile_id": "sara_hooker_huggingface",
+            "display_name": "Sara Hooker",
+            "score": 0.944,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "huggingface"
+          },
+          {
+            "profile_id": "fchollet_personal",
+            "display_name": "Francois Chollet",
+            "score": 0.079,
+            "decision": "non_match",
+            "same_person": false,
+            "source_type": "personal_site"
+          },
+          {
+            "profile_id": "andrej_github",
+            "display_name": "Andrej Karpathy",
+            "score": 0.0,
+            "decision": "non_match",
+            "same_person": false,
+            "source_type": "github"
+          }
+        ]
+      },
+      {
+        "query_profile_id": "sara_hooker_personal",
+        "query_name": "Sara Hooker",
+        "top_candidates": [
+          {
+            "profile_id": "sara_hooker_github",
+            "display_name": "Sara Hooker",
+            "score": 1.0,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "github"
+          },
+          {
+            "profile_id": "sara_hooker_conference",
+            "display_name": "Sara Hooker",
+            "score": 1.0,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "conference_bio"
+          },
+          {
+            "profile_id": "sara_hooker_huggingface",
+            "display_name": "Sara Hooker",
+            "score": 0.958,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "huggingface"
+          },
+          {
+            "profile_id": "fchollet_github",
+            "display_name": "Francois Chollet",
+            "score": 0.5,
+            "decision": "abstain",
+            "same_person": false,
+            "source_type": "github"
+          },
+          {
+            "profile_id": "fchollet_personal",
+            "display_name": "Francois Chollet",
+            "score": 0.333,
+            "decision": "non_match",
+            "same_person": false,
+            "source_type": "personal_site"
+          }
+        ]
+      },
+      {
+        "query_profile_id": "sara_hooker_conference",
+        "query_name": "Sara Hooker",
+        "top_candidates": [
+          {
+            "profile_id": "sara_hooker_github",
+            "display_name": "Sara Hooker",
+            "score": 1.0,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "github"
+          },
+          {
+            "profile_id": "sara_hooker_personal",
+            "display_name": "Sara Hooker",
+            "score": 1.0,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "personal_site"
+          },
+          {
+            "profile_id": "sara_hooker_huggingface",
+            "display_name": "Sara Hooker",
+            "score": 0.986,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "huggingface"
+          },
+          {
+            "profile_id": "andrej_github",
+            "display_name": "Andrej Karpathy",
+            "score": 0.0,
+            "decision": "non_match",
+            "same_person": false,
+            "source_type": "github"
+          },
+          {
+            "profile_id": "andrej_personal",
+            "display_name": "Andrej Karpathy",
+            "score": 0.0,
+            "decision": "non_match",
+            "same_person": false,
+            "source_type": "personal_site"
+          }
+        ]
+      },
+      {
+        "query_profile_id": "chris_manning_personal",
+        "query_name": "Christopher Manning",
+        "top_candidates": [
+          {
+            "profile_id": "chris_manning_github",
+            "display_name": "Christopher Manning",
+            "score": 1.0,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "github"
+          },
+          {
+            "profile_id": "chris_manning_conference",
+            "display_name": "Christopher Manning",
+            "score": 1.0,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "conference_bio"
+          },
+          {
+            "profile_id": "yann_personal",
+            "display_name": "Yann LeCun",
+            "score": 0.987,
+            "decision": "match",
+            "same_person": false,
+            "source_type": "personal_site"
+          },
+          {
+            "profile_id": "yann_github",
+            "display_name": "Yann LeCun",
+            "score": 0.892,
+            "decision": "match",
+            "same_person": false,
+            "source_type": "github"
+          },
+          {
+            "profile_id": "andrej_personal",
+            "display_name": "Andrej Karpathy",
+            "score": 0.826,
+            "decision": "match",
+            "same_person": false,
+            "source_type": "personal_site"
+          }
+        ]
+      },
+      {
+        "query_profile_id": "chris_manning_github",
+        "query_name": "Christopher Manning",
+        "top_candidates": [
+          {
+            "profile_id": "chris_manning_personal",
+            "display_name": "Christopher Manning",
+            "score": 1.0,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "personal_site"
+          },
+          {
+            "profile_id": "chris_manning_conference",
+            "display_name": "Christopher Manning",
+            "score": 1.0,
+            "decision": "match",
+            "same_person": true,
+            "source_type": "conference_bio"
+          },
+          {
+            "profile_id": "andrej_personal",
+            "display_name": "Andrej Karpathy",
+            "score": 0.333,
+            "decision": "non_match",
+            "same_person": false,
+            "source_type": "personal_site"
+          },
+          {
+            "profile_id": "chip_personal",
+            "display_name": "Chip Huyen",
+            "score": 0.333,
+            "decision": "non_match",
+            "same_person": false,
+            "source_type": "personal_site"
+          },
+          {
+            "profile_id": "andrej_github",
+            "display_name": "Andrej Karpathy",
+            "score": 0.0,
+            "decision": "non_match",
+            "same_person": false,
+            "source_type": "github"
+          }
+        ]
+      }
+    ]
+  },
+  "cluster_metrics": {
+    "bcubed_f1": 0.893,
+    "identity_count": 15,
+    "resolved_pair_count": 533
+  }
 }

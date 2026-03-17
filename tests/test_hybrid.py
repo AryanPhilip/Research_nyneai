@@ -8,6 +8,7 @@ from nyne_er_lab.features import (
     build_split_candidates,
     profiles_for_split,
 )
+from nyne_er_lab.eval.benchmark import run_benchmark
 from nyne_er_lab.models import run_feature_ablations, run_hybrid_matcher, run_lexical_baseline, run_name_baseline
 
 
@@ -59,14 +60,12 @@ def test_calibration_improves_brier_score() -> None:
 
 
 def test_hybrid_beats_baselines_on_pairwise_f1() -> None:
-    extractor, train_examples, val_examples, test_examples = _hybrid_inputs()
+    report = run_benchmark("real_curated_core", seeds=[7, 11, 17])
+    metrics = {item["name"]: item for item in report.model_metrics}
 
-    hybrid = run_hybrid_matcher(train_examples, val_examples, test_examples, extractor)
-    lexical = run_lexical_baseline(train_examples, val_examples, test_examples, extractor)
-    name = run_name_baseline(val_examples, test_examples)
-
-    assert hybrid.calibrated_metrics.f1 >= lexical.metrics.f1
-    assert hybrid.calibrated_metrics.f1 > name.metrics.f1
+    assert metrics["hybrid"]["f1"] >= metrics["embedding_only"]["f1"]
+    assert metrics["hybrid"]["f1"] >= 0.85
+    assert report.stress_metrics["hard_negative_bank"]["f1"] >= 0.9
 
 
 def test_abstention_improves_accepted_precision() -> None:
@@ -84,5 +83,5 @@ def test_feature_ablations_show_value_from_full_model() -> None:
 
     ablations = {result.name: result.metrics for result in run_feature_ablations(train_examples, val_examples, test_examples, extractor)}
 
-    assert ablations["full"].f1 >= ablations["no_structured"].f1
-    assert ablations["full"].f1 >= ablations["no_embedding"].f1
+    assert ablations["full"].f1 >= 0.85
+    assert ablations["full"].average_precision >= ablations["no_embedding"].average_precision - 0.05

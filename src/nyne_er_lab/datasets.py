@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path
 
 from .schemas import OrganizationClaim, ProfileRecord, RawProfilePage, TextSpan
@@ -11,6 +12,17 @@ from .schemas import OrganizationClaim, ProfileRecord, RawProfilePage, TextSpan
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
+
+
+@dataclass(frozen=True)
+class DatasetBundle:
+    """Named dataset bundle used by benchmarks and demo flows."""
+
+    name: str
+    description: str
+    profiles: list[ProfileRecord]
+    contains_synthetic: bool = False
+    headline: bool = False
 
 
 def load_seed_profiles(path: Path | None = None) -> list[ProfileRecord]:
@@ -101,19 +113,72 @@ def _synthetic_conflict_profile(canonical_id: str, profiles: list[ProfileRecord]
     )
 
 
-def load_benchmark_profiles() -> list[ProfileRecord]:
-    """Load the expanded benchmark corpus used for ML training and evaluation."""
-
+def _seed_group_profiles(seed_group: str) -> list[ProfileRecord]:
     seed_profiles = load_seed_profiles()
+    return [profile for profile in seed_profiles if profile.metadata.get("seed_group") == seed_group]
+
+
+def _stage1_profiles() -> list[ProfileRecord]:
+    return _seed_group_profiles("stage1")
+
+
+def _hard_negative_profiles() -> list[ProfileRecord]:
+    return _seed_group_profiles("hard_negative")
+
+
+def _synthetic_stress_profiles() -> list[ProfileRecord]:
+    stage1_profiles = _stage1_profiles()
     grouped: dict[str, list[ProfileRecord]] = defaultdict(list)
-    for profile in seed_profiles:
-        if profile.metadata.get("seed_group") == "stage1":
-            grouped[profile.canonical_person_id].append(profile)
+    for profile in stage1_profiles:
+        grouped[profile.canonical_person_id].append(profile)
 
     synthetic_profiles: list[ProfileRecord] = []
     for index, canonical_id in enumerate(sorted(grouped)):
         profiles = grouped[canonical_id]
         synthetic_profiles.append(_synthetic_positive_profile(canonical_id, profiles, index))
         synthetic_profiles.append(_synthetic_conflict_profile(canonical_id, profiles, index))
+    return stage1_profiles + synthetic_profiles
 
-    return seed_profiles + synthetic_profiles
+
+def load_dataset(name: str = "real_curated_core") -> DatasetBundle:
+    """Load a named dataset bundle."""
+
+    datasets = {
+        "real_curated_core": DatasetBundle(
+            name="real_curated_core",
+            description="Headline benchmark of curated public AI/ML builder profiles only.",
+            profiles=_stage1_profiles(),
+            contains_synthetic=False,
+            headline=True,
+        ),
+        "hard_negative_bank": DatasetBundle(
+            name="hard_negative_bank",
+            description="Curated same-name and adjacent-domain distractors layered onto the real corpus.",
+            profiles=_stage1_profiles() + _hard_negative_profiles(),
+            contains_synthetic=False,
+            headline=False,
+        ),
+        "synthetic_stress": DatasetBundle(
+            name="synthetic_stress",
+            description="Robustness-only dataset with generated positive and conflict variants.",
+            profiles=_synthetic_stress_profiles(),
+            contains_synthetic=True,
+            headline=False,
+        ),
+    }
+    if name not in datasets:
+        available = ", ".join(sorted(datasets))
+        raise KeyError(f"Unknown dataset '{name}'. Available datasets: {available}")
+    return datasets[name]
+
+
+def available_datasets() -> list[str]:
+    """Return stable dataset names."""
+
+    return ["real_curated_core", "hard_negative_bank", "synthetic_stress"]
+
+
+def load_benchmark_profiles(dataset_name: str = "real_curated_core") -> list[ProfileRecord]:
+    """Compatibility wrapper returning profiles for a named benchmark dataset."""
+
+    return load_dataset(dataset_name).profiles

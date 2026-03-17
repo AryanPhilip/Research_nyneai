@@ -1,4 +1,4 @@
-"""Build demo and report artifacts from the entity-resolution pipeline."""
+"""Build demo and report artifacts from the honest benchmark pipeline."""
 
 from __future__ import annotations
 
@@ -6,151 +6,31 @@ import json
 from html import escape
 from pathlib import Path
 
-from nyne_er_lab.cluster import resolve_identities
-from nyne_er_lab.datasets import load_benchmark_profiles, load_raw_pages
-from nyne_er_lab.eval import bcubed_f1
-from nyne_er_lab.features import (
-    PairFeatureExtractor,
-    assign_profile_splits,
-    build_examples_for_profiles,
-    build_pair_examples,
-    build_split_candidates,
-    profiles_for_split,
-)
-from nyne_er_lab.ingest import parse_raw_pages
-from nyne_er_lab.models import (
-    run_embedding_baseline,
-    run_feature_ablations,
-    run_hybrid_matcher,
-    run_lexical_baseline,
-    run_name_baseline,
-    train_hybrid_matcher,
-)
-
-
-def _metric_payload(run_name: str, f1: float, precision: float, recall: float, average_precision: float) -> dict[str, float | str]:
-    return {
-        "name": run_name,
-        "f1": round(f1, 3),
-        "precision": round(precision, 3),
-        "recall": round(recall, 3),
-        "average_precision": round(average_precision, 3),
-    }
+from nyne_er_lab.eval.benchmark import run_benchmark
 
 
 def _benchmark_context() -> dict[str, object]:
-    profiles = load_benchmark_profiles()
-    split_map = assign_profile_splits(profiles)
-    extractor = PairFeatureExtractor().fit(profiles_for_split(profiles, split_map, "train"))
-
-    train_examples = build_pair_examples(
-        profiles,
-        build_split_candidates(profiles, split_map, "train"),
-        extractor,
-        split_map,
-        "train",
-    )
-    val_examples = build_pair_examples(
-        profiles,
-        build_split_candidates(profiles, split_map, "val"),
-        extractor,
-        split_map,
-        "val",
-    )
-    test_examples = build_pair_examples(
-        profiles,
-        build_split_candidates(profiles, split_map, "test"),
-        extractor,
-        split_map,
-        "test",
-    )
-
-    name_run = run_name_baseline(val_examples, test_examples)
-    embedding_run = run_embedding_baseline(val_examples, test_examples)
-    lexical_run = run_lexical_baseline(train_examples, val_examples, test_examples, extractor)
-    hybrid_run = run_hybrid_matcher(train_examples, val_examples, test_examples, extractor)
-    matcher = train_hybrid_matcher(train_examples, val_examples, extractor)
-    identities, resolved_pairs = resolve_identities(
-        profiles,
-        build_examples_for_profiles(profiles, extractor),
-        matcher,
-        extractor=extractor,
-    )
-    ablations = run_feature_ablations(train_examples, val_examples, test_examples, extractor)
-
+    report = run_benchmark("real_curated_core", protocol="grouped_cv", seeds=[7, 11, 17])
     return {
-        "profiles": profiles,
-        "extractor": extractor,
-        "matcher": matcher,
-        "metrics": [
-            _metric_payload("fuzzy_name", name_run.metrics.f1, name_run.metrics.precision, name_run.metrics.recall, name_run.metrics.average_precision),
-            _metric_payload("embedding_only", embedding_run.metrics.f1, embedding_run.metrics.precision, embedding_run.metrics.recall, embedding_run.metrics.average_precision),
-            _metric_payload("lexical_baseline", lexical_run.metrics.f1, lexical_run.metrics.precision, lexical_run.metrics.recall, lexical_run.metrics.average_precision),
-            _metric_payload("hybrid", hybrid_run.calibrated_metrics.f1, hybrid_run.calibrated_metrics.precision, hybrid_run.calibrated_metrics.recall, hybrid_run.calibrated_metrics.average_precision),
-        ],
-        "hybrid": hybrid_run,
-        "cluster_f1": round(bcubed_f1(profiles, identities), 3),
-        "ablations": [
-            {"name": ablation.name, "f1": round(ablation.metrics.f1, 3), "average_precision": round(ablation.metrics.average_precision, 3)}
-            for ablation in ablations
-        ],
-        "confusion_slices": {
-            "test_examples": len(test_examples),
-            "forced_precision": round(hybrid_run.calibrated_metrics.precision, 3),
-            "accepted_precision": round(hybrid_run.accepted_precision, 3),
-            "accepted_recall": round(hybrid_run.accepted_recall, 3),
-            "abstain_rate": round(hybrid_run.abstain_rate, 3),
-        },
-        "resolved_pairs": resolved_pairs,
-        "identities": identities,
-        "train_examples": train_examples,
-        "val_examples": val_examples,
-        "test_examples": test_examples,
-        "split_map": split_map,
+        "report": report,
+        "profiles": report.profiles,
+        "extractor": report.extractor,
+        "matcher": report.matcher,
+        "metrics": report.model_metrics,
+        "headline_metrics": report.headline_metrics,
+        "hybrid": next(metric for metric in report.model_metrics if metric["name"] == "hybrid"),
+        "cluster_f1": report.cluster_metrics["bcubed_f1"],
+        "ablations": report.ablations,
+        "resolved_pairs": report.resolved_pairs,
+        "identities": report.identities,
+        "train_examples": report.train_examples,
+        "val_examples": report.val_examples,
+        "test_examples": report.test_examples,
+        "blocking_stats": report.blocking_stats,
+        "failure_slices": report.failure_slices,
+        "top_errors": report.top_errors,
+        "search_trace": report.open_world_retrieval,
     }
-
-
-def _demo_cases(extractor, matcher) -> list[dict[str, object]]:
-    raw_profiles = parse_raw_pages(load_raw_pages())
-    raw_examples = build_examples_for_profiles(raw_profiles, extractor)
-    identities, resolved_pairs = resolve_identities(raw_profiles, raw_examples, matcher, extractor=extractor)
-    profile_lookup = {profile.profile_id: profile for profile in raw_profiles}
-
-    match_cases = []
-    seen_match_titles = set()
-    for pair in resolved_pairs:
-        if pair.decision != "match":
-            continue
-        left = profile_lookup[pair.left_profile_id]
-        title_key = left.display_name
-        if title_key in seen_match_titles:
-            continue
-        seen_match_titles.add(title_key)
-        match_cases.append(pair)
-        if len(match_cases) == 3:
-            break
-    abstain_cases = [pair for pair in resolved_pairs if pair.decision == "abstain"][:2]
-    non_match_cases = [pair for pair in resolved_pairs if pair.decision == "non_match"][:2]
-    curated_pairs = match_cases + abstain_cases + non_match_cases
-
-    cases: list[dict[str, object]] = []
-    for pair in curated_pairs:
-        left = profile_lookup[pair.left_profile_id]
-        right = profile_lookup[pair.right_profile_id]
-        cases.append(
-            {
-                "title": f"{left.display_name} vs {right.display_name}",
-                "decision": pair.decision,
-                "score": round(pair.score, 3),
-                "profiles": [left.profile_id, right.profile_id],
-                "left_source": left.source_type,
-                "right_source": right.source_type,
-                "explanation": pair.evidence_card.final_explanation,
-                "reason_codes": pair.evidence_card.reason_codes,
-            }
-        )
-
-    return cases
 
 
 def _render_metric_rows(metrics: list[dict[str, object]]) -> str:
@@ -172,172 +52,188 @@ def _render_metric_rows(metrics: list[dict[str, object]]) -> str:
     return "\n".join(rows)
 
 
-def _render_case_cards(cases: list[dict[str, object]]) -> str:
+def _render_error_cards(errors: list[dict[str, object]]) -> str:
     cards = []
-    for case in cases:
+    for error in errors[:8]:
         cards.append(
             f"""
-            <article class="case {escape(str(case['decision']))}">
-              <h3>{escape(str(case['title']))}</h3>
-              <p><strong>Decision:</strong> {escape(str(case['decision']))} at {case['score']}</p>
-              <p><strong>Sources:</strong> {escape(str(case['left_source']))} + {escape(str(case['right_source']))}</p>
-              <p>{escape(str(case['explanation']))}</p>
-              <p><strong>Reason codes:</strong> {escape(', '.join(case['reason_codes']))}</p>
+            <article class="case {escape(str(error['decision']))}">
+              <p class="eyebrow">{escape(str(error['bucket']))}</p>
+              <h3>{escape(str(error['left_name']))} vs {escape(str(error['right_name']))}</h3>
+              <p><strong>Decision:</strong> {escape(str(error['decision']))} at {error['score']}</p>
+              <p>{escape(str(error['explanation']))}</p>
+              <p><strong>Counterfactuals:</strong> {escape(' | '.join(error['counterfactuals']))}</p>
             </article>
             """
         )
     return "\n".join(cards)
 
 
-def _render_identity_cards(identities) -> str:
+def _render_slice_cards(slices: list[dict[str, object]]) -> str:
     cards = []
-    for identity in identities[:6]:
+    for item in slices:
         cards.append(
             f"""
             <article class="identity">
-              <h3>{escape(identity.canonical_name)}</h3>
-              <p><strong>Members:</strong> {len(identity.member_profile_ids)} | <strong>Confidence:</strong> {identity.confidence_band}</p>
-              <p>{escape(identity.summary)}</p>
-              <p><strong>Profiles:</strong> {escape(', '.join(identity.member_profile_ids))}</p>
+              <h3>{escape(str(item['name']))}</h3>
+              <p>{escape(str(item['description']))}</p>
+              <p><strong>Count:</strong> {item['count']} | <strong>Precision:</strong> {item['precision']} | <strong>Recall:</strong> {item['recall']} | <strong>F1:</strong> {item['f1']}</p>
             </article>
             """
         )
     return "\n".join(cards)
 
 
-def _render_demo_html(metrics: list[dict[str, object]], confusion_slices: dict[str, object], cases: list[dict[str, object]], identities) -> str:
+def _render_trace_cards(trace: dict[str, object]) -> str:
+    cards = []
+    for item in trace.get("traces", [])[:4]:
+        candidates = "<br>".join(
+            f"{escape(candidate['display_name'])} ({escape(candidate['source_type'])}) · score={candidate['score']} · same_person={candidate['same_person']}"
+            for candidate in item["top_candidates"]
+        )
+        cards.append(
+            f"""
+            <article class="panel">
+              <h3>{escape(str(item['query_name']))}</h3>
+              <p><strong>Top candidates</strong><br>{candidates}</p>
+            </article>
+            """
+        )
+    return "\n".join(cards)
+
+
+def _render_demo_html(report) -> str:
+    metrics = report.model_metrics
+    headline = report.headline_metrics
+    leakage_failures = [item for item in report.leakage_checks if not item["passed"]]
     return f"""<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nyne Entity Resolution Lab</title>
+    <title>Nyne ER Lab</title>
     <style>
       :root {{
-        --bg: #f6f3ea;
-        --panel: #fffdf7;
-        --ink: #191716;
-        --muted: #6c625a;
-        --accent: #0e6ba8;
-        --good: #2a7f62;
-        --warn: #b57f00;
-        --bad: #a63d40;
-        --border: #ddd4c7;
+        --bg: #f5f1e8;
+        --panel: #fffdf8;
+        --ink: #172026;
+        --muted: #6f756f;
+        --teal: #0f8b8d;
+        --gold: #c59d31;
+        --slate: #20303c;
+        --good: #2d7d46;
+        --warn: #ad7a16;
+        --bad: #9f3f3f;
+        --border: #dfd6c6;
       }}
       body {{
         margin: 0;
-        font-family: Georgia, 'Iowan Old Style', serif;
         color: var(--ink);
-        background: radial-gradient(circle at top left, #fff7df, var(--bg) 45%), var(--bg);
+        background: radial-gradient(circle at top left, rgba(15,139,141,0.12), transparent 30%), var(--bg);
+        font-family: Georgia, 'Iowan Old Style', serif;
       }}
-      main {{
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 40px 20px 80px;
-      }}
-      h1, h2, h3 {{
-        margin: 0 0 12px;
-      }}
-      p {{
-        line-height: 1.55;
-      }}
+      main {{ max-width: 1120px; margin: 0 auto; padding: 40px 20px 80px; }}
       .hero {{
-        padding: 28px;
         border: 1px solid var(--border);
-        background: linear-gradient(135deg, rgba(14,107,168,0.08), rgba(255,255,255,0.9));
-        border-radius: 18px;
-        margin-bottom: 24px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(15,139,141,0.08));
+        padding: 28px;
+        margin-bottom: 22px;
       }}
-      .grid {{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 16px;
-      }}
+      .hero-grid {{ display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: center; }}
+      .logo svg {{ width: 100%; height: auto; }}
+      .eyebrow {{ text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: var(--muted); }}
+      .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }}
       .panel, .case, .identity {{
         border: 1px solid var(--border);
         background: var(--panel);
         border-radius: 16px;
         padding: 18px;
       }}
-      table {{
-        width: 100%;
-        border-collapse: collapse;
-      }}
-      th, td {{
-        text-align: left;
-        padding: 10px 8px;
-        border-bottom: 1px solid var(--border);
-      }}
-      .bar {{
-        width: 100%;
-        height: 10px;
-        background: #eee5d6;
-        border-radius: 999px;
-        overflow: hidden;
-      }}
-      .bar span {{
-        display: block;
-        height: 100%;
-        background: linear-gradient(90deg, #0e6ba8, #2a7f62);
-      }}
+      table {{ width: 100%; border-collapse: collapse; }}
+      th, td {{ text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); }}
+      .bar {{ width: 100%; height: 10px; background: #eee7d9; border-radius: 999px; overflow: hidden; }}
+      .bar span {{ display: block; height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold)); }}
       .match {{ border-left: 6px solid var(--good); }}
       .abstain {{ border-left: 6px solid var(--warn); }}
       .non_match {{ border-left: 6px solid var(--bad); }}
-      .eyebrow {{
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        font-size: 12px;
-        color: var(--muted);
-      }}
+      h1, h2, h3 {{ margin: 0 0 12px; }}
+      p {{ line-height: 1.55; }}
     </style>
   </head>
   <body>
     <main>
       <section class="hero">
-        <p class="eyebrow">Nyne-Oriented ML Proof of Work</p>
-        <h1>Interpretable Public-Web Entity Resolution Lab</h1>
-        <p>This demo packages a benchmarked pairwise matcher, conservative abstention policy, identity clustering layer, and explanation cards into one reproducible artifact set.</p>
+        <div class="hero-grid">
+          <div class="logo">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Nyne ER Lab logo">
+              <circle cx="22" cy="24" r="12" fill="#0f8b8d"/>
+              <circle cx="22" cy="92" r="12" fill="#20303c"/>
+              <circle cx="60" cy="58" r="10" fill="#c59d31"/>
+              <circle cx="98" cy="58" r="16" fill="#0f8b8d"/>
+              <path d="M34 24 L52 50" stroke="#20303c" stroke-width="5" stroke-linecap="round"/>
+              <path d="M34 92 L52 66" stroke="#20303c" stroke-width="5" stroke-linecap="round"/>
+              <path d="M68 58 L80 58" stroke="#20303c" stroke-width="5" stroke-dasharray="7 6" stroke-linecap="round"/>
+              <path d="M84 58 L98 58" stroke="#0f8b8d" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <p class="eyebrow">Nyne ER Lab</p>
+            <h1>Public-Web Identity Resolution</h1>
+            <p>Founder-facing benchmark and demo layer for explainable identity resolution. Headline metrics come only from the curated real-profile benchmark; stress suites are reported separately.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid" style="margin-bottom:16px;">
+        <article class="panel"><h2>Headline F1</h2><p><strong>{headline['f1']}</strong></p></article>
+        <article class="panel"><h2>Accepted Precision</h2><p><strong>{headline['accepted_precision']}</strong></p></article>
+        <article class="panel"><h2>Mean ECE</h2><p><strong>{headline['mean_ece']}</strong></p></article>
+        <article class="panel"><h2>Leakage Checks</h2><p><strong>{len(report.leakage_checks) - len(leakage_failures)}/{len(report.leakage_checks)}</strong></p></article>
       </section>
 
       <section class="panel">
-        <h2>Benchmark Snapshot</h2>
+        <h2>Benchmark</h2>
         <table>
           <thead>
             <tr><th>Model</th><th>Precision</th><th>Recall</th><th>F1</th><th>AP</th><th>Visual</th></tr>
           </thead>
-          <tbody>
-            {_render_metric_rows(metrics)}
-          </tbody>
+          <tbody>{_render_metric_rows(metrics)}</tbody>
         </table>
       </section>
 
-      <section class="grid" style="margin-top: 18px;">
-        <div class="panel">
-          <h2>Calibration</h2>
-          <p>Accepted precision: <strong>{confusion_slices['accepted_precision']}</strong></p>
-          <p>Accepted recall: <strong>{confusion_slices['accepted_recall']}</strong></p>
-          <p>Abstain rate: <strong>{confusion_slices['abstain_rate']}</strong></p>
-        </div>
-        <div class="panel">
-          <h2>Confusion Slice</h2>
-          <p>Held-out test examples: <strong>{confusion_slices['test_examples']}</strong></p>
-          <p>Forced precision: <strong>{confusion_slices['forced_precision']}</strong></p>
-          <p>This project prefers abstention over aggressive same-name merges.</p>
-        </div>
+      <section class="grid" style="margin-top:16px;">
+        <article class="panel">
+          <h2>Dataset Tracks</h2>
+          <p><strong>{report.dataset_summary['headline_dataset']}</strong>: {escape(str(report.dataset_summary['headline_description']))}</p>
+          <p><strong>Stress suites</strong>: hard-negative bank and synthetic stress are isolated from headline metrics.</p>
+        </article>
+        <article class="panel">
+          <h2>Open-World Retrieval</h2>
+          <p>Recall@1: <strong>{report.open_world_retrieval['recall_at_1']}</strong></p>
+          <p>Recall@3: <strong>{report.open_world_retrieval['recall_at_3']}</strong></p>
+          <p>Recall@5: <strong>{report.open_world_retrieval['recall_at_5']}</strong></p>
+        </article>
+        <article class="panel">
+          <h2>Stress Metrics</h2>
+          <p>Hard negatives F1: <strong>{report.stress_metrics['hard_negative_bank']['f1']}</strong></p>
+          <p>Synthetic stress F1: <strong>{report.stress_metrics['synthetic_stress']['f1']}</strong></p>
+        </article>
       </section>
 
-      <section style="margin-top: 24px;">
-        <h2>Curated Cases</h2>
-        <div class="grid">
-          {_render_case_cards(cases)}
-        </div>
+      <section style="margin-top:18px;">
+        <h2>Failure Gallery</h2>
+        <div class="grid">{_render_error_cards(report.top_errors)}</div>
       </section>
 
-      <section style="margin-top: 24px;">
-        <h2>Resolved Identity Gallery</h2>
-        <div class="grid">
-          {_render_identity_cards(identities)}
-        </div>
+      <section style="margin-top:18px;">
+        <h2>Failure Slices</h2>
+        <div class="grid">{_render_slice_cards(report.failure_slices)}</div>
+      </section>
+
+      <section style="margin-top:18px;">
+        <h2>Search Trace</h2>
+        <div class="grid">{_render_trace_cards(report.open_world_retrieval)}</div>
       </section>
     </main>
   </body>
@@ -345,105 +241,88 @@ def _render_demo_html(metrics: list[dict[str, object]], confusion_slices: dict[s
 """
 
 
-def _render_blog_markdown(metrics: list[dict[str, object]], cluster_f1: float, ablations: list[dict[str, object]], cases: list[dict[str, object]]) -> str:
-    metric_lines = "\n".join(
-        f"| {metric['name']} | {metric['precision']} | {metric['recall']} | {metric['f1']} | {metric['average_precision']} |"
-        for metric in metrics
+def _render_blog(report) -> str:
+    failures = [item for item in report.leakage_checks if not item["passed"]]
+    leakage_lines = "\n".join(f"- {'PASS' if item['passed'] else 'FAIL'}: **{item['name']}** — {item['detail']}" for item in report.leakage_checks)
+    slice_lines = "\n".join(
+        f"- **{item['name']}**: count={item['count']}, precision={item['precision']}, recall={item['recall']}, f1={item['f1']}"
+        for item in report.failure_slices
     )
-    ablation_lines = "\n".join(
-        f"| {ablation['name']} | {ablation['f1']} | {ablation['average_precision']} |"
-        for ablation in ablations
-    )
-    case_lines = "\n".join(
-        f"- `{case['decision']}`: {case['title']} ({case['score']}) with reason codes `{', '.join(case['reason_codes'])}`"
-        for case in cases
+    error_lines = "\n".join(
+        f"- **{item['bucket']}**: {item['left_name']} vs {item['right_name']} at {item['score']} — {item['explanation']}"
+        for item in report.top_errors[:6]
     )
     return f"""# Interpretable Public-Web Entity Resolution Lab
 
-## Problem
-AI agents need more than a name string. They need a way to connect fragmented public professional profiles into a unified identity while avoiding false merges on same-name collisions.
-
 ## Benchmark
-The benchmark combines curated public-profile-style records for AI/ML builders with hard negatives, including exact-name collisions. Splits are person-disjoint.
 
-| Model | Precision | Recall | F1 | AP |
-| --- | --- | --- | --- | --- |
-{metric_lines}
+Headline dataset: `{report.dataset_name}`. The benchmark now separates:
 
-Cluster B-cubed F1: **{cluster_f1}**
+- `real_curated_core` for headline metrics
+- `hard_negative_bank` for same-name and adjacent-domain stress
+- `synthetic_stress` for robustness only
 
-## System
-1. Parse public-profile snapshots into typed `ProfileRecord`s.
-2. Generate candidate pairs with rule-based blocking plus TF-IDF neighbor retrieval.
-3. Score pairs with a full-feature logistic matcher.
-4. Calibrate scores and abstain on contradictory same-name collisions.
-5. Cluster accepted matches into canonical identities and emit explanation cards.
+Hybrid average metrics across grouped seeds:
 
-## Calibration and Abstention
-The calibrated matcher improves confidence quality and preserves a conservative abstention path for exact-name collisions with conflicting org, domain, topic, and location evidence.
+- Precision: **{report.headline_metrics['precision']}**
+- Recall: **{report.headline_metrics['recall']}**
+- F1: **{report.headline_metrics['f1']}**
+- Average precision: **{report.headline_metrics['average_precision']}**
+- Mean Brier: **{report.headline_metrics['mean_brier']}**
+- Mean ECE: **{report.headline_metrics['mean_ece']}**
 
-## Ablations
-| Ablation | F1 | AP |
-| --- | --- | --- |
-{ablation_lines}
+## Honest Evaluation
 
-The structured feature block is doing meaningful work. Removing it collapses performance on held-out same-name collisions.
+The evaluation now uses grouped identity splits, train-only TF-IDF fitting, validation-only threshold selection, and explicit leakage diagnostics.
 
-## Curated Cases
-{case_lines}
+{leakage_lines}
+
+Leakage failures: **{len(failures)}**
+
+## Stress Suites
+
+- Hard negative bank: precision={report.stress_metrics['hard_negative_bank']['precision']}, recall={report.stress_metrics['hard_negative_bank']['recall']}, f1={report.stress_metrics['hard_negative_bank']['f1']}
+- Synthetic stress: precision={report.stress_metrics['synthetic_stress']['precision']}, recall={report.stress_metrics['synthetic_stress']['recall']}, f1={report.stress_metrics['synthetic_stress']['f1']}
+- Open-world retrieval: recall@1={report.open_world_retrieval['recall_at_1']}, recall@3={report.open_world_retrieval['recall_at_3']}, recall@5={report.open_world_retrieval['recall_at_5']}
 
 ## Failure Modes
-- Cross-domain topic overlap still creates noisy candidates in blocking.
-- The current corpus is intentionally small and curated; scaling would need richer raw-page coverage and more adversarial negatives.
-- Embedding quality is limited by a local TF-IDF representation; a production system would swap in a stronger embedder while preserving the same evaluation harness.
 
-## What I Would Build Next
-- Expand the public-page corpus beyond the current seed set.
-- Add richer temporal contradiction handling and alias discovery.
-- Replace TF-IDF retrieval with a stronger semantic embedder while keeping the same benchmark and abstention policy.
+{slice_lines}
+
+## Top Errors
+
+{error_lines}
+
+## Product Demo Features
+
+- Evidence Ledger with supporting and contradicting signals per decision
+- Counterfactual panel describing what is missing or conflicting
+- Identity graph for resolved profile clusters
+- Alias stress and what-if scoring in the app
+- Open-world search trace for live resolution flows
+
+## Logo Direction
+
+Primary mark: three input nodes resolving into one canonical node, with one broken edge reconnecting to signal evidence-based identity stitching. Palette: warm paper, deep slate, electric teal, muted gold.
 """
 
 
 def build_demo_artifacts(output_dir: str | Path = "reports") -> dict[str, str]:
-    """Generate reproducible demo and report artifacts."""
-
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
-    benchmark = _benchmark_context()
-    cases = _demo_cases(benchmark["extractor"], benchmark["matcher"])
+    report = run_benchmark("real_curated_core", protocol="grouped_cv", seeds=[7, 11, 17])
+    metrics_payload = report.to_payload()
+    metrics_path = output_path / "benchmark_metrics.json"
+    demo_path = output_path / "demo.html"
+    blog_path = output_path / "blog.md"
 
-    metrics_json_path = output_path / "benchmark_metrics.json"
-    demo_html_path = output_path / "demo.html"
-    blog_md_path = output_path / "blog.md"
-
-    metrics_payload = {
-        "models": benchmark["metrics"],
-        "cluster_f1": benchmark["cluster_f1"],
-        "ablations": benchmark["ablations"],
-        "confusion_slices": benchmark["confusion_slices"],
-        "cases": cases,
-    }
-    metrics_json_path.write_text(json.dumps(metrics_payload, indent=2))
-    demo_html_path.write_text(
-        _render_demo_html(
-            benchmark["metrics"],
-            benchmark["confusion_slices"],
-            cases,
-            benchmark["identities"],
-        )
-    )
-    blog_md_path.write_text(
-        _render_blog_markdown(
-            benchmark["metrics"],
-            benchmark["cluster_f1"],
-            benchmark["ablations"],
-            cases,
-        )
-    )
+    metrics_path.write_text(json.dumps(metrics_payload, indent=2))
+    demo_path.write_text(_render_demo_html(report))
+    blog_path.write_text(_render_blog(report))
 
     return {
-        "metrics_json": str(metrics_json_path),
-        "demo_html": str(demo_html_path),
-        "blog_md": str(blog_md_path),
+        "metrics_json": str(metrics_path),
+        "demo_html": str(demo_path),
+        "blog_md": str(blog_path),
     }

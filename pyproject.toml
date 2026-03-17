@@ -16,6 +16,8 @@ dependencies = [
   "scikit-learn>=1.5,<2",
   "streamlit>=1.36,<2",
   "plotly>=5.18,<6",
+  "networkx>=3.2,<4",
+  "duckduckgo-search>=7.0,<8",
 ]
 
 [project.optional-dependencies]

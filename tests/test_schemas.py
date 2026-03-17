@@ -15,16 +15,17 @@ from nyne_er_lab.schemas import (
 
 def test_seed_profiles_load_and_validate() -> None:
     profiles = load_seed_profiles()
-    assert len(profiles) == 23
+    assert len(profiles) >= 60
     assert all(isinstance(profile, ProfileRecord) for profile in profiles)
-    assert {profile.canonical_person_id for profile in profiles if profile.metadata["seed_group"] == "stage1"} == {
+    stage1_ids = {profile.canonical_person_id for profile in profiles if profile.metadata.get("seed_group") == "stage1"}
+    assert {
         "andrej_karpathy",
         "chip_huyen",
         "jay_alammar",
         "lilian_weng",
         "sebastian_raschka",
         "hamel_husain",
-    }
+    }.issubset(stage1_ids)
 
 
 def test_raw_pages_load_and_validate() -> None:

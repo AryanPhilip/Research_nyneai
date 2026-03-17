@@ -3,134 +3,96 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nyne Entity Resolution Lab</title>
+    <title>Nyne ER Lab</title>
     <style>
       :root {
-        --bg: #f6f3ea;
-        --panel: #fffdf7;
-        --ink: #191716;
-        --muted: #6c625a;
-        --accent: #0e6ba8;
-        --good: #2a7f62;
-        --warn: #b57f00;
-        --bad: #a63d40;
-        --border: #ddd4c7;
+        --bg: #f5f1e8;
+        --panel: #fffdf8;
+        --ink: #172026;
+        --muted: #6f756f;
+        --teal: #0f8b8d;
+        --gold: #c59d31;
+        --slate: #20303c;
+        --good: #2d7d46;
+        --warn: #ad7a16;
+        --bad: #9f3f3f;
+        --border: #dfd6c6;
       }
       body {
         margin: 0;
-        font-family: Georgia, 'Iowan Old Style', serif;
         color: var(--ink);
-        background: radial-gradient(circle at top left, #fff7df, var(--bg) 45%), var(--bg);
+        background: radial-gradient(circle at top left, rgba(15,139,141,0.12), transparent 30%), var(--bg);
+        font-family: Georgia, 'Iowan Old Style', serif;
       }
-      main {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 40px 20px 80px;
-      }
-      h1, h2, h3 {
-        margin: 0 0 12px;
-      }
-      p {
-        line-height: 1.55;
-      }
+      main { max-width: 1120px; margin: 0 auto; padding: 40px 20px 80px; }
       .hero {
-        padding: 28px;
         border: 1px solid var(--border);
-        background: linear-gradient(135deg, rgba(14,107,168,0.08), rgba(255,255,255,0.9));
-        border-radius: 18px;
-        margin-bottom: 24px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(15,139,141,0.08));
+        padding: 28px;
+        margin-bottom: 22px;
       }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 16px;
-      }
+      .hero-grid { display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: center; }
+      .logo svg { width: 100%; height: auto; }
+      .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: var(--muted); }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
       .panel, .case, .identity {
         border: 1px solid var(--border);
         background: var(--panel);
         border-radius: 16px;
         padding: 18px;
       }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      th, td {
-        text-align: left;
-        padding: 10px 8px;
-        border-bottom: 1px solid var(--border);
-      }
-      .bar {
-        width: 100%;
-        height: 10px;
-        background: #eee5d6;
-        border-radius: 999px;
-        overflow: hidden;
-      }
-      .bar span {
-        display: block;
-        height: 100%;
-        background: linear-gradient(90deg, #0e6ba8, #2a7f62);
-      }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); }
+      .bar { width: 100%; height: 10px; background: #eee7d9; border-radius: 999px; overflow: hidden; }
+      .bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold)); }
       .match { border-left: 6px solid var(--good); }
       .abstain { border-left: 6px solid var(--warn); }
       .non_match { border-left: 6px solid var(--bad); }
-      .eyebrow {
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        font-size: 12px;
-        color: var(--muted);
-      }
+      h1, h2, h3 { margin: 0 0 12px; }
+      p { line-height: 1.55; }
     </style>
   </head>
   <body>
     <main>
       <section class="hero">
-        <p class="eyebrow">Nyne-Oriented ML Proof of Work</p>
-        <h1>Interpretable Public-Web Entity Resolution Lab</h1>
-        <p>This demo packages a benchmarked pairwise matcher, conservative abstention policy, identity clustering layer, and explanation cards into one reproducible artifact set.</p>
+        <div class="hero-grid">
+          <div class="logo">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Nyne ER Lab logo">
+              <circle cx="22" cy="24" r="12" fill="#0f8b8d"/>
+              <circle cx="22" cy="92" r="12" fill="#20303c"/>
+              <circle cx="60" cy="58" r="10" fill="#c59d31"/>
+              <circle cx="98" cy="58" r="16" fill="#0f8b8d"/>
+              <path d="M34 24 L52 50" stroke="#20303c" stroke-width="5" stroke-linecap="round"/>
+              <path d="M34 92 L52 66" stroke="#20303c" stroke-width="5" stroke-linecap="round"/>
+              <path d="M68 58 L80 58" stroke="#20303c" stroke-width="5" stroke-dasharray="7 6" stroke-linecap="round"/>
+              <path d="M84 58 L98 58" stroke="#0f8b8d" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <p class="eyebrow">Nyne ER Lab</p>
+            <h1>Public-Web Identity Resolution</h1>
+            <p>Founder-facing benchmark and demo layer for explainable identity resolution. Headline metrics come only from the curated real-profile benchmark; stress suites are reported separately.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid" style="margin-bottom:16px;">
+        <article class="panel"><h2>Headline F1</h2><p><strong>0.901</strong></p></article>
+        <article class="panel"><h2>Accepted Precision</h2><p><strong>1.0</strong></p></article>
+        <article class="panel"><h2>Mean ECE</h2><p><strong>0.0386</strong></p></article>
+        <article class="panel"><h2>Leakage Checks</h2><p><strong>6/6</strong></p></article>
       </section>
 
       <section class="panel">
-        <h2>Benchmark Snapshot</h2>
+        <h2>Benchmark</h2>
         <table>
           <thead>
             <tr><th>Model</th><th>Precision</th><th>Recall</th><th>F1</th><th>AP</th><th>Visual</th></tr>
           </thead>
           <tbody>
-            
             <tr>
               <td>fuzzy_name</td>
-              <td>0.4</td>
-              <td>1.0</td>
-              <td>0.571</td>
-              <td>0.4</td>
-              <td><div class="bar"><span style="width:57%"></span></div></td>
-            </tr>
-            
-
-            <tr>
-              <td>embedding_only</td>
-              <td>0.333</td>
-              <td>1.0</td>
-              <td>0.5</td>
-              <td>0.333</td>
-              <td><div class="bar"><span style="width:50%"></span></div></td>
-            </tr>
-            
-
-            <tr>
-              <td>lexical_baseline</td>
-              <td>0.545</td>
-              <td>1.0</td>
-              <td>0.706</td>
-              <td>0.915</td>
-              <td><div class="bar"><span style="width:70%"></span></div></td>
-            </tr>
-            
-
-            <tr>
-              <td>hybrid</td>
               <td>1.0</td>
               <td>1.0</td>
               <td>1.0</td>
@@ -138,128 +100,140 @@
               <td><div class="bar"><span style="width:100%"></span></div></td>
             </tr>
             
-          </tbody>
+
+            <tr>
+              <td>embedding_only</td>
+              <td>0.737</td>
+              <td>0.833</td>
+              <td>0.764</td>
+              <td>0.807</td>
+              <td><div class="bar"><span style="width:76%"></span></div></td>
+            </tr>
+            
+
+            <tr>
+              <td>lexical_baseline</td>
+              <td>1.0</td>
+              <td>0.911</td>
+              <td>0.952</td>
+              <td>1.0</td>
+              <td><div class="bar"><span style="width:95%"></span></div></td>
+            </tr>
+            
+
+            <tr>
+              <td>hybrid</td>
+              <td>1.0</td>
+              <td>0.839</td>
+              <td>0.901</td>
+              <td>1.0</td>
+              <td><div class="bar"><span style="width:90%"></span></div></td>
+            </tr>
+            </tbody>
         </table>
       </section>
 
-      <section class="grid" style="margin-top: 18px;">
-        <div class="panel">
-          <h2>Calibration</h2>
-          <p>Accepted precision: <strong>1.0</strong></p>
-          <p>Accepted recall: <strong>1.0</strong></p>
-          <p>Abstain rate: <strong>0.444</strong></p>
-        </div>
-        <div class="panel">
-          <h2>Confusion Slice</h2>
-          <p>Held-out test examples: <strong>18</strong></p>
-          <p>Forced precision: <strong>1.0</strong></p>
-          <p>This project prefers abstention over aggressive same-name merges.</p>
-        </div>
+      <section class="grid" style="margin-top:16px;">
+        <article class="panel">
+          <h2>Dataset Tracks</h2>
+          <p><strong>real_curated_core</strong>: Headline benchmark of curated public AI/ML builder profiles only.</p>
+          <p><strong>Stress suites</strong>: hard-negative bank and synthetic stress are isolated from headline metrics.</p>
+        </article>
+        <article class="panel">
+          <h2>Open-World Retrieval</h2>
+          <p>Recall@1: <strong>1.0</strong></p>
+          <p>Recall@3: <strong>1.0</strong></p>
+          <p>Recall@5: <strong>1.0</strong></p>
+        </article>
+        <article class="panel">
+          <h2>Stress Metrics</h2>
+          <p>Hard negatives F1: <strong>0.937</strong></p>
+          <p>Synthetic stress F1: <strong>0.888</strong></p>
+        </article>
       </section>
 
-      <section style="margin-top: 24px;">
-        <h2>Curated Cases</h2>
+      <section style="margin-top:18px;">
+        <h2>Failure Gallery</h2>
         <div class="grid">
-          
-            <article class="case match">
-              <h3>Andrej Karpathy vs Andrej Karpathy</h3>
-              <p><strong>Decision:</strong> match at 1.0</p>
-              <p><strong>Sources:</strong> github + personal_site</p>
-              <p>Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics. Contradictions: location_conflict.</p>
-              <p><strong>Reason codes:</strong> high_name_similarity, shared_domain, shared_org, shared_topics</p>
-            </article>
-            
-
-            <article class="case match">
-              <h3>Chip Huyen vs Chip Huyen</h3>
-              <p><strong>Decision:</strong> match at 0.722</p>
-              <p><strong>Sources:</strong> company_profile + personal_site</p>
-              <p>Decision=match at confidence 0.72. Supporting signals: high_name_similarity, shared_domain, shared_topics. Contradictions: location_conflict.</p>
-              <p><strong>Reason codes:</strong> high_name_similarity, shared_domain, shared_topics</p>
-            </article>
-            
-
-            <article class="case match">
-              <h3>Jay Alammar vs Jay Alammar</h3>
-              <p><strong>Decision:</strong> match at 1.0</p>
-              <p><strong>Sources:</strong> github + personal_site</p>
-              <p>Decision=match at confidence 1.00. Supporting signals: high_name_similarity, shared_domain, shared_org, shared_topics. Contradictions: location_conflict.</p>
-              <p><strong>Reason codes:</strong> high_name_similarity, shared_domain, shared_org, shared_topics</p>
-            </article>
-            
-
             <article class="case non_match">
-              <h3>Andrej Karpathy vs Chip Huyen</h3>
-              <p><strong>Decision:</strong> non_match at 0.0</p>
-              <p><strong>Sources:</strong> github + company_profile</p>
-              <p>Decision=non_match at confidence 0.00. Supporting signals: shared_topics. Contradictions: location_conflict.</p>
-              <p><strong>Reason codes:</strong> shared_topics, location_conflict</p>
+              <p class="eyebrow">false_negative</p>
+              <h3>Harrison Chase vs Harrison Chase</h3>
+              <p><strong>Decision:</strong> non_match at 0.333</p>
+              <p>Decision=non_match at confidence 0.33. Supporting signals: high_name_similarity, shared_org, shared_topics.</p>
+              <p><strong>Counterfactuals:</strong> No shared personal domain or outbound link. | Semantic text similarity is low.</p>
             </article>
             
 
-            <article class="case non_match">
-              <h3>Andrej Karpathy vs Chip Huyen</h3>
-              <p><strong>Decision:</strong> non_match at 0.0</p>
-              <p><strong>Sources:</strong> github + personal_site</p>
-              <p>Decision=non_match at confidence 0.00. Supporting signals: shared_topics.</p>
-              <p><strong>Reason codes:</strong> shared_topics</p>
+            <article class="case abstain">
+              <p class="eyebrow">abstain</p>
+              <h3>Harrison Chase vs Harrison Chase</h3>
+              <p><strong>Decision:</strong> abstain at 0.5</p>
+              <p>Decision=abstain at confidence 0.50. Supporting signals: high_name_similarity, shared_org, shared_topics. Contradictions: location_conflict.</p>
+              <p><strong>Counterfactuals:</strong> No shared personal domain or outbound link. | Locations contradict each other. | Semantic text similarity is low.</p>
             </article>
             
-        </div>
+
+            <article class="case abstain">
+              <p class="eyebrow">abstain</p>
+              <h3>Harrison Chase vs Harrison Chase</h3>
+              <p><strong>Decision:</strong> abstain at 0.5</p>
+              <p>Decision=abstain at confidence 0.50. Supporting signals: high_name_similarity, shared_org, shared_topics.</p>
+              <p><strong>Counterfactuals:</strong> No shared personal domain or outbound link.</p>
+            </article>
+            </div>
       </section>
 
-      <section style="margin-top: 24px;">
-        <h2>Resolved Identity Gallery</h2>
+      <section style="margin-top:18px;">
+        <h2>Failure Slices</h2>
         <div class="grid">
-          
             <article class="identity">
-              <h3>Andrej Karpathy</h3>
-              <p><strong>Members:</strong> 8 | <strong>Confidence:</strong> high</p>
-              <p>Andrej Karpathy appears across 8 profiles with topics deep learning, agents, ai systems.</p>
-              <p><strong>Profiles:</strong> andrej_github, andrej_karpathy_augmented, andrej_personal, andrej_speaker, lilian_company, lilian_personal, lilian_speaker, lilian_weng_augmented</p>
+              <h3>location_conflict</h3>
+              <p>Pairs with conflicting structured locations.</p>
+              <p><strong>Count:</strong> 14 | <strong>Precision:</strong> 1.0 | <strong>Recall:</strong> 0.9 | <strong>F1:</strong> 0.947</p>
             </article>
             
 
             <article class="identity">
-              <h3>Chip Huyen</h3>
-              <p><strong>Members:</strong> 4 | <strong>Confidence:</strong> high</p>
-              <p>Chip Huyen appears across 4 profiles with topics ml systems, data infrastructure, mlops.</p>
-              <p><strong>Profiles:</strong> chip_company, chip_github, chip_huyen_augmented, chip_personal</p>
+              <h3>sparse_overlap</h3>
+              <p>Pairs with weak supporting overlap and mostly textual evidence.</p>
+              <p><strong>Count:</strong> 1 | <strong>Precision:</strong> 0.0 | <strong>Recall:</strong> 0.0 | <strong>F1:</strong> 0.0</p>
             </article>
             
 
             <article class="identity">
-              <h3>Hamel Husain</h3>
-              <p><strong>Members:</strong> 4 | <strong>Confidence:</strong> high</p>
-              <p>Hamel Husain appears across 4 profiles with topics evals, ai systems, llm engineering.</p>
-              <p><strong>Profiles:</strong> hamel_company, hamel_github, hamel_husain_augmented, hamel_personal</p>
+              <h3>cross_source_true_match</h3>
+              <p>True matches across different source types.</p>
+              <p><strong>Count:</strong> 15 | <strong>Precision:</strong> 1.0 | <strong>Recall:</strong> 0.8 | <strong>F1:</strong> 0.889</p>
+            </article>
+            </div>
+      </section>
+
+      <section style="margin-top:18px;">
+        <h2>Search Trace</h2>
+        <div class="grid">
+            <article class="panel">
+              <h3>Sara Hooker</h3>
+              <p><strong>Top candidates</strong><br>Sara Hooker (personal_site) · score=1.0 · same_person=True<br>Sara Hooker (conference_bio) · score=1.0 · same_person=True<br>Sara Hooker (huggingface) · score=0.944 · same_person=True<br>Francois Chollet (personal_site) · score=0.079 · same_person=False<br>Andrej Karpathy (github) · score=0.0 · same_person=False</p>
             </article>
             
 
-            <article class="identity">
-              <h3>Jay Alammar</h3>
-              <p><strong>Members:</strong> 4 | <strong>Confidence:</strong> high</p>
-              <p>Jay Alammar appears across 4 profiles with topics transformers, llms, education.</p>
-              <p><strong>Profiles:</strong> jay_alammar_augmented, jay_github, jay_personal, jay_podcast</p>
+            <article class="panel">
+              <h3>Sara Hooker</h3>
+              <p><strong>Top candidates</strong><br>Sara Hooker (github) · score=1.0 · same_person=True<br>Sara Hooker (conference_bio) · score=1.0 · same_person=True<br>Sara Hooker (huggingface) · score=0.958 · same_person=True<br>Francois Chollet (github) · score=0.5 · same_person=False<br>Francois Chollet (personal_site) · score=0.333 · same_person=False</p>
             </article>
             
 
-            <article class="identity">
-              <h3>Sebastian Raschka</h3>
-              <p><strong>Members:</strong> 4 | <strong>Confidence:</strong> high</p>
-              <p>Sebastian Raschka appears across 4 profiles with topics machine learning, llms, open source.</p>
-              <p><strong>Profiles:</strong> sebastian_github, sebastian_personal, sebastian_podcast, sebastian_raschka_augmented</p>
+            <article class="panel">
+              <h3>Sara Hooker</h3>
+              <p><strong>Top candidates</strong><br>Sara Hooker (github) · score=1.0 · same_person=True<br>Sara Hooker (personal_site) · score=1.0 · same_person=True<br>Sara Hooker (huggingface) · score=0.986 · same_person=True<br>Andrej Karpathy (github) · score=0.0 · same_person=False<br>Andrej Karpathy (personal_site) · score=0.0 · same_person=False</p>
             </article>
             
 
-            <article class="identity">
-              <h3>Lilian Weng</h3>
-              <p><strong>Members:</strong> 2 | <strong>Confidence:</strong> high</p>
-              <p>Lilian Weng appears across 2 profiles with topics ai governance, policy, regulation.</p>
-              <p><strong>Profiles:</strong> andrej_karpathy_conflict_generated, lilian_weng_policy</p>
+            <article class="panel">
+              <h3>Christopher Manning</h3>
+              <p><strong>Top candidates</strong><br>Christopher Manning (github) · score=1.0 · same_person=True<br>Christopher Manning (conference_bio) · score=1.0 · same_person=True<br>Yann LeCun (personal_site) · score=0.987 · same_person=False<br>Yann LeCun (github) · score=0.892 · same_person=False<br>Andrej Karpathy (personal_site) · score=0.826 · same_person=False</p>
             </article>
-            
-        </div>
+            </div>
       </section>
     </main>
   </body>

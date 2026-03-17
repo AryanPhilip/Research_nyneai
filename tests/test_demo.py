@@ -17,13 +17,15 @@ def test_demo_builder_generates_expected_artifacts(tmp_path) -> None:
     assert outputs["blog_md"] == str(blog_path)
 
     payload = json.loads(metrics_path.read_text())
-    assert len(payload["models"]) == 4
-    assert payload["cluster_f1"] >= 0.8
-    assert len(payload["cases"]) >= 5
+    assert len(payload["model_metrics"]) == 4
+    assert payload["cluster_metrics"]["bcubed_f1"] >= 0.8
+    assert payload["headline_metrics"]["dataset_name"] == "real_curated_core"
+    assert len(payload["top_errors"]) >= 1
+    assert len(payload["failure_slices"]) >= 1
 
     html = demo_path.read_text()
-    assert "Interpretable Public-Web Entity Resolution Lab" in html
-    assert "Curated Cases" in html
+    assert "Nyne ER Lab" in html
+    assert "Failure Gallery" in html
 
     blog = blog_path.read_text()
     assert "# Interpretable Public-Web Entity Resolution Lab" in blog

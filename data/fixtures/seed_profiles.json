@@ -540,5 +540,1040 @@
       {"field_name": "headline", "snippet": "Quantitative analyst in finance."}
     ],
     "metadata": {"seed_group": "hard_negative"}
+  },
+
+  {
+    "profile_id": "yann_github",
+    "canonical_person_id": "yann_lecun",
+    "source_type": "github",
+    "url": "https://github.com/ylecun",
+    "display_name": "Yann LeCun",
+    "aliases": ["Y. LeCun", "ylecun"],
+    "headline": "Deep learning pioneer and VP & Chief AI Scientist at Meta.",
+    "bio_text": "Yann LeCun is a Turing Award laureate known for foundational work on convolutional neural networks and self-supervised learning.",
+    "organizations": [
+      {"name": "Meta AI", "role": "VP & Chief AI Scientist"},
+      {"name": "New York University", "role": "Professor"}
+    ],
+    "education": [
+      {"institution": "Universite Pierre et Marie Curie", "degree": "PhD", "graduation_year": 1987}
+    ],
+    "locations": ["New York"],
+    "outbound_links": ["https://yann.lecun.com/"],
+    "topics": ["convolutional networks", "self-supervised learning", "deep learning", "computer vision"],
+    "timestamps": ["1998", "2018", "2024"],
+    "raw_text": "Yann LeCun maintains open-source repositories related to deep learning research, convolutional neural networks, and energy-based models. He received the Turing Award in 2018 alongside Yoshua Bengio and Geoffrey Hinton.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "Turing Award laureate known for foundational work on convolutional neural networks"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "yann_personal",
+    "canonical_person_id": "yann_lecun",
+    "source_type": "personal_site",
+    "url": "https://yann.lecun.com/",
+    "display_name": "Yann LeCun",
+    "aliases": ["Yann", "Y LeCun"],
+    "headline": "Professor at NYU and Chief AI Scientist at Meta.",
+    "bio_text": "Yann LeCun is a computer scientist whose research spans deep learning, energy-based models, and self-supervised learning for vision and language.",
+    "organizations": [
+      {"name": "Meta AI", "role": "Chief AI Scientist"},
+      {"name": "New York University", "role": "Silver Professor"}
+    ],
+    "education": [
+      {"institution": "ESIEE Paris", "degree": "Diplome d'Ingenieur"},
+      {"institution": "Universite Pierre et Marie Curie", "degree": "PhD"}
+    ],
+    "locations": ["New York City"],
+    "outbound_links": ["https://github.com/ylecun", "https://ai.meta.com/"],
+    "topics": ["deep learning", "energy-based models", "self-supervised learning", "ai research"],
+    "timestamps": ["1989", "2013", "2024"],
+    "raw_text": "Yann LeCun is a Silver Professor at NYU and Chief AI Scientist at Meta. He is known for developing convolutional neural networks, the LeNet architecture, and pioneering self-supervised learning approaches.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "Silver Professor at NYU and Chief AI Scientist at Meta"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "yann_conference",
+    "canonical_person_id": "yann_lecun",
+    "source_type": "conference_bio",
+    "url": "https://example.org/speakers/yann-lecun",
+    "display_name": "Yann LeCun",
+    "aliases": ["Y. LeCun"],
+    "headline": "Keynote speaker on the future of AI and self-supervised learning.",
+    "bio_text": "Yann LeCun delivers keynotes on self-supervised learning, world models, and the path toward autonomous machine intelligence.",
+    "organizations": [
+      {"name": "Meta AI", "role": "Chief AI Scientist"},
+      {"name": "New York University", "role": "Professor"}
+    ],
+    "education": [
+      {"institution": "Universite Pierre et Marie Curie", "degree": "PhD"}
+    ],
+    "locations": ["United States"],
+    "outbound_links": ["https://yann.lecun.com/"],
+    "topics": ["self-supervised learning", "world models", "autonomous intelligence"],
+    "timestamps": ["2023", "2024"],
+    "raw_text": "Speaker biography for Yann LeCun, Turing Award winner and Chief AI Scientist at Meta, discussing world models, self-supervised learning, and the future of AI.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "Turing Award winner and Chief AI Scientist at Meta"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+
+  {
+    "profile_id": "fchollet_github",
+    "canonical_person_id": "francois_chollet",
+    "source_type": "github",
+    "url": "https://github.com/fchollet",
+    "display_name": "Francois Chollet",
+    "aliases": ["F. Chollet", "fchollet"],
+    "headline": "Creator of Keras and researcher on intelligence measurement.",
+    "bio_text": "Francois Chollet is a software engineer and AI researcher who created Keras and proposed the ARC benchmark for measuring intelligence.",
+    "organizations": [
+      {"name": "Google", "role": "Software engineer"}
+    ],
+    "education": [],
+    "locations": ["California"],
+    "outbound_links": ["https://fchollet.com/"],
+    "topics": ["keras", "deep learning frameworks", "arc benchmark", "abstraction"],
+    "timestamps": ["2015", "2019", "2024"],
+    "raw_text": "Francois Chollet is the creator of Keras, one of the most widely used deep learning frameworks. He also designed the Abstraction and Reasoning Corpus (ARC) as a benchmark for general intelligence.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "created Keras and proposed the ARC benchmark for measuring intelligence"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "fchollet_personal",
+    "canonical_person_id": "francois_chollet",
+    "source_type": "personal_site",
+    "url": "https://fchollet.com/",
+    "display_name": "Francois Chollet",
+    "aliases": ["Francois", "F Chollet"],
+    "headline": "AI researcher and author of Deep Learning with Python.",
+    "bio_text": "Francois Chollet is the author of Deep Learning with Python and a researcher focused on the nature of intelligence, abstraction, and program synthesis.",
+    "organizations": [
+      {"name": "Google", "role": "Staff software engineer"}
+    ],
+    "education": [],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://github.com/fchollet", "https://keras.io/"],
+    "topics": ["intelligence measurement", "abstraction", "program synthesis", "deep learning"],
+    "timestamps": ["2017", "2023"],
+    "raw_text": "Francois Chollet writes about the nature of intelligence, abstraction and reasoning, and the future of deep learning. He authored Deep Learning with Python, published by Manning.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "writes about the nature of intelligence, abstraction and reasoning"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "fchollet_conference",
+    "canonical_person_id": "francois_chollet",
+    "source_type": "conference_bio",
+    "url": "https://example.org/speakers/francois-chollet",
+    "display_name": "Francois Chollet",
+    "aliases": ["F. Chollet"],
+    "headline": "Speaker on measuring machine intelligence and Keras.",
+    "bio_text": "Francois Chollet speaks about intelligence benchmarks, the ARC challenge, and building intuitive deep learning APIs through Keras.",
+    "organizations": [
+      {"name": "Google", "role": "Software engineer"}
+    ],
+    "education": [],
+    "locations": ["United States"],
+    "outbound_links": ["https://fchollet.com/"],
+    "topics": ["intelligence benchmarks", "arc challenge", "keras", "api design"],
+    "timestamps": ["2024"],
+    "raw_text": "Conference biography for Francois Chollet, creator of Keras and designer of the ARC benchmark, on measuring machine intelligence and building developer-friendly deep learning tools.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "creator of Keras and designer of the ARC benchmark"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+
+  {
+    "profile_id": "jeremy_github",
+    "canonical_person_id": "jeremy_howard",
+    "source_type": "github",
+    "url": "https://github.com/jph00",
+    "display_name": "Jeremy Howard",
+    "aliases": ["J. Howard", "jph00"],
+    "headline": "Co-founder of fast.ai and deep learning educator.",
+    "bio_text": "Jeremy Howard builds open-source deep learning tools and teaches practical AI through fast.ai courses taken by over a million students.",
+    "organizations": [
+      {"name": "fast.ai", "role": "Co-founder"},
+      {"name": "Kaggle", "role": "Former president"}
+    ],
+    "education": [
+      {"institution": "University of Melbourne", "degree": "BA"}
+    ],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://jeremy.fast.ai/"],
+    "topics": ["deep learning", "fast.ai", "practical ai", "transfer learning"],
+    "timestamps": ["2012", "2018", "2024"],
+    "raw_text": "Jeremy Howard is the co-founder of fast.ai. He maintains open-source libraries for practical deep learning and was formerly president and chief scientist at Kaggle.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "builds open-source deep learning tools and teaches practical AI through fast.ai"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "jeremy_personal",
+    "canonical_person_id": "jeremy_howard",
+    "source_type": "personal_site",
+    "url": "https://jeremy.fast.ai/",
+    "display_name": "Jeremy Howard",
+    "aliases": ["Jeremy", "J Howard"],
+    "headline": "Data scientist, educator, and entrepreneur.",
+    "bio_text": "Jeremy Howard is an Australian data scientist and entrepreneur who co-founded fast.ai to make deep learning accessible to everyone.",
+    "organizations": [
+      {"name": "fast.ai", "role": "Co-founder"},
+      {"name": "Enlitic", "role": "Founder"}
+    ],
+    "education": [
+      {"institution": "University of Melbourne", "degree": "BA"}
+    ],
+    "locations": ["San Francisco", "Brisbane"],
+    "outbound_links": ["https://github.com/jph00", "https://www.fast.ai/"],
+    "topics": ["ai education", "transfer learning", "medical imaging", "deep learning"],
+    "timestamps": ["2014", "2020", "2024"],
+    "raw_text": "Jeremy Howard is an Australian data scientist who co-founded fast.ai and previously founded Enlitic, applying deep learning to medical imaging. He was named one of the most influential people in data by DataIQ.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "co-founded fast.ai and previously founded Enlitic, applying deep learning to medical imaging"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "jeremy_podcast",
+    "canonical_person_id": "jeremy_howard",
+    "source_type": "podcast_guest",
+    "url": "https://example.org/podcast/jeremy-howard",
+    "display_name": "Jeremy Howard",
+    "aliases": ["Jeremy Howard"],
+    "headline": "Guest on democratizing AI through education.",
+    "bio_text": "Podcast guest biography for Jeremy Howard on fast.ai, transfer learning, and making deep learning practical for software engineers.",
+    "organizations": [
+      {"name": "fast.ai", "role": "Co-founder"}
+    ],
+    "education": [],
+    "locations": ["California"],
+    "outbound_links": ["https://jeremy.fast.ai/"],
+    "topics": ["fast.ai", "transfer learning", "ai democratization"],
+    "timestamps": ["2023"],
+    "raw_text": "Podcast introduction for Jeremy Howard discussing practical deep learning, transfer learning with ULMFiT, and the mission of fast.ai to make AI accessible.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "practical deep learning, transfer learning with ULMFiT, and the mission of fast.ai"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+
+  {
+    "profile_id": "sara_hooker_github",
+    "canonical_person_id": "sara_hooker",
+    "source_type": "github",
+    "url": "https://github.com/sarahooker",
+    "display_name": "Sara Hooker",
+    "aliases": ["S. Hooker", "sarahooker"],
+    "headline": "ML researcher focused on model efficiency and fairness.",
+    "bio_text": "Sara Hooker researches the impact of model compression on fairness, interpretability of neural networks, and efficient deep learning.",
+    "organizations": [
+      {"name": "Cohere", "role": "VP of Research"},
+      {"name": "Google Brain", "role": "Former researcher"}
+    ],
+    "education": [],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://www.sarahooker.me/"],
+    "topics": ["model compression", "fairness", "interpretability", "efficient ml"],
+    "timestamps": ["2019", "2022", "2024"],
+    "raw_text": "Sara Hooker publishes research on model compression, pruning biases, and the unintended consequences of efficiency optimizations in deep learning.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "impact of model compression on fairness, interpretability of neural networks"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "sara_hooker_personal",
+    "canonical_person_id": "sara_hooker",
+    "source_type": "personal_site",
+    "url": "https://www.sarahooker.me/",
+    "display_name": "Sara Hooker",
+    "aliases": ["Sara", "S Hooker"],
+    "headline": "Researcher on efficient and fair machine learning.",
+    "bio_text": "Sara Hooker is VP of Research at Cohere and previously worked at Google Brain, studying how model compression disproportionately affects underrepresented data.",
+    "organizations": [
+      {"name": "Cohere", "role": "VP of Research"},
+      {"name": "Google Brain", "role": "Research scientist"}
+    ],
+    "education": [],
+    "locations": ["California"],
+    "outbound_links": ["https://github.com/sarahooker", "https://cohere.com/"],
+    "topics": ["ml fairness", "model compression", "pruning", "deep learning"],
+    "timestamps": ["2020", "2023"],
+    "raw_text": "Sara Hooker studies how compression and pruning techniques in neural networks can amplify biases. She leads research at Cohere after working at Google Brain on interpretability and efficiency.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "leads research at Cohere after working at Google Brain on interpretability and efficiency"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "sara_hooker_conference",
+    "canonical_person_id": "sara_hooker",
+    "source_type": "conference_bio",
+    "url": "https://example.org/speakers/sara-hooker",
+    "display_name": "Sara Hooker",
+    "aliases": ["S. Hooker"],
+    "headline": "Speaker on fairness in model compression.",
+    "bio_text": "Sara Hooker speaks about how pruning and quantization disproportionately harm model performance on minority subgroups and long-tail data.",
+    "organizations": [
+      {"name": "Cohere", "role": "VP of Research"}
+    ],
+    "education": [],
+    "locations": ["United States"],
+    "outbound_links": ["https://www.sarahooker.me/"],
+    "topics": ["pruning bias", "quantization", "ml fairness", "model efficiency"],
+    "timestamps": ["2024"],
+    "raw_text": "Conference biography for Sara Hooker on the intersection of model efficiency and fairness, covering her research on how compression techniques can introduce hidden biases.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "intersection of model efficiency and fairness"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+
+  {
+    "profile_id": "chris_manning_personal",
+    "canonical_person_id": "chris_manning",
+    "source_type": "personal_site",
+    "url": "https://nlp.stanford.edu/~manning/",
+    "display_name": "Christopher Manning",
+    "aliases": ["Chris Manning", "C. Manning", "C. D. Manning"],
+    "headline": "Professor of Computer Science and Linguistics at Stanford.",
+    "bio_text": "Christopher Manning is a professor at Stanford University known for foundational contributions to natural language processing, including Stanford CoreNLP and GloVe embeddings.",
+    "organizations": [
+      {"name": "Stanford University", "role": "Professor of Computer Science and Linguistics"},
+      {"name": "Stanford AI Lab", "role": "Director"}
+    ],
+    "education": [
+      {"institution": "Stanford University", "degree": "PhD", "graduation_year": 1994},
+      {"institution": "Australian National University", "degree": "BA"}
+    ],
+    "locations": ["Stanford", "Palo Alto"],
+    "outbound_links": ["https://github.com/stanfordnlp"],
+    "topics": ["natural language processing", "corenlp", "glove", "deep learning for nlp"],
+    "timestamps": ["2014", "2019", "2024"],
+    "raw_text": "Christopher Manning is the Thomas M. Siebel Professor at Stanford. He has authored influential textbooks on NLP and statistical methods and created widely used tools including Stanford CoreNLP and the GloVe word embeddings.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "Thomas M. Siebel Professor at Stanford"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "chris_manning_github",
+    "canonical_person_id": "chris_manning",
+    "source_type": "github",
+    "url": "https://github.com/stanfordnlp",
+    "display_name": "Christopher Manning",
+    "aliases": ["Chris Manning", "stanfordnlp"],
+    "headline": "Stanford NLP Group open-source projects.",
+    "bio_text": "Open-source NLP tools maintained by the Stanford NLP group under the direction of Christopher Manning, including CoreNLP and Stanza.",
+    "organizations": [
+      {"name": "Stanford University", "role": "Professor"},
+      {"name": "Stanford NLP Group", "role": "Director"}
+    ],
+    "education": [
+      {"institution": "Stanford University", "degree": "PhD"}
+    ],
+    "locations": ["Stanford"],
+    "outbound_links": ["https://nlp.stanford.edu/~manning/", "https://stanfordnlp.github.io/"],
+    "topics": ["corenlp", "stanza", "nlp tools", "dependency parsing"],
+    "timestamps": ["2018", "2023"],
+    "raw_text": "The Stanford NLP GitHub organization hosts CoreNLP, Stanza, and other NLP tools developed by Christopher Manning's research group.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "Stanford NLP group under the direction of Christopher Manning"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "chris_manning_conference",
+    "canonical_person_id": "chris_manning",
+    "source_type": "conference_bio",
+    "url": "https://example.org/speakers/christopher-manning",
+    "display_name": "Christopher Manning",
+    "aliases": ["Chris Manning", "C.D. Manning"],
+    "headline": "Keynote speaker on NLP and computational linguistics.",
+    "bio_text": "Christopher Manning delivers keynotes on the evolution of NLP from rule-based systems to neural approaches and the role of linguistics in modern AI.",
+    "organizations": [
+      {"name": "Stanford University", "role": "Professor"}
+    ],
+    "education": [
+      {"institution": "Stanford University", "degree": "PhD"}
+    ],
+    "locations": ["United States"],
+    "outbound_links": ["https://nlp.stanford.edu/~manning/"],
+    "topics": ["nlp", "computational linguistics", "neural methods", "transformers"],
+    "timestamps": ["2023", "2024"],
+    "raw_text": "Speaker biography for Christopher Manning, a leading figure in computational linguistics and NLP, known for Stanford CoreNLP, GloVe, and co-authoring the textbook Foundations of Statistical Natural Language Processing.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "leading figure in computational linguistics and NLP"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+
+  {
+    "profile_id": "timnit_personal",
+    "canonical_person_id": "timnit_gebru",
+    "source_type": "personal_site",
+    "url": "https://www.dair-institute.org/about",
+    "display_name": "Timnit Gebru",
+    "aliases": ["T. Gebru", "Timnit"],
+    "headline": "Founder of the DAIR Institute and AI ethics researcher.",
+    "bio_text": "Timnit Gebru founded the Distributed AI Research Institute (DAIR) to conduct community-rooted AI research. She is known for research on dataset bias and large language model risks.",
+    "organizations": [
+      {"name": "DAIR Institute", "role": "Founder and Executive Director"},
+      {"name": "Google", "role": "Former co-lead of Ethical AI team"}
+    ],
+    "education": [
+      {"institution": "Stanford University", "degree": "PhD", "graduation_year": 2017}
+    ],
+    "locations": ["Seattle"],
+    "outbound_links": ["https://github.com/timnitGebru"],
+    "topics": ["ai ethics", "dataset bias", "algorithmic fairness", "responsible ai"],
+    "timestamps": ["2018", "2020", "2024"],
+    "raw_text": "Timnit Gebru is the founder and executive director of DAIR. Her research on dataset documentation through datasheets and the risks of large language models has shaped the field of responsible AI.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "founder and executive director of DAIR"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "timnit_github",
+    "canonical_person_id": "timnit_gebru",
+    "source_type": "github",
+    "url": "https://github.com/timnitGebru",
+    "display_name": "Timnit Gebru",
+    "aliases": ["timnitGebru", "T Gebru"],
+    "headline": "AI ethics researcher and open-source advocate.",
+    "bio_text": "GitHub profile for Timnit Gebru featuring research code on bias auditing, dataset documentation, and fairness evaluation tools.",
+    "organizations": [
+      {"name": "DAIR Institute", "role": "Founder"}
+    ],
+    "education": [
+      {"institution": "Stanford University", "degree": "PhD"}
+    ],
+    "locations": ["Washington"],
+    "outbound_links": ["https://www.dair-institute.org/"],
+    "topics": ["bias auditing", "datasheets", "fairness evaluation"],
+    "timestamps": ["2021", "2024"],
+    "raw_text": "Timnit Gebru maintains repositories on bias auditing, fairness benchmarks, and dataset documentation practices for responsible AI development.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "bias auditing, dataset documentation, and fairness evaluation tools"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "timnit_conference",
+    "canonical_person_id": "timnit_gebru",
+    "source_type": "conference_bio",
+    "url": "https://example.org/speakers/timnit-gebru",
+    "display_name": "Timnit Gebru",
+    "aliases": ["T. Gebru"],
+    "headline": "Speaker on AI ethics, bias, and responsible development.",
+    "bio_text": "Timnit Gebru speaks about the societal impacts of AI, bias in datasets and models, and building accountability structures for AI development.",
+    "organizations": [
+      {"name": "DAIR Institute", "role": "Executive Director"}
+    ],
+    "education": [
+      {"institution": "Stanford University", "degree": "PhD"}
+    ],
+    "locations": ["United States"],
+    "outbound_links": ["https://www.dair-institute.org/"],
+    "topics": ["ai ethics", "bias", "accountability", "societal impact"],
+    "timestamps": ["2023", "2024"],
+    "raw_text": "Conference biography for Timnit Gebru, whose Stochastic Parrots paper and datasheets proposal have been widely influential in shaping responsible AI practices globally.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "Stochastic Parrots paper and datasheets proposal have been widely influential"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+
+  {
+    "profile_id": "simon_willison_github",
+    "canonical_person_id": "simon_willison",
+    "source_type": "github",
+    "url": "https://github.com/simonw",
+    "display_name": "Simon Willison",
+    "aliases": ["simonw", "S. Willison"],
+    "headline": "Creator of Datasette and LLM tools.",
+    "bio_text": "Simon Willison is a software developer who created Datasette for exploring and publishing data, and builds open-source tools for working with large language models.",
+    "organizations": [
+      {"name": "Datasette", "role": "Creator"},
+      {"name": "Django", "role": "Co-creator"}
+    ],
+    "education": [],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://simonwillison.net/"],
+    "topics": ["datasette", "llm tools", "open data", "django"],
+    "timestamps": ["2005", "2018", "2024"],
+    "raw_text": "Simon Willison is the creator of Datasette and co-creator of the Django web framework. He actively develops and maintains open-source LLM command-line tools and plugins.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "creator of Datasette and co-creator of the Django web framework"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "simon_willison_personal",
+    "canonical_person_id": "simon_willison",
+    "source_type": "personal_site",
+    "url": "https://simonwillison.net/",
+    "display_name": "Simon Willison",
+    "aliases": ["Simon", "S Willison"],
+    "headline": "Blogger, developer, and open-source maintainer.",
+    "bio_text": "Simon Willison writes about LLMs, open data tools, web development, and building software with AI. His blog is widely read in the developer and AI communities.",
+    "organizations": [
+      {"name": "Datasette", "role": "Creator"},
+      {"name": "Eventbrite", "role": "Former engineering director"}
+    ],
+    "education": [
+      {"institution": "University of Bath", "degree": "BSc"}
+    ],
+    "locations": ["San Francisco", "United Kingdom"],
+    "outbound_links": ["https://github.com/simonw", "https://datasette.io/"],
+    "topics": ["llms", "open data", "web development", "sqlite"],
+    "timestamps": ["2003", "2020", "2024"],
+    "raw_text": "Simon Willison is a developer and blogger who writes extensively about using LLMs as development tools, open data publishing with Datasette, and the intersection of AI with software engineering.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "writes extensively about using LLMs as development tools, open data publishing with Datasette"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "simon_willison_podcast",
+    "canonical_person_id": "simon_willison",
+    "source_type": "podcast_guest",
+    "url": "https://example.org/podcast/simon-willison",
+    "display_name": "Simon Willison",
+    "aliases": ["Simon Willison"],
+    "headline": "Guest on LLM tooling and open data.",
+    "bio_text": "Podcast guest biography for Simon Willison on building developer tools for LLMs, the Datasette ecosystem, and practical AI engineering.",
+    "organizations": [
+      {"name": "Datasette", "role": "Creator"}
+    ],
+    "education": [],
+    "locations": ["California"],
+    "outbound_links": ["https://simonwillison.net/"],
+    "topics": ["llm tooling", "datasette", "ai engineering", "open source"],
+    "timestamps": ["2024"],
+    "raw_text": "Podcast introduction for Simon Willison discussing his work on Datasette, the llm CLI tool, prompt engineering practices, and building AI-powered developer workflows.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "Datasette, the llm CLI tool, prompt engineering practices"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+
+  {
+    "profile_id": "harrison_chase_github",
+    "canonical_person_id": "harrison_chase",
+    "source_type": "github",
+    "url": "https://github.com/hwchase17",
+    "display_name": "Harrison Chase",
+    "aliases": ["hwchase17", "H. Chase"],
+    "headline": "Creator of LangChain.",
+    "bio_text": "Harrison Chase is the creator of LangChain, an open-source framework for building applications with large language models through composable chains and agents.",
+    "organizations": [
+      {"name": "LangChain", "role": "CEO and Co-founder"}
+    ],
+    "education": [
+      {"institution": "Harvard University", "degree": "BA", "graduation_year": 2017}
+    ],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://www.langchain.com/"],
+    "topics": ["langchain", "llm agents", "ai applications", "chains"],
+    "timestamps": ["2022", "2023", "2024"],
+    "raw_text": "Harrison Chase created LangChain, a widely adopted framework for building LLM-powered applications. He maintains the open-source project and leads the company building LangSmith and LangGraph.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "created LangChain, a widely adopted framework for building LLM-powered applications"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "harrison_chase_company",
+    "canonical_person_id": "harrison_chase",
+    "source_type": "company_profile",
+    "url": "https://www.langchain.com/about",
+    "display_name": "Harrison Chase",
+    "aliases": ["Harrison", "H Chase"],
+    "headline": "CEO and co-founder of LangChain Inc.",
+    "bio_text": "Harrison Chase is CEO and co-founder of LangChain Inc., building tools for LLM application development including LangSmith for observability and LangGraph for agent orchestration.",
+    "organizations": [
+      {"name": "LangChain", "role": "CEO and Co-founder"},
+      {"name": "Robust Intelligence", "role": "Former ML engineer"}
+    ],
+    "education": [
+      {"institution": "Harvard University", "degree": "BA"}
+    ],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://github.com/hwchase17", "https://smith.langchain.com/"],
+    "topics": ["langchain", "langsmith", "langgraph", "llm infrastructure"],
+    "timestamps": ["2023", "2024"],
+    "raw_text": "Harrison Chase leads LangChain Inc. where the team builds LangSmith for LLM observability, LangGraph for multi-agent orchestration, and the core LangChain open-source framework used by thousands of developers.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "leads LangChain Inc. where the team builds LangSmith for LLM observability"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "harrison_chase_conference",
+    "canonical_person_id": "harrison_chase",
+    "source_type": "conference_bio",
+    "url": "https://example.org/speakers/harrison-chase",
+    "display_name": "Harrison Chase",
+    "aliases": ["H. Chase"],
+    "headline": "Speaker on LLM application frameworks and agents.",
+    "bio_text": "Harrison Chase speaks about building production LLM applications, agent architectures, and the LangChain ecosystem for composing AI workflows.",
+    "organizations": [
+      {"name": "LangChain", "role": "CEO"}
+    ],
+    "education": [],
+    "locations": ["United States"],
+    "outbound_links": ["https://www.langchain.com/"],
+    "topics": ["llm applications", "agent architectures", "langchain", "ai workflows"],
+    "timestamps": ["2024"],
+    "raw_text": "Conference biography for Harrison Chase, CEO of LangChain, discussing how to build reliable LLM applications using chains, agents, and retrieval-augmented generation patterns.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "CEO of LangChain, discussing how to build reliable LLM applications"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+
+  {
+    "profile_id": "swyx_personal",
+    "canonical_person_id": "swyx",
+    "source_type": "personal_site",
+    "url": "https://www.swyx.io/",
+    "display_name": "Shawn Wang",
+    "aliases": ["swyx", "Shawn", "S. Wang"],
+    "headline": "Writer, speaker, and AI engineering advocate.",
+    "bio_text": "Shawn Wang, known as swyx, writes about AI engineering, developer tools, and the emerging discipline of building with large language models.",
+    "organizations": [
+      {"name": "Latent Space", "role": "Co-founder"},
+      {"name": "smol.ai", "role": "Founder"}
+    ],
+    "education": [],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://github.com/swyxio", "https://www.latent.space/"],
+    "topics": ["ai engineering", "developer experience", "llms", "latent space"],
+    "timestamps": ["2022", "2023", "2024"],
+    "raw_text": "Shawn Wang (swyx) coined the term AI Engineer and co-hosts the Latent Space podcast covering the latest developments in AI infrastructure, LLMs, and developer tools.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "coined the term AI Engineer and co-hosts the Latent Space podcast"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "swyx_github",
+    "canonical_person_id": "swyx",
+    "source_type": "github",
+    "url": "https://github.com/swyxio",
+    "display_name": "Shawn Wang",
+    "aliases": ["swyx", "swyxio"],
+    "headline": "AI engineer and open-source builder.",
+    "bio_text": "GitHub profile for swyx (Shawn Wang) with repositories on AI engineering patterns, developer tools, and open-source projects around LLM applications.",
+    "organizations": [
+      {"name": "smol.ai", "role": "Founder"},
+      {"name": "Latent Space", "role": "Co-founder"}
+    ],
+    "education": [],
+    "locations": ["California"],
+    "outbound_links": ["https://www.swyx.io/"],
+    "topics": ["ai engineering", "open source", "llm apps", "developer tools"],
+    "timestamps": ["2023", "2024"],
+    "raw_text": "swyx (Shawn Wang) maintains open-source repositories focused on AI engineering, smol developer agents, and tooling for building with language models.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "AI engineering patterns, developer tools, and open-source projects"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "swyx_podcast",
+    "canonical_person_id": "swyx",
+    "source_type": "podcast_guest",
+    "url": "https://example.org/podcast/swyx",
+    "display_name": "Shawn Wang",
+    "aliases": ["swyx", "Shawn Wang"],
+    "headline": "Guest discussing AI engineering and the Latent Space podcast.",
+    "bio_text": "Podcast guest biography for Shawn Wang (swyx) on the rise of AI engineering as a discipline and insights from hosting the Latent Space podcast.",
+    "organizations": [
+      {"name": "Latent Space", "role": "Co-host"}
+    ],
+    "education": [],
+    "locations": ["United States"],
+    "outbound_links": ["https://www.swyx.io/", "https://www.latent.space/"],
+    "topics": ["ai engineering", "latent space", "llm ecosystem", "developer community"],
+    "timestamps": ["2024"],
+    "raw_text": "Podcast introduction for Shawn Wang (swyx), who popularized the concept of the AI Engineer and co-hosts Latent Space, a leading podcast on AI infrastructure and developer tools.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "popularized the concept of the AI Engineer and co-hosts Latent Space"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+
+  {
+    "profile_id": "eugene_yan_personal",
+    "canonical_person_id": "eugene_yan",
+    "source_type": "personal_site",
+    "url": "https://eugeneyan.com/",
+    "display_name": "Eugene Yan",
+    "aliases": ["E. Yan", "Eugene"],
+    "headline": "Applied scientist writing about ML in production.",
+    "bio_text": "Eugene Yan is an applied scientist at Amazon who writes about recommendation systems, machine learning in production, and practical engineering for ML systems.",
+    "organizations": [
+      {"name": "Amazon", "role": "Senior Applied Scientist"}
+    ],
+    "education": [],
+    "locations": ["Singapore", "Seattle"],
+    "outbound_links": ["https://github.com/eugeneyan"],
+    "topics": ["recommendation systems", "ml in production", "applied ml", "information retrieval"],
+    "timestamps": ["2020", "2023", "2024"],
+    "raw_text": "Eugene Yan writes about building recommendation systems, deploying ML models at scale, and practical patterns for applied machine learning at Amazon and beyond.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "building recommendation systems, deploying ML models at scale"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "eugene_yan_github",
+    "canonical_person_id": "eugene_yan",
+    "source_type": "github",
+    "url": "https://github.com/eugeneyan",
+    "display_name": "Eugene Yan",
+    "aliases": ["eugeneyan", "E Yan"],
+    "headline": "Applied scientist and open-source contributor.",
+    "bio_text": "GitHub profile for Eugene Yan featuring repositories on recommendation systems, ML system design, and applied machine learning reference architectures.",
+    "organizations": [
+      {"name": "Amazon", "role": "Applied Scientist"}
+    ],
+    "education": [],
+    "locations": ["Seattle"],
+    "outbound_links": ["https://eugeneyan.com/"],
+    "topics": ["recsys", "ml system design", "applied ml", "open source"],
+    "timestamps": ["2021", "2024"],
+    "raw_text": "Eugene Yan shares open-source resources on ML system design patterns, recommendation system architectures, and practical guides for applied machine learning engineers.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "recommendation systems, ML system design, and applied machine learning"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "eugene_yan_conference",
+    "canonical_person_id": "eugene_yan",
+    "source_type": "conference_bio",
+    "url": "https://example.org/speakers/eugene-yan",
+    "display_name": "Eugene Yan",
+    "aliases": ["E. Yan"],
+    "headline": "Speaker on recommendation systems and ML at scale.",
+    "bio_text": "Eugene Yan speaks about building and scaling recommendation systems, ML system design, and the operational challenges of deploying models in production.",
+    "organizations": [
+      {"name": "Amazon", "role": "Senior Applied Scientist"}
+    ],
+    "education": [],
+    "locations": ["United States"],
+    "outbound_links": ["https://eugeneyan.com/"],
+    "topics": ["recommendation systems", "ml at scale", "system design", "production ml"],
+    "timestamps": ["2024"],
+    "raw_text": "Conference biography for Eugene Yan, a senior applied scientist at Amazon known for writing about ML system design and recommendation systems at scale.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "senior applied scientist at Amazon known for writing about ML system design"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+
+  {
+    "profile_id": "chris_manning_bio",
+    "canonical_person_id": "chris_manning_marine",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/chris-manning-noaa",
+    "display_name": "Chris Manning",
+    "aliases": ["C. Manning", "Christopher Manning"],
+    "headline": "Marine biologist at NOAA.",
+    "bio_text": "Chris Manning is a marine biologist at NOAA studying coral reef ecosystems, ocean acidification, and coastal habitat restoration along the Atlantic seaboard.",
+    "organizations": [
+      {"name": "NOAA", "role": "Marine biologist"},
+      {"name": "Woods Hole Oceanographic Institution", "role": "Visiting researcher"}
+    ],
+    "education": [
+      {"institution": "University of Miami", "degree": "PhD"}
+    ],
+    "locations": ["Silver Spring", "Woods Hole"],
+    "outbound_links": ["https://example.org/noaa-bio/chris-manning"],
+    "topics": ["marine biology", "coral reefs", "ocean acidification", "habitat restoration"],
+    "timestamps": ["2016", "2023"],
+    "raw_text": "Chris Manning is a marine biologist at NOAA specializing in coral reef conservation and ocean acidification research. He has published over 40 papers on coastal ecosystem health.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "marine biologist at NOAA studying coral reef ecosystems, ocean acidification"}
+    ],
+    "metadata": {"seed_group": "hard_negative"}
+  },
+  {
+    "profile_id": "sara_hooker_chef",
+    "canonical_person_id": "sara_hooker_culinary",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/sara-hooker-chef",
+    "display_name": "Sara Hooker",
+    "aliases": ["S. Hooker", "Chef Sara"],
+    "headline": "Executive chef and culinary director.",
+    "bio_text": "Sara Hooker is an executive chef and culinary director known for sustainable farm-to-table cuisine and innovative plant-based menus at award-winning restaurants.",
+    "organizations": [
+      {"name": "Harvest Kitchen", "role": "Executive Chef"},
+      {"name": "Green Table Hospitality", "role": "Culinary Director"}
+    ],
+    "education": [
+      {"institution": "Culinary Institute of America", "degree": "AOS"}
+    ],
+    "locations": ["Portland", "New York"],
+    "outbound_links": ["https://example.org/harvest-kitchen"],
+    "topics": ["culinary arts", "farm-to-table", "plant-based cuisine", "sustainable food"],
+    "timestamps": ["2018", "2024"],
+    "raw_text": "Sara Hooker is an executive chef specializing in sustainable and plant-based cuisine. She leads Harvest Kitchen in Portland and consults on menu design for Green Table Hospitality.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "executive chef and culinary director known for sustainable farm-to-table cuisine"}
+    ],
+    "metadata": {"seed_group": "hard_negative"}
+  },
+  {
+    "profile_id": "jason_howard_realestate",
+    "canonical_person_id": "jason_howard",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/jason-howard",
+    "display_name": "Jason Howard",
+    "aliases": ["J. Howard", "Jason H."],
+    "headline": "Real estate consultant and market analyst.",
+    "bio_text": "Jason Howard is a real estate consultant specializing in commercial property valuation, market analysis, and investment strategy for urban developments.",
+    "organizations": [
+      {"name": "Apex Realty Advisors", "role": "Principal consultant"},
+      {"name": "Urban Land Institute", "role": "Member"}
+    ],
+    "education": [
+      {"institution": "University of Southern California", "degree": "MBA"}
+    ],
+    "locations": ["Los Angeles"],
+    "outbound_links": ["https://example.org/apex-realty"],
+    "topics": ["real estate", "commercial property", "market analysis", "investment strategy"],
+    "timestamps": ["2019", "2024"],
+    "raw_text": "Jason Howard advises on commercial real estate transactions, market valuations, and investment strategy. He is a principal consultant at Apex Realty Advisors based in Los Angeles.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "real estate consultant specializing in commercial property valuation, market analysis"}
+    ],
+    "metadata": {"seed_group": "hard_negative"}
+  },
+  {
+    "profile_id": "simon_williams_it",
+    "canonical_person_id": "simon_williams",
+    "source_type": "company_profile",
+    "url": "https://example.org/team/simon-williams",
+    "display_name": "Simon Williams",
+    "aliases": ["S. Williams", "Simon W."],
+    "headline": "IT consultant specializing in cloud infrastructure.",
+    "bio_text": "Simon Williams is an IT consultant focused on cloud migration, enterprise infrastructure, and cybersecurity for mid-market businesses.",
+    "organizations": [
+      {"name": "CloudPath Solutions", "role": "Principal consultant"},
+      {"name": "Deloitte", "role": "Former senior consultant"}
+    ],
+    "education": [
+      {"institution": "University of Manchester", "degree": "MSc"}
+    ],
+    "locations": ["London", "Manchester"],
+    "outbound_links": ["https://example.org/cloudpath"],
+    "topics": ["cloud infrastructure", "cybersecurity", "enterprise it", "cloud migration"],
+    "timestamps": ["2017", "2024"],
+    "raw_text": "Simon Williams is an IT consultant who helps mid-market companies with cloud migrations, security architecture, and enterprise infrastructure modernization. He previously held senior roles at Deloitte.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "IT consultant focused on cloud migration, enterprise infrastructure, and cybersecurity"}
+    ],
+    "metadata": {"seed_group": "hard_negative"}
+  },
+
+  {
+    "profile_id": "yann_huggingface",
+    "canonical_person_id": "yann_lecun",
+    "source_type": "huggingface",
+    "url": "https://huggingface.co/ylecun",
+    "display_name": "Yann LeCun",
+    "aliases": ["ylecun"],
+    "headline": "Chief AI Scientist at Meta sharing research models.",
+    "bio_text": "Hugging Face profile for Yann LeCun featuring research models and datasets related to self-supervised learning, vision transformers, and energy-based models.",
+    "organizations": [
+      {"name": "Meta AI", "role": "Chief AI Scientist"}
+    ],
+    "education": [],
+    "locations": ["New York"],
+    "outbound_links": ["https://yann.lecun.com/"],
+    "topics": ["self-supervised learning", "vision transformers", "energy-based models"],
+    "timestamps": ["2024"],
+    "raw_text": "Yann LeCun shares research artifacts on Hugging Face including model checkpoints and datasets from Meta AI research on self-supervised and energy-based learning.",
+    "supporting_spans": [
+      {"field_name": "raw_text", "snippet": "research artifacts on Hugging Face including model checkpoints"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "fchollet_huggingface",
+    "canonical_person_id": "francois_chollet",
+    "source_type": "huggingface",
+    "url": "https://huggingface.co/fchollet",
+    "display_name": "Francois Chollet",
+    "aliases": ["fchollet"],
+    "headline": "Keras creator sharing models on Hugging Face.",
+    "bio_text": "Hugging Face profile for Francois Chollet featuring Keras model exports and ARC-related evaluation datasets.",
+    "organizations": [
+      {"name": "Google", "role": "Software engineer"}
+    ],
+    "education": [],
+    "locations": ["California"],
+    "outbound_links": ["https://fchollet.com/", "https://keras.io/"],
+    "topics": ["keras models", "arc benchmark", "model exports"],
+    "timestamps": ["2024"],
+    "raw_text": "Francois Chollet publishes Keras-based model exports and ARC evaluation resources on Hugging Face for the research community.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "Keras model exports and ARC-related evaluation datasets"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "jeremy_huggingface",
+    "canonical_person_id": "jeremy_howard",
+    "source_type": "huggingface",
+    "url": "https://huggingface.co/jhoward",
+    "display_name": "Jeremy Howard",
+    "aliases": ["jhoward"],
+    "headline": "fast.ai models and datasets on Hugging Face.",
+    "bio_text": "Hugging Face profile for Jeremy Howard hosting fast.ai pretrained models, ULMFiT checkpoints, and educational datasets for transfer learning.",
+    "organizations": [
+      {"name": "fast.ai", "role": "Co-founder"}
+    ],
+    "education": [],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://jeremy.fast.ai/"],
+    "topics": ["transfer learning", "fast.ai models", "ulmfit", "pretrained models"],
+    "timestamps": ["2023", "2024"],
+    "raw_text": "Jeremy Howard shares fast.ai pretrained models and educational notebooks on Hugging Face, enabling easy access to transfer learning resources.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "fast.ai pretrained models, ULMFiT checkpoints, and educational datasets"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "timnit_huggingface",
+    "canonical_person_id": "timnit_gebru",
+    "source_type": "huggingface",
+    "url": "https://huggingface.co/timnitgebru",
+    "display_name": "Timnit Gebru",
+    "aliases": ["timnitgebru"],
+    "headline": "AI ethics datasets and fairness tools.",
+    "bio_text": "Hugging Face profile for Timnit Gebru hosting fairness evaluation datasets, bias measurement tools, and datasheet templates for responsible AI.",
+    "organizations": [
+      {"name": "DAIR Institute", "role": "Executive Director"}
+    ],
+    "education": [],
+    "locations": ["Seattle"],
+    "outbound_links": ["https://www.dair-institute.org/"],
+    "topics": ["fairness datasets", "bias measurement", "datasheets", "responsible ai"],
+    "timestamps": ["2024"],
+    "raw_text": "Timnit Gebru publishes fairness evaluation datasets and datasheet templates on Hugging Face to support responsible AI development practices.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "fairness evaluation datasets, bias measurement tools, and datasheet templates"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "sebastian_huggingface",
+    "canonical_person_id": "sebastian_raschka",
+    "source_type": "huggingface",
+    "url": "https://huggingface.co/rasbt",
+    "display_name": "Sebastian Raschka",
+    "aliases": ["rasbt"],
+    "headline": "LLM training resources on Hugging Face.",
+    "bio_text": "Hugging Face profile for Sebastian Raschka hosting LLM fine-tuning notebooks, model checkpoints, and educational datasets for practical deep learning.",
+    "organizations": [
+      {"name": "Lightning AI", "role": "Research engineer"}
+    ],
+    "education": [],
+    "locations": ["Wisconsin"],
+    "outbound_links": ["https://sebastianraschka.com/"],
+    "topics": ["llm fine-tuning", "model checkpoints", "deep learning education"],
+    "timestamps": ["2024"],
+    "raw_text": "Sebastian Raschka shares LLM fine-tuning notebooks and practical deep learning model checkpoints on Hugging Face for the open-source community.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "LLM fine-tuning notebooks, model checkpoints, and educational datasets"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "eugene_yan_huggingface",
+    "canonical_person_id": "eugene_yan",
+    "source_type": "huggingface",
+    "url": "https://huggingface.co/eugeneyan",
+    "display_name": "Eugene Yan",
+    "aliases": ["eugeneyan"],
+    "headline": "RecSys models and applied ML resources.",
+    "bio_text": "Hugging Face profile for Eugene Yan featuring recommendation system model experiments, embedding models, and applied ML evaluation datasets.",
+    "organizations": [
+      {"name": "Amazon", "role": "Applied Scientist"}
+    ],
+    "education": [],
+    "locations": ["Seattle"],
+    "outbound_links": ["https://eugeneyan.com/"],
+    "topics": ["recommendation models", "embedding models", "applied ml"],
+    "timestamps": ["2024"],
+    "raw_text": "Eugene Yan hosts recommendation system experiments and embedding model evaluations on Hugging Face for the applied ML community.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "recommendation system model experiments, embedding models"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "sara_hooker_huggingface",
+    "canonical_person_id": "sara_hooker",
+    "source_type": "huggingface",
+    "url": "https://huggingface.co/sarahooker",
+    "display_name": "Sara Hooker",
+    "aliases": ["sarahooker"],
+    "headline": "Compression fairness research models and datasets.",
+    "bio_text": "Hugging Face profile for Sara Hooker featuring pruned model variants, compression fairness benchmarks, and bias evaluation datasets from her research.",
+    "organizations": [
+      {"name": "Cohere", "role": "VP of Research"}
+    ],
+    "education": [],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://www.sarahooker.me/"],
+    "topics": ["pruned models", "compression fairness", "bias evaluation"],
+    "timestamps": ["2024"],
+    "raw_text": "Sara Hooker publishes pruned model variants and compression fairness benchmark datasets on Hugging Face for reproducible research on efficiency and equity.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "pruned model variants, compression fairness benchmarks, and bias evaluation datasets"}
+    ],
+    "metadata": {"seed_group": "stage1"}
+  },
+  {
+    "profile_id": "harrison_chase_huggingface",
+    "canonical_person_id": "harrison_chase",
+    "source_type": "huggingface",
+    "url": "https://huggingface.co/hwchase17",
+    "display_name": "Harrison Chase",
+    "aliases": ["hwchase17"],
+    "headline": "LangChain integration models and embeddings.",
+    "bio_text": "Hugging Face profile for Harrison Chase featuring embedding models, LangChain-compatible model integrations, and agent evaluation datasets.",
+    "organizations": [
+      {"name": "LangChain", "role": "CEO"}
+    ],
+    "education": [],
+    "locations": ["San Francisco"],
+    "outbound_links": ["https://www.langchain.com/"],
+    "topics": ["embedding models", "langchain integrations", "agent evaluation"],
+    "timestamps": ["2024"],
+    "raw_text": "Harrison Chase publishes LangChain-compatible embedding models and agent evaluation datasets on Hugging Face for the LLM application developer community.",
+    "supporting_spans": [
+      {"field_name": "bio_text", "snippet": "embedding models, LangChain-compatible model integrations, and agent evaluation datasets"}
+    ],
+    "metadata": {"seed_group": "stage1"}
   }
 ]

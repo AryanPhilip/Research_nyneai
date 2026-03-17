@@ -16,6 +16,29 @@ class MetricSummary:
     average_precision: float
 
 
+def expected_calibration_error(labels: list[int], scores: list[float], n_bins: int = 10) -> float:
+    """Compute expected calibration error for binary scores."""
+
+    if not labels or not scores or len(labels) != len(scores):
+        return 0.0
+    bins = np.linspace(0.0, 1.0, n_bins + 1)
+    ece = 0.0
+    total = len(scores)
+    labels_arr = np.asarray(labels)
+    scores_arr = np.asarray(scores)
+    for lower, upper in zip(bins[:-1], bins[1:]):
+        if upper == 1.0:
+            mask = (scores_arr >= lower) & (scores_arr <= upper)
+        else:
+            mask = (scores_arr >= lower) & (scores_arr < upper)
+        if not np.any(mask):
+            continue
+        bin_scores = scores_arr[mask]
+        bin_labels = labels_arr[mask]
+        ece += (len(bin_scores) / total) * abs(float(bin_scores.mean()) - float(bin_labels.mean()))
+    return float(ece)
+
+
 def summarize_predictions(labels: list[int], scores: list[float], threshold: float) -> MetricSummary:
     """Compute pairwise metrics for a thresholded score output."""
 

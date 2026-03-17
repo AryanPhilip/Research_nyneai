@@ -84,6 +84,7 @@ class PairFeatureExtractor:
 
     vectorizer: TfidfVectorizer | None = None
     profile_vectors: dict[str, np.ndarray] | None = None
+    fit_profile_ids: set[str] | None = None
     feature_order: tuple[str, ...] = (
         "name_similarity",
         "alias_similarity",
@@ -111,14 +112,29 @@ class PairFeatureExtractor:
             profile.profile_id: dense[index]
             for index, profile in enumerate(profiles)
         }
+        self.fit_profile_ids = {profile.profile_id for profile in profiles}
         return self
 
+    def _profile_vector(self, profile: ProfileRecord) -> np.ndarray | None:
+        if self.profile_vectors is None:
+            return None
+        cached = self.profile_vectors.get(profile.profile_id)
+        if cached is not None:
+            return cached
+        if self.vectorizer is None:
+            return None
+        vector = self.vectorizer.transform([compose_normalized_text(profile)]).toarray()[0]
+        self.profile_vectors[profile.profile_id] = vector
+        return vector
+
     def _embedding_cosine(self, left: ProfileRecord, right: ProfileRecord) -> float:
-        if not self.profile_vectors or left.profile_id not in self.profile_vectors or right.profile_id not in self.profile_vectors:
+        if not self.profile_vectors:
             return 0.0
 
-        left_vec = self.profile_vectors[left.profile_id]
-        right_vec = self.profile_vectors[right.profile_id]
+        left_vec = self._profile_vector(left)
+        right_vec = self._profile_vector(right)
+        if left_vec is None or right_vec is None:
+            return 0.0
         left_norm = np.linalg.norm(left_vec)
         right_norm = np.linalg.norm(right_vec)
         if left_norm == 0.0 or right_norm == 0.0:

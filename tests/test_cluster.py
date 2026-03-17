@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from nyne_er_lab.cluster import generate_evidence_card, resolve_identities
-from nyne_er_lab.datasets import load_benchmark_profiles
+from nyne_er_lab.datasets import load_dataset
 from nyne_er_lab.eval import bcubed_f1
 from nyne_er_lab.features import (
     PairFeatureExtractor,
@@ -15,7 +15,7 @@ from nyne_er_lab.models import train_hybrid_matcher
 
 
 def _cluster_inputs():
-    profiles = load_benchmark_profiles()
+    profiles = load_dataset("hard_negative_bank").profiles
     split_map = assign_profile_splits(profiles)
     extractor = PairFeatureExtractor().fit(profiles_for_split(profiles, split_map, "train"))
 

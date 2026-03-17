@@ -2,6 +2,7 @@
 
 from .blocker import (
     BlockCandidate,
+    blocking_rule_stats,
     blocking_recall,
     candidate_volume_ratio,
     domain_overlap_match,
@@ -14,6 +15,7 @@ from .blocker import (
 
 __all__ = [
     "BlockCandidate",
+    "blocking_rule_stats",
     "blocking_recall",
     "candidate_volume_ratio",
     "domain_overlap_match",
