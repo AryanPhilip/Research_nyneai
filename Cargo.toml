@@ -1,0 +1,24 @@
+[workspace]
+members = [
+    "crates/nyne-er-core",
+    "crates/nyne-er-cli",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+version = "0.1.0"
+
+[workspace.dependencies]
+anyhow = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4.5", features = ["derive"] }
+ndarray = "0.16"
+rand = "0.9"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+scraper = "0.24"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.10"
+url = { version = "2.5", features = ["serde"] }

@@ -1,0 +1,22 @@
+[package]
+name = "nyne-er-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "nyne-er"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+url.workspace = true
+nyne-er-core = { path = "../nyne-er-core" }
+
+[dev-dependencies]
+assert_cmd = "2.0"
+tempfile = "3.20"
+

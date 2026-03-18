@@ -12,3 +12,4 @@ __pycache__/
 
 # Generated test output directories
 reports_test/
+target/

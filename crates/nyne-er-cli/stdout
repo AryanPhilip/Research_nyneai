@@ -1,0 +1,506 @@
+{
+  "dataset_name": "real_curated_core",
+  "protocol": "grouped_cv",
+  "seeds": [
+    7
+  ],
+  "headline_metrics": {
+    "abstain_rate": 0.091,
+    "accepted_precision": 1.0,
+    "accepted_recall": 0.833,
+    "average_precision": 1.0,
+    "dataset_name": "real_curated_core",
+    "f1": 1.0,
+    "identity_count": 16,
+    "mean_brier": 0.0095,
+    "mean_ece": 0.0282,
+    "precision": 1.0,
+    "profile_count": 56,
+    "recall": 1.0
+  },
+  "model_metrics": [
+    {
+      "average_precision": 1.0,
+      "f1": 0.947,
+      "name": "fuzzy_name",
+      "precision": 0.9,
+      "recall": 1.0
+    },
+    {
+      "average_precision": 0.63,
+      "f1": 0.706,
+      "name": "embedding_only",
+      "precision": 0.545,
+      "recall": 1.0
+    },
+    {
+      "average_precision": 1.0,
+      "f1": 1.0,
+      "name": "lexical_baseline",
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    {
+      "average_precision": 1.0,
+      "f1": 1.0,
+      "name": "hybrid",
+      "precision": 1.0,
+      "recall": 1.0
+    }
+  ],
+  "cv_summary": [
+    {
+      "average_precision": 1.0,
+      "brier": 0.0095,
+      "ece": 0.0282,
+      "f1": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "seed": 7,
+      "test_profiles": 12,
+      "train_profiles": 34,
+      "val_profiles": 10
+    }
+  ],
+  "stress_metrics": {
+    "hard_negative_bank": {
+      "abstain_rate": 0.023,
+      "dataset_name": "hard_negative_bank",
+      "example_count": 617,
+      "f1": 0.979,
+      "precision": 1.0,
+      "profile_count": 65,
+      "recall": 0.958
+    },
+    "synthetic_stress": {
+      "abstain_rate": 0.063,
+      "dataset_name": "synthetic_stress",
+      "example_count": 1277,
+      "f1": 0.961,
+      "precision": 0.961,
+      "profile_count": 88,
+      "recall": 0.961
+    }
+  },
+  "failure_slices": [
+    {
+      "count": 0,
+      "description": "Exact or near-exact names that should not merge.",
+      "examples": [],
+      "f1": 0.0,
+      "name": "same_name_collision",
+      "precision": 0.0,
+      "recall": 0.0
+    },
+    {
+      "count": 23,
+      "description": "Pairs with conflicting structured locations.",
+      "examples": [
+        {
+          "decision": "abstain",
+          "label": 1,
+          "left_profile_id": "harrison_chase_company",
+          "right_profile_id": "harrison_chase_conference",
+          "score": 0.813
+        },
+        {
+          "decision": "non_match",
+          "label": 0,
+          "left_profile_id": "harrison_chase_company",
+          "right_profile_id": "sebastian_personal",
+          "score": 0.003
+        },
+        {
+          "decision": "match",
+          "label": 1,
+          "left_profile_id": "harrison_chase_conference",
+          "right_profile_id": "harrison_chase_github",
+          "score": 1.0
+        },
+        {
+          "decision": "match",
+          "label": 1,
+          "left_profile_id": "harrison_chase_conference",
+          "right_profile_id": "harrison_chase_huggingface",
+          "score": 1.0
+        }
+      ],
+      "f1": 0.0,
+      "name": "location_conflict",
+      "precision": 0.0,
+      "recall": 0.0
+    }
+  ],
+  "leakage_checks": [
+    {
+      "detail": "Canonical identities are disjoint across splits.",
+      "name": "canonical_person_disjoint",
+      "passed": true
+    },
+    {
+      "detail": "No duplicated URLs across train/test.",
+      "name": "duplicate_urls_across_train_test",
+      "passed": true
+    },
+    {
+      "detail": "No near-duplicate raw text across train/test.",
+      "name": "near_duplicate_raw_text_across_train_test",
+      "passed": true
+    },
+    {
+      "detail": "Headline dataset contains no synthetic profiles.",
+      "name": "synthetic_contamination",
+      "passed": true
+    },
+    {
+      "detail": "TF-IDF fit on train profiles only.",
+      "name": "train_only_feature_fitting",
+      "passed": true
+    },
+    {
+      "detail": "Baseline and hybrid thresholds are chosen on validation splits only.",
+      "name": "threshold_selected_on_validation_only",
+      "passed": true
+    }
+  ],
+  "thresholds": [
+    {
+      "match_threshold": 0.85,
+      "non_match_threshold": 0.4,
+      "seed": 7,
+      "threshold": 0.35
+    }
+  ],
+  "top_errors": [
+    {
+      "decision": "abstain",
+      "explanation": "Decision=abstain at confidence 0.81. Supporting signals: high_name_similarity, shared_org, shared_topics. Contradictions: location_conflict.",
+      "label": 1,
+      "left_name": "Harrison Chase",
+      "left_profile_id": "harrison_chase_company",
+      "reason_codes": [
+        "high_name_similarity",
+        "shared_org",
+        "shared_topics",
+        "location_conflict"
+      ],
+      "right_name": "Harrison Chase",
+      "right_profile_id": "harrison_chase_conference",
+      "score": 0.813
+    },
+    {
+      "decision": "abstain",
+      "explanation": "Decision=abstain at confidence 0.67. Supporting signals: high_name_similarity, shared_org, shared_topics.",
+      "label": 1,
+      "left_name": "Harrison Chase",
+      "left_profile_id": "harrison_chase_company",
+      "reason_codes": [
+        "high_name_similarity",
+        "shared_org",
+        "shared_topics"
+      ],
+      "right_name": "Harrison Chase",
+      "right_profile_id": "harrison_chase_huggingface",
+      "score": 0.669
+    },
+    {
+      "decision": "abstain",
+      "explanation": "Decision=abstain at confidence 0.59. Supporting signals: high_name_similarity, shared_org, shared_topics.",
+      "label": 1,
+      "left_name": "Harrison Chase",
+      "left_profile_id": "harrison_chase_company",
+      "reason_codes": [
+        "high_name_similarity",
+        "shared_org",
+        "shared_topics"
+      ],
+      "right_name": "Harrison Chase",
+      "right_profile_id": "harrison_chase_github",
+      "score": 0.589
+    }
+  ],
+  "ablations": [
+    {
+      "average_precision": 1.0,
+      "f1": 1.0,
+      "name": "full"
+    },
+    {
+      "average_precision": 1.0,
+      "f1": 1.0,
+      "name": "no_embedding"
+    },
+    {
+      "average_precision": 1.0,
+      "f1": 1.0,
+      "name": "no_structured"
+    }
+  ],
+  "permutation_sanity": {
+    "f1": 0.571,
+    "note": "Sanity check with shuffled train labels. This should stay materially below the real model.",
+    "precision": 0.8,
+    "recall": 0.444
+  },
+  "open_world_retrieval": {
+    "queries": 12,
+    "recall_at_1": 1.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "traces": [
+      {
+        "query_name": "Sebastian Raschka",
+        "query_profile_id": "sebastian_personal",
+        "top_candidates": [
+          {
+            "decision": "match",
+            "display_name": "Sebastian Raschka",
+            "profile_id": "sebastian_github",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "github"
+          },
+          {
+            "decision": "match",
+            "display_name": "Sebastian Raschka",
+            "profile_id": "sebastian_podcast",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "podcast_guest"
+          },
+          {
+            "decision": "match",
+            "display_name": "Sebastian Raschka",
+            "profile_id": "sebastian_huggingface",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "huggingface"
+          },
+          {
+            "decision": "non_match",
+            "display_name": "Sara Hooker",
+            "profile_id": "sara_hooker_personal",
+            "same_person": false,
+            "score": 0.001,
+            "source_type": "personal_site"
+          },
+          {
+            "decision": "non_match",
+            "display_name": "Andrej Karpathy",
+            "profile_id": "andrej_github",
+            "same_person": false,
+            "score": 0.0,
+            "source_type": "github"
+          }
+        ]
+      },
+      {
+        "query_name": "Sebastian Raschka",
+        "query_profile_id": "sebastian_github",
+        "top_candidates": [
+          {
+            "decision": "match",
+            "display_name": "Sebastian Raschka",
+            "profile_id": "sebastian_personal",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "personal_site"
+          },
+          {
+            "decision": "match",
+            "display_name": "Sebastian Raschka",
+            "profile_id": "sebastian_podcast",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "podcast_guest"
+          },
+          {
+            "decision": "match",
+            "display_name": "Sebastian Raschka",
+            "profile_id": "sebastian_huggingface",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "huggingface"
+          },
+          {
+            "decision": "non_match",
+            "display_name": "Andrej Karpathy",
+            "profile_id": "andrej_github",
+            "same_person": false,
+            "score": 0.0,
+            "source_type": "github"
+          },
+          {
+            "decision": "non_match",
+            "display_name": "Andrej Karpathy",
+            "profile_id": "andrej_personal",
+            "same_person": false,
+            "score": 0.0,
+            "source_type": "personal_site"
+          }
+        ]
+      },
+      {
+        "query_name": "Sebastian Raschka",
+        "query_profile_id": "sebastian_podcast",
+        "top_candidates": [
+          {
+            "decision": "match",
+            "display_name": "Sebastian Raschka",
+            "profile_id": "sebastian_personal",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "personal_site"
+          },
+          {
+            "decision": "match",
+            "display_name": "Sebastian Raschka",
+            "profile_id": "sebastian_github",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "github"
+          },
+          {
+            "decision": "match",
+            "display_name": "Sebastian Raschka",
+            "profile_id": "sebastian_huggingface",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "huggingface"
+          },
+          {
+            "decision": "non_match",
+            "display_name": "Andrej Karpathy",
+            "profile_id": "andrej_github",
+            "same_person": false,
+            "score": 0.0,
+            "source_type": "github"
+          },
+          {
+            "decision": "non_match",
+            "display_name": "Andrej Karpathy",
+            "profile_id": "andrej_personal",
+            "same_person": false,
+            "score": 0.0,
+            "source_type": "personal_site"
+          }
+        ]
+      },
+      {
+        "query_name": "Jeremy Howard",
+        "query_profile_id": "jeremy_github",
+        "top_candidates": [
+          {
+            "decision": "match",
+            "display_name": "Jeremy Howard",
+            "profile_id": "jeremy_personal",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "personal_site"
+          },
+          {
+            "decision": "match",
+            "display_name": "Jeremy Howard",
+            "profile_id": "jeremy_podcast",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "podcast_guest"
+          },
+          {
+            "decision": "match",
+            "display_name": "Jeremy Howard",
+            "profile_id": "jeremy_huggingface",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "huggingface"
+          },
+          {
+            "decision": "non_match",
+            "display_name": "Andrej Karpathy",
+            "profile_id": "andrej_github",
+            "same_person": false,
+            "score": 0.0,
+            "source_type": "github"
+          },
+          {
+            "decision": "non_match",
+            "display_name": "Andrej Karpathy",
+            "profile_id": "andrej_personal",
+            "same_person": false,
+            "score": 0.0,
+            "source_type": "personal_site"
+          }
+        ]
+      },
+      {
+        "query_name": "Jeremy Howard",
+        "query_profile_id": "jeremy_personal",
+        "top_candidates": [
+          {
+            "decision": "match",
+            "display_name": "Jeremy Howard",
+            "profile_id": "jeremy_github",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "github"
+          },
+          {
+            "decision": "match",
+            "display_name": "Jeremy Howard",
+            "profile_id": "jeremy_podcast",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "podcast_guest"
+          },
+          {
+            "decision": "match",
+            "display_name": "Jeremy Howard",
+            "profile_id": "jeremy_huggingface",
+            "same_person": true,
+            "score": 1.0,
+            "source_type": "huggingface"
+          },
+          {
+            "decision": "non_match",
+            "display_name": "Andrej Karpathy",
+            "profile_id": "andrej_github",
+            "same_person": false,
+            "score": 0.0,
+            "source_type": "github"
+          },
+          {
+            "decision": "non_match",
+            "display_name": "Andrej Karpathy",
+            "profile_id": "andrej_personal",
+            "same_person": false,
+            "score": 0.0,
+            "source_type": "personal_site"
+          }
+        ]
+      }
+    ]
+  },
+  "cluster_metrics": {
+    "bcubed_f1": 0.986,
+    "identity_count": 17,
+    "resolved_pair_count": 534
+  },
+  "dataset_summary": {
+    "available_datasets": {
+      "hard_negative_bank": {
+        "contains_synthetic": false,
+        "profile_count": 65
+      },
+      "real_curated_core": {
+        "contains_synthetic": false,
+        "profile_count": 56
+      },
+      "synthetic_stress": {
+        "contains_synthetic": true,
+        "profile_count": 88
+      }
+    },
+    "headline_dataset": "real_curated_core",
+    "headline_description": "Headline benchmark of curated public AI/ML builder profiles only."
+  }
+}
