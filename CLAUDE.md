@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Nyne Entity Resolution Lab — a benchmark-first entity resolution system for matching fragmented public professional identities (e.g., GitHub profiles, conference bios, personal sites) across the open web. It resolves multiple online profiles of the same person into unified canonical identities while avoiding false merges on same-name collisions.
+Entity Resolution Lab -- a benchmark-first entity resolution system for matching fragmented public professional identities (e.g., GitHub profiles, conference bios, personal sites) across the open web. It resolves multiple online profiles of the same person into unified canonical identities while avoiding false merges on same-name collisions.
 
 ## Commands
 
